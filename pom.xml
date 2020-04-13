@@ -9,11 +9,11 @@
         <relativePath/>
     </parent>
 
-    <groupId>io.github.talelin</groupId>
-    <artifactId>merak</artifactId>
+    <groupId>vip.gadfly</groupId>
+    <artifactId>chakkispring</artifactId>
     <version>0.0.1-RC6</version>
-    <name>merak</name>
-    <description>Demo project for lin cms</description>
+    <name>chakkispring</name>
+    <description>Chakki Class Management</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
