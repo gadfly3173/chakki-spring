@@ -16,6 +16,7 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import static vip.gadfly.chakkispring.module.message.MessageConstant.USER_KEY;
@@ -77,7 +78,7 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
 
     private void writeMessageToBody(ServerHttpResponse response, String message) throws IOException {
         response.setStatusCode(HttpStatus.BAD_REQUEST);
-        response.getBody().write(message.getBytes(Charset.forName("UTF8")));
+        response.getBody().write(message.getBytes(StandardCharsets.UTF_8));
     }
 
 }
