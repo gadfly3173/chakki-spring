@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class ResultAspect {
 
 
-    @Pointcut("execution(public * io.github.talelin.merak.controller..*.*(..))")
+    @Pointcut("execution(public * vip.gadfly.chakkispring.controller..*.*(..))")
     public void handlePlaceholder() {
     }
 

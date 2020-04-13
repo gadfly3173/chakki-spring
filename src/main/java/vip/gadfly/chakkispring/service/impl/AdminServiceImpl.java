@@ -2,11 +2,11 @@ package vip.gadfly.chakkispring.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.github.talelin.merak.model.*;
-import io.github.talelin.merak.service.*;
+import vip.gadfly.chakkispring.model.*;
+import vip.gadfly.chakkispring.service.*;
 import vip.gadfly.chakkispring.bo.GroupPermissionBO;
 import vip.gadfly.chakkispring.common.mybatis.Page;
-import io.github.talelin.merak.dto.admin.*;
+import vip.gadfly.chakkispring.dto.admin.*;
 import vip.gadfly.chakkispring.mapper.GroupPermissionMapper;
 import io.github.talelin.autoconfigure.exception.ForbiddenException;
 import io.github.talelin.autoconfigure.exception.NotFoundException;

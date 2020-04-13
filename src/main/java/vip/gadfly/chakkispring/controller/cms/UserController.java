@@ -59,7 +59,7 @@ public class UserController {
     }
 
     /**
-     * 用户登陆
+     * 用户登录
      */
     @PostMapping("/login")
     public Tokens login(@RequestBody @Validated LoginDTO validator) {
