@@ -1,0 +1,104 @@
+package vip.gadfly.chakkispring.service.impl;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.github.talelin.autoconfigure.exception.ForbiddenException;
+import io.github.talelin.autoconfigure.exception.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.common.mybatis.Page;
+import vip.gadfly.chakkispring.dto.admin.*;
+import vip.gadfly.chakkispring.model.*;
+import vip.gadfly.chakkispring.service.*;
+
+import java.util.List;
+
+
+@Service
+public class ClassServiceImpl implements ClassService {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ClassManageService classManageService;
+
+    @Value("${user.root.id}")
+    private Long rootUserId;
+
+    @Override
+    public IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page) {
+        Page pager = new Page(page, count);
+        IPage<UserDO> iPage;
+        // 如果class_id为空，则以分页的形式返回所有用户
+        if (classId == null) {
+            QueryWrapper<UserDO> wrapper = new QueryWrapper<>();
+            wrapper.lambda().ne(UserDO::getId, rootUserId);
+            iPage = userService.page(pager, wrapper);
+        } else {
+            iPage = userService.getUserPageByClassId(pager, classId);
+        }
+        return iPage;
+    }
+
+    @Override
+    public IPage<ClassDO> getClassPage(Long page, Long count) {
+        return classManageService.getClassPage(page, count);
+    }
+
+    @Override
+    public ClassDO getClass(Long id) {
+        throwClassNotExistById(id);
+        return classManageService.getClassById(id);
+    }
+
+    @Transactional(rollbackFor=Exception.class)
+    @Override
+    public boolean createClass(NewClassDTO dto) {
+        throwClassNameExist(dto.getName());
+        ClassDO lesson = ClassDO.builder().name(dto.getName()).info(dto.getInfo()).build();
+        classManageService.save(lesson);
+        return true;
+    }
+
+    @Override
+    public boolean updateClass(Long id, UpdateClassDTO dto) {
+        // bug 如果只修改info，不修改name，则name已经存在，此时不应该报错
+        ClassDO exist = classManageService.getById(id);
+        if (exist == null) {
+            throw new NotFoundException("class not found", 10202);
+        }
+        if (!exist.getName().equals(dto.getName())) {
+            throwClassNameExist(dto.getName());
+        }
+        ClassDO lesson = ClassDO.builder().id(id).name(dto.getName()).info(dto.getInfo()).build();
+        return classManageService.updateById(lesson);
+    }
+
+    @Override
+    public boolean deleteClass(Long id) {
+        throwClassNotExistById(id);
+        return classManageService.removeById(id);
+    }
+
+    @Override
+    public List<ClassDO> getAllClasses() {
+        return classManageService.list();
+    }
+
+    private void throwClassNotExistById(Long id) {
+        boolean exist = classManageService.checkClassExistById(id);
+        if (!exist) {
+            throw new NotFoundException("class not found", 10202);
+        }
+    }
+
+    private void throwClassNameExist(String name) {
+        boolean exist = classManageService.checkClassExistByName(name);
+        if (exist) {
+            throw new ForbiddenException("class name already exist, please enter a new one", 10203);
+        }
+    }
+}

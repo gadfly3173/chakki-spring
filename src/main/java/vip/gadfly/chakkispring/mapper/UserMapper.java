@@ -39,4 +39,13 @@ public interface UserMapper extends BaseMapper<UserDO> {
      * @return 分页数据
      */
     IPage<UserDO> selectPageByGroupId(Page pager, Long groupId, Long rootGroupId);
+
+    /**
+     * 通过班级id分页获取用户数据
+     *
+     * @param pager   分页
+     * @param classId 班级id
+     * @return 分页数据
+     */
+    IPage<UserDO> selectPageByClassId(Page pager, Long classId);
 }
