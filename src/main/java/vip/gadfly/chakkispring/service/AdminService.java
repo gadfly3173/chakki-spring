@@ -27,6 +27,16 @@ public interface AdminService {
     IPage<UserDO> getUserPageByGroupId(Long groupId, Long count, Long page);
 
     /**
+     * 通过班级id分页获取用户数据
+     *
+     * @param classId 班级id
+     * @param count   当前页数目
+     * @param page    当前分页
+     * @return 用户数据
+     */
+    IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page);
+
+    /**
      * 修改用户密码（重置用户密码）
      *
      * @param id  用户id

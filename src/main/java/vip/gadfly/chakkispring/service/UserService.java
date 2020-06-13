@@ -123,7 +123,7 @@ public interface UserService extends IService<UserDO> {
     IPage<UserDO> getUserPageByGroupId(Page pager, Long groupId);
 
     /**
-     * 根据分组id分页获取用户数据
+     * 根据班级id分页获取用户数据
      *
      * @param pager   分页
      * @param classId 班级id

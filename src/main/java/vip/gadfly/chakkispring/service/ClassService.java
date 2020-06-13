@@ -1,10 +1,8 @@
 package vip.gadfly.chakkispring.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import vip.gadfly.chakkispring.bo.ClassPermissionBO;
 import vip.gadfly.chakkispring.dto.admin.*;
 import vip.gadfly.chakkispring.model.ClassDO;
-import vip.gadfly.chakkispring.model.PermissionDO;
 import vip.gadfly.chakkispring.model.UserDO;
 
 import java.util.List;
@@ -25,6 +23,14 @@ public interface ClassService {
      * @return 用户数据
      */
     IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page);
+
+    /**
+     * 获得用户的所有分组
+     *
+     * @param userId 用户id
+     * @return 所有分组
+     */
+    List<ClassDO> getUserClassByUserId(Long userId);
 
     /**
      * 分页获取班级数据

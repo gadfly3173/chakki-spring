@@ -66,7 +66,7 @@ public class AdminServiceImpl implements AdminService {
         return userIdentityService.changePassword(id, dto.getNewPassword());
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean deleteUser(Long id) {
         throwUserNotExistById(id);
@@ -106,7 +106,7 @@ public class AdminServiceImpl implements AdminService {
         return groupService.getGroupAndPermissions(id);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean createGroup(NewGroupDTO dto) {
         throwGroupNameExist(dto.getName());
@@ -172,6 +172,14 @@ public class AdminServiceImpl implements AdminService {
         wrapper.lambda().ne(GroupDO::getId, rootGroupId);
         List<GroupDO> groups = groupService.list(wrapper);
         return groups;
+    }
+
+    @Override
+    public IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page) {
+        Page pager = new Page(page, count);
+        IPage<UserDO> iPage;
+        iPage = userService.getUserPageByClassId(pager, classId);
+        return iPage;
     }
 
     @Override

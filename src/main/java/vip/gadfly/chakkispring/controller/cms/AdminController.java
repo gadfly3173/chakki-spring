@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.core.annotation.AdminMeta;
 import vip.gadfly.chakkispring.bo.GroupPermissionBO;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
+import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.PermissionDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.AdminService;
@@ -44,7 +45,6 @@ public class AdminController {
     public Map<String, List<PermissionDO>> getAllPermissions() {
         return adminService.getAllStructualPermissions();
     }
-
 
     @GetMapping("/users")
     @AdminMeta(permission = "查询所有用户", module = "管理员")

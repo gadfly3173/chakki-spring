@@ -2,6 +2,7 @@ package vip.gadfly.chakkispring.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.github.talelin.autoconfigure.exception.ForbiddenException;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +11,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.dto.admin.*;
+import vip.gadfly.chakkispring.mapper.ClassMapper;
 import vip.gadfly.chakkispring.model.*;
 import vip.gadfly.chakkispring.service.*;
 
 import java.util.List;
 
 
+/**
+ * @author gadfly
+ */
+
 @Service
-public class ClassServiceImpl implements ClassService {
+public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implements ClassService {
 
     @Autowired
     private UserService userService;
@@ -32,15 +38,13 @@ public class ClassServiceImpl implements ClassService {
     public IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page) {
         Page pager = new Page(page, count);
         IPage<UserDO> iPage;
-        // 如果class_id为空，则以分页的形式返回所有用户
-        if (classId == null) {
-            QueryWrapper<UserDO> wrapper = new QueryWrapper<>();
-            wrapper.lambda().ne(UserDO::getId, rootUserId);
-            iPage = userService.page(pager, wrapper);
-        } else {
-            iPage = userService.getUserPageByClassId(pager, classId);
-        }
+        iPage = userService.getUserPageByClassId(pager, classId);
         return iPage;
+    }
+
+    @Override
+    public List<ClassDO> getUserClassByUserId(Long userId) {
+        return this.baseMapper.selectUserClasses(userId);
     }
 
     @Override
