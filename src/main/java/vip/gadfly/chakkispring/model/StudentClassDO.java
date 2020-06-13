@@ -30,7 +30,7 @@ public class StudentClassDO implements Serializable {
      */
     private Long classId;
 
-    public StudentClassDO(Long userId, Long classId) {
+    public StudentClassDO(Long classId, Long userId) {
         this.userId = userId;
         this.classId = classId;
     }

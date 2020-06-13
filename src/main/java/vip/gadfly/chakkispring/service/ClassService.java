@@ -25,10 +25,20 @@ public interface ClassService {
     IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page);
 
     /**
-     * 获得用户的所有分组
+     * 通过班级id分页获取非此班级学生数据
+     *
+     * @param classId 班级id
+     * @param count   当前页数目
+     * @param page    当前分页
+     * @return 用户数据
+     */
+    IPage<UserDO> getFreshUserPageByClassId(Long classId, Long count, Long page);
+
+    /**
+     * 获得用户的所有班级
      *
      * @param userId 用户id
-     * @return 所有分组
+     * @return 所有班级
      */
     List<ClassDO> getUserClassByUserId(Long userId);
 
@@ -78,4 +88,20 @@ public interface ClassService {
      * 获得所有班级信息
      */
     List<ClassDO> getAllClasses();
+
+    /**
+     * 删除用户与班级直接的关联
+     *
+     * @param userId    用户id
+     * @param deleteIds 班级id
+     */
+    boolean deleteStudentClassRelations(Long userId, List<Long> deleteIds);
+
+    /**
+     * 添加用户与班级直接的关联
+     *
+     * @param classId 班级id
+     * @param addIds 用户id
+     */
+    boolean addStudentClassRelations(Long classId, List<Long> addIds);
 }

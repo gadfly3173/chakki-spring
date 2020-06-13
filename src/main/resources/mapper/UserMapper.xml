@@ -51,4 +51,18 @@
         AND u.delete_time IS NULL
     </select>
 
+    <select id="selectFreshUserPageByClassId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT u.username, u.nickname,
+               u.avatar, u.email, u.create_time,
+               u.update_time, u.delete_time
+        FROM lin_user AS u
+        WHERE u.id NOT IN
+              (
+                  SELECT ug.user_id
+                  FROM student_class AS ug
+                  WHERE ug.class_id = #{classId}
+              )
+          AND u.delete_time IS NULL
+    </select>
+
 </mapper>

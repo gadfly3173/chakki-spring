@@ -85,8 +85,9 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
 
     @Override
     public boolean deleteUserGroupRelations(Long userId, List<Long> deleteIds) {
-        if (deleteIds == null || deleteIds.isEmpty())
+        if (deleteIds == null || deleteIds.isEmpty()) {
             return true;
+        }
         if (checkIsRootByUserId(userId)) {
             throw new ForbiddenException("can't modify the root user's group", 10078);
         }
@@ -99,8 +100,9 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
 
     @Override
     public boolean addUserGroupRelations(Long userId, List<Long> addIds) {
-        if (addIds == null || addIds.isEmpty())
+        if (addIds == null || addIds.isEmpty()) {
             return true;
+        }
         boolean ok = checkGroupExistByIds(addIds);
         if (!ok) {
             throw new ForbiddenException("cant't add user to non-existent group", 10077);

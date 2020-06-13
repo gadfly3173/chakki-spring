@@ -12,10 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.dto.admin.*;
 import vip.gadfly.chakkispring.mapper.ClassMapper;
+import vip.gadfly.chakkispring.mapper.StudentClassMapper;
 import vip.gadfly.chakkispring.model.*;
 import vip.gadfly.chakkispring.service.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -31,14 +33,22 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     @Autowired
     private ClassManageService classManageService;
 
-    @Value("${user.root.id}")
-    private Long rootUserId;
+    @Autowired
+    private StudentClassMapper studentClassMapper;
 
     @Override
     public IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page) {
         Page pager = new Page(page, count);
         IPage<UserDO> iPage;
         iPage = userService.getUserPageByClassId(pager, classId);
+        return iPage;
+    }
+
+    @Override
+    public IPage<UserDO> getFreshUserPageByClassId(Long classId, Long count, Long page) {
+        Page pager = new Page(page, count);
+        IPage<UserDO> iPage;
+        iPage = userService.getFreshUserPageByClassId(pager, classId);
         return iPage;
     }
 
@@ -81,11 +91,35 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         return classManageService.updateById(lesson);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean deleteClass(Long id) {
         throwClassNotExistById(id);
+        studentClassMapper.removeByClassId(id);
         return classManageService.removeById(id);
     }
+
+    @Override
+    public boolean deleteStudentClassRelations(Long userId, List<Long> deleteIds) {
+        if (deleteIds == null || deleteIds.isEmpty()) {
+            return true;
+        }
+        QueryWrapper<StudentClassDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda()
+                .eq(StudentClassDO::getUserId, userId)
+                .in(StudentClassDO::getClassId, deleteIds);
+        return studentClassMapper.delete(wrapper) > 0;
+    }
+
+    @Override
+    public boolean addStudentClassRelations(Long classId, List<Long> addIds) {
+        if (addIds == null || addIds.isEmpty()) {
+            return true;
+        }
+        List<StudentClassDO> relations = addIds.stream().map(it -> new StudentClassDO(classId, it)).collect(Collectors.toList());
+        return studentClassMapper.insertBatch(relations) > 0;
+    }
+
 
     @Override
     public List<ClassDO> getAllClasses() {

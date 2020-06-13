@@ -15,4 +15,6 @@ import java.util.List;
 public interface StudentClassMapper extends BaseMapper<StudentClassDO> {
 
     int insertBatch(@Param("relations") List<StudentClassDO> relations);
+
+    int removeByClassId(@Param("class_id") Long class_id);
 }

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
+import vip.gadfly.chakkispring.dto.admin.AddStudentClassDTO;
+import vip.gadfly.chakkispring.dto.admin.DispatchStudentClassDTO;
 import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
@@ -69,19 +71,50 @@ public class ClassController {
     }
 
     @GetMapping("/students")
-    @AdminMeta(permission = "查询所有学生", module = "管理员")
+    @AdminMeta(permission = "查询所有此班级学生", module = "管理员")
     public PageResponseVO getStudents(
             @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Long groupId,
+            @Min(value = 1, message = "{class-id}") Long classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Long count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Long page) {
-        IPage<UserDO> iPage = classService.getUserPageByClassId(groupId, count, page);
-        List<UserInfoVO> userInfos = iPage.getRecords().stream().map(user -> {
-            List<ClassDO> lesson = classService.getUserClassByUserId(user.getId());
-            return new UserInfoVO(user, lesson);
-        }).collect(Collectors.toList());
-        return ResponseUtil.generatePageResult(iPage.getTotal(), userInfos, page, count);
+        IPage<UserDO> iPage = classService.getUserPageByClassId(classId, count, page);
+//        List<UserInfoVO> userInfos = iPage.getRecords().stream().map(user -> {
+//            List<ClassDO> lesson = classService.getUserClassByUserId(user.getId());
+//            return new UserInfoVO(user, lesson);
+//        }).collect(Collectors.toList());
+        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+    }
+
+    @GetMapping("/students/fresh")
+    @AdminMeta(permission = "查询所有不在此班级的学生", module = "管理员")
+    public PageResponseVO getFreshStudents(
+            @RequestParam(name = "class_id")
+            @Min(value = 1, message = "{class-id}") Long classId,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "{count}") Long count,
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{page}") Long page) {
+        IPage<UserDO> iPage = classService.getFreshUserPageByClassId(classId, count, page);
+//        List<UserInfoVO> userInfos = iPage.getRecords().stream().map(user -> {
+//            List<ClassDO> lesson = classService.getUserClassByUserId(user.getId());
+//            return new UserInfoVO(user, lesson);
+//        }).collect(Collectors.toList());
+        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+    }
+
+    @PostMapping("/students/del")
+    @AdminMeta(permission = "移除班级内学生", module = "管理员")
+    public UnifyResponseVO moveStudentClass(@RequestBody @Validated DispatchStudentClassDTO validator) {
+        classService.deleteStudentClassRelations(validator.getUserId(), validator.getClassIds());
+        return ResponseUtil.generateUnifyResponse(10208);
+    }
+
+    @PostMapping("/students/add")
+    @AdminMeta(permission = "添加班级内学生", module = "管理员")
+    public UnifyResponseVO addStudentClass(@RequestBody @Validated AddStudentClassDTO validator) {
+        classService.addStudentClassRelations(validator.getUserId(), validator.getClassIds());
+        return ResponseUtil.generateUnifyResponse(10209);
     }
 }
