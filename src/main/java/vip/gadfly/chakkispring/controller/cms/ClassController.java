@@ -18,6 +18,7 @@ import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 import vip.gadfly.chakkispring.vo.UserInfoVO;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,7 +53,7 @@ public class ClassController {
     @AdminMeta(permission = "新建班级", module = "管理员")
     public UnifyResponseVO createClass(@RequestBody @Validated NewClassDTO validator) {
         classService.createClass(validator);
-        return ResponseUtil.generateUnifyResponse(10207);
+        return ResponseUtil.generateUnifyResponse(16);
     }
 
     @PutMapping("/class/{id}")
@@ -60,14 +61,14 @@ public class ClassController {
     public UnifyResponseVO updateClass(@PathVariable @Positive(message = "{id}") Long id,
                                        @RequestBody @Validated UpdateClassDTO validator) {
         classService.updateClass(id, validator);
-        return ResponseUtil.generateUnifyResponse(10205);
+        return ResponseUtil.generateUnifyResponse(14);
     }
 
     @DeleteMapping("/class/{id}")
     @AdminMeta(permission = "删除一个班级", module = "管理员")
     public UnifyResponseVO deleteClass(@PathVariable @Positive(message = "{id}") Long id) {
         classService.deleteClass(id);
-        return ResponseUtil.generateUnifyResponse(10206);
+        return ResponseUtil.generateUnifyResponse(15);
     }
 
     @GetMapping("/students")
@@ -104,17 +105,32 @@ public class ClassController {
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
 
+    @GetMapping("/students/fresh_by_name")
+    @AdminMeta(permission = "查询名字符合的不在此班级的学生", module = "管理员")
+    public PageResponseVO getFreshStudentsByName(
+            @RequestParam(name = "name")
+            @NotBlank(message = "{search-text.blank}") String name,
+            @RequestParam(name = "class_id")
+            @Min(value = 1, message = "{class-id}") Long classId,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "{count}") Long count,
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{page}") Long page) {
+        IPage<UserDO> iPage = classService.getFreshUserPageByClassIdAndName(classId, name, count, page);
+        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+    }
+
     @PostMapping("/students/del")
     @AdminMeta(permission = "移除班级内学生", module = "管理员")
     public UnifyResponseVO moveStudentClass(@RequestBody @Validated DispatchStudentClassDTO validator) {
         classService.deleteStudentClassRelations(validator.getUserId(), validator.getClassIds());
-        return ResponseUtil.generateUnifyResponse(10208);
+        return ResponseUtil.generateUnifyResponse(17);
     }
 
     @PostMapping("/students/add")
     @AdminMeta(permission = "添加班级内学生", module = "管理员")
     public UnifyResponseVO addStudentClass(@RequestBody @Validated AddStudentClassDTO validator) {
-        classService.addStudentClassRelations(validator.getUserId(), validator.getClassIds());
-        return ResponseUtil.generateUnifyResponse(10209);
+        classService.addStudentClassRelations(validator.getClassId(), validator.getUserIds());
+        return ResponseUtil.generateUnifyResponse(18);
     }
 }

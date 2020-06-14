@@ -1,6 +1,7 @@
 package vip.gadfly.chakkispring.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.ibatis.annotations.Param;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.model.UserDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -57,4 +58,14 @@ public interface UserMapper extends BaseMapper<UserDO> {
      * @return 分页数据
      */
     IPage<UserDO> selectFreshUserPageByClassId(Page pager, Long classId);
+
+    /**
+     * 通过班级id分页和姓名获取非此班级学生数据
+     *
+     * @param pager   分页
+     * @param classId 班级id
+     * @param name    名字
+     * @return 分页数据
+     */
+    IPage<UserDO> selectFreshUserPageByClassIdAndName(Page pager, @Param("classId") Long classId, @Param("name") String name);
 }

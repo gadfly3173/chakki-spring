@@ -35,6 +35,17 @@ public interface ClassService {
     IPage<UserDO> getFreshUserPageByClassId(Long classId, Long count, Long page);
 
     /**
+     * 通过班级id分页和名字获取非此班级学生数据
+     *
+     * @param classId 班级id
+     * @param name    名字
+     * @param count   当前页数目
+     * @param page    当前分页
+     * @return 用户数据
+     */
+    IPage<UserDO> getFreshUserPageByClassIdAndName(Long classId, String name, Long count, Long page);
+
+    /**
      * 获得用户的所有班级
      *
      * @param userId 用户id

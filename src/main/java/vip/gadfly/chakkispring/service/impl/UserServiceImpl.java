@@ -113,6 +113,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         return user;
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean adminUpdateUserInfo(Long id, String username, String nickname) {
+        UserDO user = new UserDO();
+        user.setId(id);
+        user.setUsername(username);
+        user.setNickname(nickname);
+        return this.baseMapper.updateById(user) > 0;
+    }
+
     @Override
     public UserDO changeUserPassword(ChangePasswordDTO dto) {
         UserDO user = LocalUser.getLocalUser();
@@ -197,6 +207,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Override
     public IPage<UserDO> getFreshUserPageByClassId(Page pager, Long classId) {
         return this.baseMapper.selectFreshUserPageByClassId(pager, classId);
+    }
+
+    @Override
+    public IPage<UserDO> getFreshUserPageByClassIdAndName(Page pager, Long classId, String name) {
+        return this.baseMapper.selectFreshUserPageByClassIdAndName(pager, classId, name);
     }
 
     private void checkGroupsExist(List<Long> ids) {

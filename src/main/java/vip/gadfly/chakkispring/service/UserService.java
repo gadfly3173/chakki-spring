@@ -37,6 +37,8 @@ public interface UserService extends IService<UserDO> {
      */
     UserDO updateUserInfo(UpdateInfoDTO validator);
 
+    boolean adminUpdateUserInfo(Long id, String username, String nickname);
+
     /**
      * 修改用户密码
      *
@@ -139,4 +141,14 @@ public interface UserService extends IService<UserDO> {
      * @return 数据页
      */
     IPage<UserDO> getFreshUserPageByClassId(Page pager, Long classId);
+
+    /**
+     * 根据班级id分页和名字获取非此班级学生数据
+     *
+     * @param pager   分页
+     * @param classId 班级id
+     * @param name    名字
+     * @return 数据页
+     */
+    IPage<UserDO> getFreshUserPageByClassIdAndName(Page pager, Long classId, String name);
 }

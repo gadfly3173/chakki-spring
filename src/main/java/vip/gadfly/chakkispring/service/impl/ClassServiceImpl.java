@@ -53,6 +53,14 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
+    public IPage<UserDO> getFreshUserPageByClassIdAndName(Long classId, String name, Long count, Long page) {
+        Page pager = new Page(page, count);
+        IPage<UserDO> iPage;
+        iPage = userService.getFreshUserPageByClassIdAndName(pager, classId, name);
+        return iPage;
+    }
+
+    @Override
     public List<ClassDO> getUserClassByUserId(Long userId) {
         return this.baseMapper.selectUserClasses(userId);
     }

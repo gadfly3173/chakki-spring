@@ -76,8 +76,10 @@ public class AdminServiceImpl implements AdminService {
         return userRemoved && userIdentityService.remove(wrapper);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateUserInfo(Long id, UpdateUserInfoDTO validator) {
+        userService.adminUpdateUserInfo(id, validator.getUsername(), validator.getNickname());
         List<Long> newGroupIds = validator.getGroupIds();
         if (newGroupIds == null || newGroupIds.isEmpty()) {
             return false;

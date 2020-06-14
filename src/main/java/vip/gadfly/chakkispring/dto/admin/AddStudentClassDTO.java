@@ -15,8 +15,8 @@ import java.util.List;
 public class AddStudentClassDTO {
     @Positive(message = "{class.id.positive}")
     @NotNull(message = "{class.id.not-null}")
-    private Long userId;
+    private Long classId;
 
-    @LongList(message = "{class.ids.long-list}")
-    private List<Long> classIds;
+    @LongList(message = "{class.user-ids.long-list}")
+    private List<Long> userIds;
 }
