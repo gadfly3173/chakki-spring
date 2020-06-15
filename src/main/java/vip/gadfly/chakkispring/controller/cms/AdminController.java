@@ -47,7 +47,7 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    @AdminMeta(permission = "查询所有用户", module = "管理员")
+    @AdminMeta(permission = "查询所有用户", module = "管理员", mount = true)
     public PageResponseVO getUsers(
             @RequestParam(name = "group_id", required = false)
             @Min(value = 1, message = "{group-id}") Long groupId,
@@ -64,7 +64,7 @@ public class AdminController {
     }
 
     @PutMapping("/user/{id}/password")
-    @AdminMeta(permission = "修改用户密码", module = "管理员")
+    @AdminMeta(permission = "修改用户密码", module = "管理员", mount = true)
     public UnifyResponseVO changeUserPassword(@PathVariable @Positive(message = "{id}") Long id, @RequestBody @Validated ResetPasswordDTO validator) {
         adminService.changeUserPassword(id, validator);
         return ResponseUtil.generateUnifyResponse(2);
@@ -78,7 +78,7 @@ public class AdminController {
     }
 
     @PutMapping("/user/{id}")
-    @AdminMeta(permission = "管理员更新用户信息", module = "管理员")
+    @AdminMeta(permission = "管理员更新用户信息", module = "管理员", mount = true)
     public UnifyResponseVO updateUser(@PathVariable @Positive(message = "{id}") Long id, @RequestBody @Validated UpdateUserInfoDTO validator) {
         adminService.updateUserInfo(id, validator);
         return ResponseUtil.generateUnifyResponse(4);

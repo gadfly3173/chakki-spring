@@ -2,6 +2,7 @@ package vip.gadfly.chakkispring.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import vip.gadfly.chakkispring.common.mybatis.Page;
+import vip.gadfly.chakkispring.dto.user.BatchRegisterDTO;
 import vip.gadfly.chakkispring.dto.user.ChangePasswordDTO;
 import vip.gadfly.chakkispring.dto.user.RegisterDTO;
 import vip.gadfly.chakkispring.dto.user.UpdateInfoDTO;
@@ -28,6 +29,14 @@ public interface UserService extends IService<UserDO> {
      * @return 被创建的用户
      */
     UserDO createUser(RegisterDTO validator);
+
+    /**
+     * 批量新建用户
+     *
+     * @param validator 新建用户校验器
+     * @return 是否成功
+     */
+    boolean createBatchUser(BatchRegisterDTO validator);
 
     /**
      * 更新用户

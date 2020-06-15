@@ -3,6 +3,7 @@ package vip.gadfly.chakkispring.controller.cms;
 import io.github.talelin.core.annotation.*;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
+import vip.gadfly.chakkispring.dto.user.*;
 import vip.gadfly.chakkispring.model.GroupDO;
 import vip.gadfly.chakkispring.service.GroupService;
 import vip.gadfly.chakkispring.service.UserIdentityService;
@@ -15,10 +16,6 @@ import io.github.talelin.core.token.DoubleJWT;
 import io.github.talelin.core.token.Tokens;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
 import io.github.talelin.autoconfigure.exception.ParameterException;
-import vip.gadfly.chakkispring.dto.user.ChangePasswordDTO;
-import vip.gadfly.chakkispring.dto.user.LoginDTO;
-import vip.gadfly.chakkispring.dto.user.RegisterDTO;
-import vip.gadfly.chakkispring.dto.user.UpdateInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -55,6 +52,16 @@ public class UserController {
     @AdminRequired
     public UnifyResponseVO<String> register(@RequestBody @Validated RegisterDTO validator) {
         userService.createUser(validator);
+        return ResponseUtil.generateUnifyResponse(9);
+    }
+
+    /**
+     * 用户批量注册
+     */
+    @PostMapping("/register/batch")
+    @AdminRequired
+    public UnifyResponseVO<String> register(@RequestBody @Validated BatchRegisterDTO validator) {
+        userService.createBatchUser(validator);
         return ResponseUtil.generateUnifyResponse(9);
     }
 

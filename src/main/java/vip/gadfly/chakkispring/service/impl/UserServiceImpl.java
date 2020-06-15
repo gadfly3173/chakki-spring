@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.mybatis.Page;
+import vip.gadfly.chakkispring.dto.user.BatchRegisterDTO;
 import vip.gadfly.chakkispring.dto.user.ChangePasswordDTO;
 import vip.gadfly.chakkispring.dto.user.RegisterDTO;
 import vip.gadfly.chakkispring.dto.user.UpdateInfoDTO;
@@ -96,7 +97,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         return user;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean createBatchUser(BatchRegisterDTO validator) {
+        int count = 0;
+        for (RegisterDTO item : validator.getBatchUsers()) {
+            createUser(item);
+            count++;
+        }
+        return count > 0;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public UserDO updateUserInfo(UpdateInfoDTO dto) {
         UserDO user = LocalUser.getLocalUser();

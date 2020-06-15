@@ -2,6 +2,7 @@ package vip.gadfly.chakkispring.controller.cms;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.core.annotation.AdminMeta;
+import io.github.talelin.core.annotation.GroupMeta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,26 +39,26 @@ public class ClassController {
 //    班级接口
 
     @GetMapping("/class/all")
-    @AdminMeta(permission = "查询所有班级", module = "管理员")
+    @GroupMeta(permission = "查询所有班级", module = "管理员", mount = true)
     public List<ClassDO> getAllClasses() {
         return classService.getAllClasses();
     }
 
     @GetMapping("/class/{id}")
-    @AdminMeta(permission = "查询一个班级", module = "管理员")
+    @GroupMeta(permission = "查询一个班级", module = "管理员", mount = true)
     public ClassDO getClass(@PathVariable @Positive(message = "{id}") Long id) {
         return classService.getClass(id);
     }
 
     @PostMapping("/class")
-    @AdminMeta(permission = "新建班级", module = "管理员")
+    @GroupMeta(permission = "新建班级", module = "管理员", mount = true)
     public UnifyResponseVO createClass(@RequestBody @Validated NewClassDTO validator) {
         classService.createClass(validator);
         return ResponseUtil.generateUnifyResponse(16);
     }
 
     @PutMapping("/class/{id}")
-    @AdminMeta(permission = "更新一个班级", module = "管理员")
+    @GroupMeta(permission = "更新一个班级", module = "管理员", mount = true)
     public UnifyResponseVO updateClass(@PathVariable @Positive(message = "{id}") Long id,
                                        @RequestBody @Validated UpdateClassDTO validator) {
         classService.updateClass(id, validator);
@@ -65,14 +66,14 @@ public class ClassController {
     }
 
     @DeleteMapping("/class/{id}")
-    @AdminMeta(permission = "删除一个班级", module = "管理员")
+    @GroupMeta(permission = "删除一个班级", module = "管理员", mount = true)
     public UnifyResponseVO deleteClass(@PathVariable @Positive(message = "{id}") Long id) {
         classService.deleteClass(id);
         return ResponseUtil.generateUnifyResponse(15);
     }
 
     @GetMapping("/students")
-    @AdminMeta(permission = "查询所有此班级学生", module = "管理员")
+    @GroupMeta(permission = "查询所有此班级学生", module = "管理员", mount = true)
     public PageResponseVO getStudents(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId,
@@ -89,7 +90,7 @@ public class ClassController {
     }
 
     @GetMapping("/students/fresh")
-    @AdminMeta(permission = "查询所有不在此班级的学生", module = "管理员")
+    @GroupMeta(permission = "查询所有不在此班级的学生", module = "管理员", mount = true)
     public PageResponseVO getFreshStudents(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId,
@@ -106,7 +107,7 @@ public class ClassController {
     }
 
     @GetMapping("/students/fresh_by_name")
-    @AdminMeta(permission = "查询名字符合的不在此班级的学生", module = "管理员")
+    @GroupMeta(permission = "查询名字符合的不在此班级的学生", module = "管理员", mount = true)
     public PageResponseVO getFreshStudentsByName(
             @RequestParam(name = "name")
             @NotBlank(message = "{search-text.blank}") String name,
@@ -121,14 +122,14 @@ public class ClassController {
     }
 
     @PostMapping("/students/del")
-    @AdminMeta(permission = "移除班级内学生", module = "管理员")
+    @GroupMeta(permission = "移除班级内学生", module = "管理员", mount = true)
     public UnifyResponseVO moveStudentClass(@RequestBody @Validated DispatchStudentClassDTO validator) {
         classService.deleteStudentClassRelations(validator.getUserId(), validator.getClassIds());
         return ResponseUtil.generateUnifyResponse(17);
     }
 
     @PostMapping("/students/add")
-    @AdminMeta(permission = "添加班级内学生", module = "管理员")
+    @GroupMeta(permission = "添加班级内学生", module = "管理员", mount = true)
     public UnifyResponseVO addStudentClass(@RequestBody @Validated AddStudentClassDTO validator) {
         classService.addStudentClassRelations(validator.getClassId(), validator.getUserIds());
         return ResponseUtil.generateUnifyResponse(18);
