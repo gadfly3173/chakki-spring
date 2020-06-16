@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
+/**
+ * @author Gadfly
+ */
 @RestController
 @RequestMapping("/v1/class")
 @Validated
