@@ -6,16 +6,19 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.github.talelin.autoconfigure.exception.ForbiddenException;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.dto.admin.*;
+import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.mapper.ClassMapper;
+import vip.gadfly.chakkispring.mapper.SignListMapper;
 import vip.gadfly.chakkispring.mapper.StudentClassMapper;
 import vip.gadfly.chakkispring.model.*;
 import vip.gadfly.chakkispring.service.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +38,12 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Autowired
     private StudentClassMapper studentClassMapper;
+
+    @Autowired
+    private SignListMapper signListMapper;
+
+    @Autowired
+    private ClassMapper classMapper;
 
     @Override
     public IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page) {
@@ -128,10 +137,34 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         return studentClassMapper.insertBatch(relations) > 0;
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean createSign(NewSignDTO validator) {
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SignListDO sign = new SignListDO();
+        sign.setClassId(validator.getClassId());
+        sign.setName(validator.getTitle());
+//        设置结束时间
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, validator.getEndMinutes());
+        sign.setEndTime(calendar.getTime());
+        ClassDO lesson = classMapper.selectById(validator.getClassId());
+        lesson.setSignId(sign.getId());
+        return classMapper.updateById(lesson) > 0;
+    }
+
 
     @Override
     public List<ClassDO> getAllClasses() {
         return classManageService.list();
+    }
+
+    @Override
+    public IPage<SignListDO> getSignPageByClassId(Long classId, Long count, Long page) {
+        Page pager = new Page(page, count);
+        IPage<SignListDO> iPage;
+        iPage = signListMapper.selectSignPageByClassId(pager, classId);
+        return iPage;
     }
 
     private void throwClassNotExistById(Long id) {

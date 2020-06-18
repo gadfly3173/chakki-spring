@@ -12,6 +12,7 @@ import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
+import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.vo.PageResponseVO;
@@ -64,6 +65,35 @@ public class LessonController {
     @PostMapping("/sign/create")
     @GroupMeta(permission = "发起签到", module = "教师", mount = true)
     public UnifyResponseVO createStudentSign(@RequestBody @Validated NewSignDTO validator) {
+        classService.createSign(validator);
         return ResponseUtil.generateUnifyResponse(19);
+    }
+
+    @GetMapping("/sign/list")
+    @GroupMeta(permission = "查看所有签到项目", module = "教师", mount = true)
+    public PageResponseVO getSignList(
+            @RequestParam(name = "class_id")
+            @Min(value = 1, message = "{class-id}") Long classId,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "{count}") Long count,
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{page}") Long page) {
+        IPage<SignListDO> iPage = classService.getSignPageByClassId(classId, count, page);
+        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+    }
+
+    @GetMapping("/sign/detail")
+    @GroupMeta(permission = "查看签到项目学生列表", module = "教师", mount = true)
+    public PageResponseVO getSignDetail(
+            @RequestParam(name = "sign_id")
+            @Min(value = 1, message = "{sign-id}") Long signId,
+            @RequestParam(name = "signed_status", required = false, defaultValue = "0")
+            @Min(value = 1, message = "{signed-status}") int signed_status,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "{count}") Long count,
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{page}") Long page) {
+        IPage<SignListDO> iPage = classService.getSignPageByClassId(signId, count, page);
+        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
 }

@@ -38,6 +38,8 @@ public class ClassDO implements Serializable {
      */
     private String info;
 
+    private Long signId;
+
     @JsonIgnore
     private Date createTime;
 
