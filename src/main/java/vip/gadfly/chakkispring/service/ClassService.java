@@ -134,4 +134,15 @@ public interface ClassService {
      * @return 用户数据
      */
     IPage<SignListDO> getSignPageByClassId(Long classId, Long count, Long page);
+
+    /**
+     * 通过id分页获取签到项目详情
+     *
+     * @param signId  签到项目id
+     * @param signedStatus  签到状态：0-全部，1-已签到，2-未签到
+     * @param count   当前页数目
+     * @param page    当前分页
+     * @return 用户数据
+     */
+    List<SignListDO> getSignDetailPageById(Long signId, int signedStatus, Long count, Long page);
 }

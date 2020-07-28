@@ -82,18 +82,18 @@ public class LessonController {
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
 
-    @GetMapping("/sign/detail")
-    @GroupMeta(permission = "查看签到项目学生列表", module = "教师", mount = true)
-    public PageResponseVO getSignDetail(
-            @RequestParam(name = "sign_id")
-            @Min(value = 1, message = "{sign-id}") Long signId,
-            @RequestParam(name = "signed_status", required = false, defaultValue = "0")
-            @Min(value = 1, message = "{signed-status}") int signed_status,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Long count,
-            @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Long page) {
-        IPage<SignListDO> iPage = classService.getSignPageByClassId(signId, count, page);
-        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
-    }
+//    @GetMapping("/sign/detail")
+//    @GroupMeta(permission = "查看签到项目学生列表", module = "教师", mount = true)
+//    public PageResponseVO getSignDetail(
+//            @RequestParam(name = "sign_id")
+//            @Min(value = 1, message = "{sign-id}") Long signId,
+//            @RequestParam(name = "signed_status", required = false, defaultValue = "0")
+//            @Min(value = 1, message = "{signed-status}") int signedStatus,
+//            @RequestParam(name = "count", required = false, defaultValue = "10")
+//            @Min(value = 1, message = "{count}") Long count,
+//            @RequestParam(name = "page", required = false, defaultValue = "0")
+//            @Min(value = 0, message = "{page}") Long page) {
+//        List<SignListDO> list = classService.getSignDetailPageById(signId, signedStatus, count, page);
+//        return list;
+//    }
 }

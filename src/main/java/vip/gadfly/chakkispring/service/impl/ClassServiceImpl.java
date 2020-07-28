@@ -14,10 +14,12 @@ import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.mapper.ClassMapper;
 import vip.gadfly.chakkispring.mapper.SignListMapper;
 import vip.gadfly.chakkispring.mapper.StudentClassMapper;
+import vip.gadfly.chakkispring.mapper.StudentSignMapper;
 import vip.gadfly.chakkispring.model.*;
 import vip.gadfly.chakkispring.service.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +43,9 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Autowired
     private SignListMapper signListMapper;
+
+    @Autowired
+    private StudentSignMapper studentSignMapper;
 
     @Autowired
     private ClassMapper classMapper;
@@ -165,6 +170,23 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         IPage<SignListDO> iPage;
         iPage = signListMapper.selectSignPageByClassId(pager, classId);
         return iPage;
+    }
+
+    @Override
+    public List<SignListDO> getSignDetailPageById(Long signId, int signedStatus, Long count, Long page) {
+        List<SignListDO> list = new ArrayList<SignListDO>();
+//        switch (signedStatus) {
+//            case 1:
+//                list = studentSignMapper.selectSignedStudentBySignId(signId);
+//                break;
+//            case 2:
+//                list = studentSignMapper.selectUnSignedStudentBySignId(signId);
+//                break;
+//            default:
+//                list = studentSignMapper.selectSignPageByClassId(signId);
+//                break;
+//        }
+        return list;
     }
 
     private void throwClassNotExistById(Long id) {
