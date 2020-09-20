@@ -53,14 +53,14 @@
         SELECT COUNT(*) AS count FROM class WHERE delete_time IS NULL AND id = #{id}
     </select>
 
-    <select id="selectCountUserByUserIdAndGroupName" resultType="java.lang.Integer">
-        SELECT COUNT(*) AS count
-        FROM student_class AS ug
-        WHERE
-        ug.user_id = #{userId}
-        AND
-        ug.class_id =
-        (SELECT g.id FROM class AS g WHERE g.name = #{className} AND g.delete_time IS NULL)
-    </select>
+<!--    <select id="selectCountUserByUserIdAndGroupName" resultType="java.lang.Integer">-->
+<!--        SELECT COUNT(*) AS count-->
+<!--        FROM student_class AS ug-->
+<!--        WHERE-->
+<!--        ug.user_id = #{userId}-->
+<!--        AND-->
+<!--        ug.class_id =-->
+<!--        (SELECT g.id FROM class AS g WHERE g.name = #{className} AND g.delete_time IS NULL)-->
+<!--    </select>-->
 
 </mapper>

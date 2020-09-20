@@ -15,9 +15,11 @@ import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.vo.PageResponseVO;
+import vip.gadfly.chakkispring.vo.StudentSignVO;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 import vip.gadfly.chakkispring.vo.UserInfoVO;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;

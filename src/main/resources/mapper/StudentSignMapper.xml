@@ -13,28 +13,33 @@
     <resultMap id="SignResultMap" type="vip.gadfly.chakkispring.vo.StudentSignVO">
         <id column="id" property="id"/>
         <result column="create_time" property="createTime"/>
-        <association property="user" javaType="vip.gadfly.chakkispring.model.UserDO">
-            <id property="id" column="id"/>
-            <result property="username" column="username"/>
-            <result property="nickname" column="nickname"/>
-        </association>
+        <result column="username" property="username"/>
+        <result column="nickname" property="nickname"/>
+        <result column="sign_id" property="signId"/>
+        <result column="sign_status" property="signStatus"/>
     </resultMap>
 
-    <select id="selectUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT g.id, g.name, g.info,
-               g.create_time,g.update_time,g.delete_time
-        from class AS g
+    <select id="selectUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
+        SELECT u.username, u.nickname, ss.sign_id, ss.create_time, ss.id, 'true' AS sign_status
+        from lin_user AS u, student_sign AS ss
         WHERE
-            g.delete_time IS NULL
-          AND
-                g.id IN
-                (
-                    SELECT ug.class_id
-                    FROM lin_user AS u
-                             LEFT JOIN student_class as ug
-                                       ON ug.user_id = u.id
-                    WHERE u.id = #{userId}
-                      AND u.delete_time IS NULL
+            ss.sign_id = #{signId}
+    </select>
+
+    <select id="selectUnsignedUserDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
+        SELECT u.username, u.nickname, 'false' AS sign_status
+        from lin_user AS u
+        WHERE
+            u.id NOT IN (
+                    SELECT ssi.user_id FROM student_sign AS ssi
+                    WHERE ssi.sign_id = #{signId}
                 )
+        AND u.id IN (
+                SELECT sc.user_id from student_class AS sc
+                WHERE sc.class_id = (
+                        SELECT sl.class_id from sign_list AS sl
+                        WHERE sl.id = #{signId}
+                    )
+            )
     </select>
 </mapper>

@@ -19,6 +19,8 @@ public class StudentSignVO {
 
     private Long id;
 
+    private Long signId;
+
     /**
      * 用户名，唯一
      */

@@ -6,6 +6,7 @@ import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.UserDO;
+import vip.gadfly.chakkispring.vo.StudentSignVO;
 
 import java.util.List;
 import java.util.Map;
@@ -139,10 +140,10 @@ public interface ClassService {
      * 通过id分页获取签到项目详情
      *
      * @param signId  签到项目id
-     * @param signedStatus  签到状态：0-全部，1-已签到，2-未签到
+     * @param signStatus  签到状态：true-已签到，false-未签到
      * @param count   当前页数目
      * @param page    当前分页
      * @return 用户数据
      */
-    List<SignListDO> getSignDetailPageById(Long signId, int signedStatus, Long count, Long page);
+    IPage<StudentSignVO> getUserPageBySignId(Long signId, Boolean signStatus, Long count, Long page);
 }

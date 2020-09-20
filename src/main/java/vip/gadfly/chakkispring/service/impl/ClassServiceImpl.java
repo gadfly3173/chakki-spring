@@ -17,6 +17,7 @@ import vip.gadfly.chakkispring.mapper.StudentClassMapper;
 import vip.gadfly.chakkispring.mapper.StudentSignMapper;
 import vip.gadfly.chakkispring.model.*;
 import vip.gadfly.chakkispring.service.*;
+import vip.gadfly.chakkispring.vo.StudentSignVO;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -173,20 +174,15 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public List<SignListDO> getSignDetailPageById(Long signId, int signedStatus, Long count, Long page) {
-        List<SignListDO> list = new ArrayList<SignListDO>();
-//        switch (signedStatus) {
-//            case 1:
-//                list = studentSignMapper.selectSignedStudentBySignId(signId);
-//                break;
-//            case 2:
-//                list = studentSignMapper.selectUnSignedStudentBySignId(signId);
-//                break;
-//            default:
-//                list = studentSignMapper.selectSignPageByClassId(signId);
-//                break;
-//        }
-        return list;
+    public IPage<StudentSignVO> getUserPageBySignId(Long signId, Boolean signStatus, Long count, Long page) {
+        Page pager = new Page(page, count);
+        IPage<StudentSignVO> iPage;
+        if (signStatus) {
+            iPage = studentSignMapper.selectUserSignDetailBySignId(pager, signId);
+        } else {
+            iPage = studentSignMapper.selectUnsignedUserDetailBySignId(pager, signId);
+        }
+        return iPage;
     }
 
     private void throwClassNotExistById(Long id) {
