@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Gadfly
@@ -17,13 +17,14 @@ import java.util.Date;
 @NoArgsConstructor
 public class NewSignDTO {
 
-    @NotBlank(message = "{class.id.not-null}")
+    @NotNull(message = "{class.id.not-null}")
     @Min(value = 1, message = "{class.id.not-null}")
     private Long classId;
 
     @NotBlank(message = "{lesson.sign.title.not-null}")
     private String title;
 
+    @NotNull(message = "{lesson.sign.end-time.not-null}")
     @Min(value = 1, message = "{lesson.sign.end-time.not-null}")
     private Integer endMinutes;
 

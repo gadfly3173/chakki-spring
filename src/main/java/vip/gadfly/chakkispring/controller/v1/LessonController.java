@@ -44,11 +44,11 @@ public class LessonController {
         return classService.getAllClasses();
     }
 
-//    @GetMapping("/class/{id}")
-//    @GroupMeta(permission = "查询一个班级", module = "教师", mount = true)
-//    public ClassDO getClass(@PathVariable @Positive(message = "{id}") Long id) {
-//        return classService.getClass(id);
-//    }
+   @GetMapping("/class/{id}")
+   @GroupMeta(permission = "查询一个班级", module = "教师", mount = true)
+   public ClassDO getClass(@PathVariable @Positive(message = "{id}") Long id) {
+       return classService.getClass(id);
+   }
 
     @GetMapping("/students")
     @GroupMeta(permission = "查询所有此班级学生", module = "教师", mount = true)

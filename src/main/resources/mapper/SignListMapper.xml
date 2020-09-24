@@ -17,6 +17,7 @@
                u.end_time
         FROM sign_list AS u
         WHERE u.class_id = #{classId}
+        ORDER BY u.create_time DESC
     </select>
 
 </mapper>

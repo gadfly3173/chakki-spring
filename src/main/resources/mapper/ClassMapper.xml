@@ -30,6 +30,7 @@
         WHERE u.id = #{userId}
         AND u.delete_time IS NULL
         )
+        ORDER BY g.id DESC
     </select>
 
     <select id="selectUserClassIds" parameterType="java.lang.Long" resultType="java.lang.Long">

@@ -150,19 +150,21 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         SignListDO sign = new SignListDO();
         sign.setClassId(validator.getClassId());
         sign.setName(validator.getTitle());
+        sign.setSigned(0L);
 //        设置结束时间
         Calendar calendar = Calendar.getInstance();
+        sign.setCreateTime(calendar.getTime());
         calendar.add(Calendar.MINUTE, validator.getEndMinutes());
         sign.setEndTime(calendar.getTime());
-        ClassDO lesson = classMapper.selectById(validator.getClassId());
-        lesson.setSignId(sign.getId());
-        return classMapper.updateById(lesson) > 0;
+        return signListMapper.insert(sign) > 0;
     }
 
 
     @Override
     public List<ClassDO> getAllClasses() {
-        return classManageService.list();
+        QueryWrapper<ClassDO> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("id");
+        return classManageService.list(wrapper);
     }
 
     @Override
