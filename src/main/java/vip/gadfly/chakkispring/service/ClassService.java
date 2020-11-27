@@ -140,10 +140,10 @@ public interface ClassService {
      * 通过id分页获取签到项目详情
      *
      * @param signId  签到项目id
-     * @param signStatus  签到状态：true-已签到，false-未签到
+     * @param signStatus  筛选签到状态：0-全部，false-未签到
      * @param count   当前页数目
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<StudentSignVO> getUserPageBySignId(Long signId, Boolean signStatus, Long count, Long page);
+    IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, Long count, Long page);
 }

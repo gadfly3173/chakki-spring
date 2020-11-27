@@ -1,11 +1,16 @@
 package vip.gadfly.chakkispring.controller.v1;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.core.annotation.GroupMeta;
 import io.github.talelin.core.annotation.LoginRequired;
+import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.model.BookDO;
 import vip.gadfly.chakkispring.dto.book.CreateOrUpdateBookDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
+import vip.gadfly.chakkispring.model.SignListDO;
+import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.service.StudentService;
+import vip.gadfly.chakkispring.vo.PageResponseVO;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
@@ -13,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -26,11 +32,37 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private ClassService classService;
 
     @LoginRequired
     @GetMapping("/list")
     public List<ClassDO> getClassList() {
         return studentService.getStudentClassList();
+    }
+
+    @LoginRequired
+    @GetMapping("/sign/list")
+    public PageResponseVO getSignList(
+            @RequestParam(name = "class_id")
+            @Min(value = 1, message = "{class-id}") Long classId,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "{count}") Long count,
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{page}") Long page) {
+        IPage<SignListDO> iPage = classService.getSignPageByClassId(classId, count, page);
+        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+    }
+
+    @LoginRequired
+    @PostMapping("/sign/confirm/{signId}")
+    public UnifyResponseVO confirmStudentSign(
+            @Min(value = 1, message = "{lesson.sign.id.positive}")
+            @PathVariable Long signId) {
+        if (studentService.confirmSign(signId)) {
+            return ResponseUtil.generateUnifyResponse(20);
+        }
+        return ResponseUtil.generateUnifyResponse(10210);
     }
 
 //    @GetMapping("")

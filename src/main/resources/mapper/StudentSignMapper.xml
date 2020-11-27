@@ -16,18 +16,32 @@
         <result column="username" property="username"/>
         <result column="nickname" property="nickname"/>
         <result column="sign_id" property="signId"/>
-        <result column="sign_status" property="signStatus"/>
+        <result column="status" property="status"/>
     </resultMap>
 
     <select id="selectUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
-        SELECT u.username, u.nickname, ss.sign_id, ss.create_time, ss.id, 'true' AS sign_status
+        SELECT u.username, u.nickname, ss.sign_id, ss.create_time, ss.id, ss.status
         from lin_user AS u, student_sign AS ss
         WHERE
-            ss.sign_id = #{signId}
+            ss.sign_id = #{signId} AND ss.status = 1
+    </select>
+
+    <select id="selectLateUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
+        SELECT u.username, u.nickname, ss.sign_id, ss.create_time, ss.id, ss.status
+        from lin_user AS u, student_sign AS ss
+        WHERE
+            ss.sign_id = #{signId} AND ss.status = 2
+    </select>
+
+    <select id="selectCancelUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
+        SELECT u.username, u.nickname, ss.sign_id, ss.create_time, ss.id, ss.status
+        from lin_user AS u, student_sign AS ss
+        WHERE
+            ss.sign_id = #{signId} AND ss.status = 3
     </select>
 
     <select id="selectUnsignedUserDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
-        SELECT u.username, u.nickname, 'false' AS sign_status
+        SELECT u.username, u.nickname, 0 AS sign_status
         from lin_user AS u
         WHERE
             u.id NOT IN (
@@ -41,5 +55,26 @@
                         WHERE sl.id = #{signId}
                     )
             )
+    </select>
+
+    <select id="selectClassUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
+        SELECT u.username, u.nickname, ss.sign_id, ss.create_time, ss.id, ss.status
+        from lin_user AS u, student_sign AS ss
+        WHERE
+            ss.sign_id = #{signId}
+        OR (
+            u.id NOT IN (
+                SELECT ssi.user_id FROM student_sign AS ssi
+                WHERE ssi.sign_id = #{signId}
+            )
+            AND u.id IN (
+                SELECT sc.user_id from student_class AS sc
+                WHERE sc.class_id = (
+                    SELECT sl.class_id from sign_list AS sl
+                    WHERE sl.id = #{signId}
+                )
+            )
+        )
+
     </select>
 </mapper>

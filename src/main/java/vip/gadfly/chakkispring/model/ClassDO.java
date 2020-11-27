@@ -38,7 +38,10 @@ public class ClassDO implements Serializable {
      */
     private String info;
 
-    private Long signId;
+    /**
+     * 学期id
+     */
+    private Long semesterId;
 
     @JsonIgnore
     private Date createTime;

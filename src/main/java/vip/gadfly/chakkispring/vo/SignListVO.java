@@ -1,4 +1,4 @@
-package vip.gadfly.chakkispring.model;
+package vip.gadfly.chakkispring.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @TableName("sign_list")
 @Data
-public class SignListDO implements Serializable {
+public class SignListVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,6 +27,8 @@ public class SignListDO implements Serializable {
     private Long classId;
 
     private String name;
+
+    private Long signed;
 
     private Date createTime;
 

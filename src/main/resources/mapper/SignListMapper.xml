@@ -3,7 +3,7 @@
 <mapper namespace="vip.gadfly.chakkispring.mapper.SignListMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="vip.gadfly.chakkispring.model.SignListDO">
+    <resultMap id="BaseResultMap" type="vip.gadfly.chakkispring.vo.SignListVO">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="class_id" property="classId"/>
@@ -13,7 +13,7 @@
     </resultMap>
 
     <select id="selectSignPageByClassId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT u.id, u.name, u.signed, u.create_time,
+        SELECT u.id, u.name, (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = u.id AND ss.status &lt; 3) AS signed, u.create_time,
                u.end_time
         FROM sign_list AS u
         WHERE u.class_id = #{classId}

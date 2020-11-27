@@ -34,7 +34,7 @@ public class StudentSignVO {
     /**
      * 签到状态
      */
-    private Integer signStatus;
+    private Integer status;
 
     /**
      * 签到时间

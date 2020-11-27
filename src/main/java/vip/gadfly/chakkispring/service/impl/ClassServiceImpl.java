@@ -51,6 +51,10 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     @Autowired
     private ClassMapper classMapper;
 
+    private final int STATUS_SIGNED = 1;
+    private final int STATUS_LATE = 2;
+    private final int STATUS_CANCEL = 3;
+
     @Override
     public IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page) {
         Page pager = new Page(page, count);
@@ -150,7 +154,6 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         SignListDO sign = new SignListDO();
         sign.setClassId(validator.getClassId());
         sign.setName(validator.getTitle());
-        sign.setSigned(0L);
 //        设置结束时间
         Calendar calendar = Calendar.getInstance();
         sign.setCreateTime(calendar.getTime());
@@ -176,13 +179,22 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<StudentSignVO> getUserPageBySignId(Long signId, Boolean signStatus, Long count, Long page) {
+    public IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, Long count, Long page) {
         Page pager = new Page(page, count);
         IPage<StudentSignVO> iPage;
-        if (signStatus) {
-            iPage = studentSignMapper.selectUserSignDetailBySignId(pager, signId);
-        } else {
-            iPage = studentSignMapper.selectUnsignedUserDetailBySignId(pager, signId);
+        switch (signStatus) {
+            case STATUS_SIGNED:
+                iPage = studentSignMapper.selectUserSignDetailBySignId(pager, signId);
+                break;
+            case STATUS_LATE:
+                iPage = studentSignMapper.selectLateUserSignDetailBySignId(pager, signId);
+                break;
+            case STATUS_CANCEL:
+                iPage = studentSignMapper.selectUnsignedUserDetailBySignId(pager, signId);
+                break;
+            case 0:
+            default:
+                iPage = studentSignMapper.selectClassUserSignDetailBySignId(pager, signId);
         }
         return iPage;
     }

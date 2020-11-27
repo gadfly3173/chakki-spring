@@ -86,11 +86,13 @@ public class LessonController {
     @GetMapping("/sign/students/query/{signId}")
     @GroupMeta(permission = "查询所有签到项目下的学生", module = "教师", mount = true)
     public PageResponseVO getStudentsBySignId(
-            @RequestParam(name = "sign_status", required = false, defaultValue = "true") Boolean signStatus,
+            @Min(value = 1, message = "{sign-status}")
+            @RequestParam(name = "sign_status", required = false, defaultValue = "0") Integer signStatus,
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Long count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Long page,
+            @Min(value = 1, message = "{lesson.sign.id.positive}")
             @PathVariable Long signId) {
         IPage<StudentSignVO> iPage = classService.getUserPageBySignId(signId, signStatus, count, page);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);

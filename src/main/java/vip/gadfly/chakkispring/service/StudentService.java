@@ -16,4 +16,11 @@ public interface StudentService {
      * @return 分组数据
      */
     List<ClassDO> getStudentClassList();
+
+    /**
+     * 学生签到
+     *
+     * @param signId 签到id
+     */
+    boolean confirmSign(Long signId);
 }
