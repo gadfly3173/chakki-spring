@@ -43,6 +43,15 @@ public class StudentController {
         return studentService.getStudentClassList();
     }
 
+    @GetMapping("/{id}")
+    @GroupMeta(permission = "查询特定班级", module = "学生", mount = true)
+    public ClassDO getClass(@PathVariable @Positive(message = "{id}") Long id) {
+        if (!ClassPermissionCheckUtil.isStudentInClassByClassId(id)) {
+            return null;
+        }
+        return classService.getClass(id);
+    }
+
     @GroupMeta(permission = "查看班级内签到项目", module = "学生", mount = true)
     @GetMapping("/sign/list")
     public PageResponseVO getSignList(
