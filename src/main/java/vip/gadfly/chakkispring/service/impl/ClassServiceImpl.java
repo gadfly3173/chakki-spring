@@ -8,6 +8,7 @@ import io.github.talelin.autoconfigure.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.dto.admin.*;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
@@ -50,10 +51,6 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Autowired
     private ClassMapper classMapper;
-
-    private final int STATUS_SIGNED = 1;
-    private final int STATUS_LATE = 2;
-    private final int STATUS_CANCEL = 3;
 
     @Override
     public IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page) {
@@ -183,13 +180,13 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         Page pager = new Page(page, count);
         IPage<StudentSignVO> iPage;
         switch (signStatus) {
-            case STATUS_SIGNED:
+            case SignStatusConstant.STATUS_SIGNED:
                 iPage = studentSignMapper.selectUserSignDetailBySignId(pager, signId);
                 break;
-            case STATUS_LATE:
+            case SignStatusConstant.STATUS_LATE:
                 iPage = studentSignMapper.selectLateUserSignDetailBySignId(pager, signId);
                 break;
-            case STATUS_CANCEL:
+            case SignStatusConstant.STATUS_CANCEL:
                 iPage = studentSignMapper.selectUnsignedUserDetailBySignId(pager, signId);
                 break;
             case 0:

@@ -1,6 +1,7 @@
 package vip.gadfly.chakkispring.service;
 
 import vip.gadfly.chakkispring.model.ClassDO;
+import vip.gadfly.chakkispring.vo.SignListVO;
 
 import java.util.List;
 
@@ -23,4 +24,11 @@ public interface StudentService {
      * @param signId 签到id
      */
     boolean confirmSign(Long signId);
+
+    /**
+     * 获得最新签到项目
+     *
+     * @return 签到项目数据
+     */
+    SignListVO getLatestSignByClassId(Long classId);
 }

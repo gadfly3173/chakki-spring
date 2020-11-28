@@ -3,7 +3,7 @@ package vip.gadfly.chakkispring.common;
 import vip.gadfly.chakkispring.model.UserDO;
 
 /**
- * 线程安全的当前登录用户，如果用户为登录，则得到 null
+ * 线程安全的当前登录用户，如果用户未登录，则得到 null
  */
 public class LocalUser {
 

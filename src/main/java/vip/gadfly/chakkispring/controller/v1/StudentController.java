@@ -3,6 +3,7 @@ package vip.gadfly.chakkispring.controller.v1;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.core.annotation.GroupMeta;
 import io.github.talelin.core.annotation.LoginRequired;
+import vip.gadfly.chakkispring.common.util.ClassPermissionCheckUtil;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.model.BookDO;
 import vip.gadfly.chakkispring.dto.book.CreateOrUpdateBookDTO;
@@ -11,6 +12,7 @@ import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.service.StudentService;
 import vip.gadfly.chakkispring.vo.PageResponseVO;
+import vip.gadfly.chakkispring.vo.SignListVO;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
@@ -35,13 +37,13 @@ public class StudentController {
     @Autowired
     private ClassService classService;
 
-    @LoginRequired
+    @GroupMeta(permission = "查看自己所属班级", module = "学生", mount = true)
     @GetMapping("/list")
     public List<ClassDO> getClassList() {
         return studentService.getStudentClassList();
     }
 
-    @LoginRequired
+    @GroupMeta(permission = "查看班级内签到项目", module = "学生", mount = true)
     @GetMapping("/sign/list")
     public PageResponseVO getSignList(
             @RequestParam(name = "class_id")
@@ -54,11 +56,25 @@ public class StudentController {
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
 
-    @LoginRequired
+    @GroupMeta(permission = "查看班级最新签到项目", module = "学生", mount = true)
+    @GetMapping("/sign/latest")
+    public SignListVO getLatestSign(
+            @RequestParam(name = "class_id")
+            @Min(value = 1, message = "{class-id}") Long classId) {
+        if (!ClassPermissionCheckUtil.isStudentInClassByClassId(classId)) {
+            return null;
+        }
+        return studentService.getLatestSignByClassId(classId);
+    }
+
+    @GroupMeta(permission = "学生进行签到", module = "学生", mount = true)
     @PostMapping("/sign/confirm/{signId}")
     public UnifyResponseVO confirmStudentSign(
             @Min(value = 1, message = "{lesson.sign.id.positive}")
             @PathVariable Long signId) {
+        if (!ClassPermissionCheckUtil.isStudentInClassBySignId(signId)) {
+            return ResponseUtil.generateUnifyResponse(10205);
+        }
         if (studentService.confirmSign(signId)) {
             return ResponseUtil.generateUnifyResponse(20);
         }

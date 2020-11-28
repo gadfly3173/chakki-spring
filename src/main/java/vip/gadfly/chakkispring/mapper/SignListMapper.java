@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.stereotype.Repository;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.model.SignListDO;
+import vip.gadfly.chakkispring.vo.SignListVO;
 
 /**
  * @author pedro
@@ -20,4 +21,12 @@ public interface SignListMapper extends BaseMapper<SignListDO> {
      * @return 分页数据
      */
     IPage<SignListDO> selectSignPageByClassId(Page pager, Long classId);
+
+    /**
+     * 通过班级id获取最新签到项目
+     *
+     * @param classId 班级id
+     * @return 数据
+     */
+    SignListVO getLatestSignByClassId(Long classId);
 }

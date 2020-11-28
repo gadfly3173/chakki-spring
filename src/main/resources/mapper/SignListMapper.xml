@@ -14,10 +14,19 @@
 
     <select id="selectSignPageByClassId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT u.id, u.name, (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = u.id AND ss.status &lt; 3) AS signed, u.create_time,
-               u.end_time
+               u.class_id, u.end_time
         FROM sign_list AS u
         WHERE u.class_id = #{classId}
-        ORDER BY u.create_time DESC
+        ORDER BY u.id DESC
+    </select>
+
+    <select id="getLatestSignByClassId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT u.id, u.name, (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = u.id AND ss.status &lt; 3) AS signed, u.create_time,
+              u.class_id, u.end_time
+        FROM sign_list AS u
+        WHERE u.class_id = #{classId}
+        ORDER BY u.id DESC
+        LIMIT 1
     </select>
 
 </mapper>
