@@ -28,5 +28,13 @@
         ORDER BY u.id DESC
         LIMIT 1
     </select>
+    <select id="getStudentLatestSignByClassId" resultType="vip.gadfly.chakkispring.vo.SignListVO">
+        SELECT u.id, u.name, (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.user_id = #{userId} AND ss.sign_id = u.id) AS signed, u.create_time,
+               u.class_id, u.end_time
+        FROM sign_list AS u
+        WHERE u.class_id = #{classId}
+        ORDER BY u.id DESC
+        LIMIT 1
+    </select>
 
 </mapper>

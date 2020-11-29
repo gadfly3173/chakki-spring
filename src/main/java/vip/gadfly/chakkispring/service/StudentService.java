@@ -31,4 +31,6 @@ public interface StudentService {
      * @return 签到项目数据
      */
     SignListVO getLatestSignByClassId(Long classId);
+
+    boolean signAvailable(Long signId);
 }

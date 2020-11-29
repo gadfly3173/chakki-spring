@@ -29,4 +29,12 @@ public interface SignListMapper extends BaseMapper<SignListDO> {
      * @return 数据
      */
     SignListVO getLatestSignByClassId(Long classId);
+
+    /**
+     * 学生通过班级id获取最新签到项目
+     *
+     * @param classId 班级id
+     * @return 数据
+     */
+    SignListVO getStudentLatestSignByClassId(Long classId, Long userId);
 }

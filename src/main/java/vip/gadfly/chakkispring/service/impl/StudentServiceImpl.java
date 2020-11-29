@@ -9,6 +9,7 @@ import vip.gadfly.chakkispring.mapper.ClassMapper;
 import vip.gadfly.chakkispring.mapper.SignListMapper;
 import vip.gadfly.chakkispring.mapper.StudentSignMapper;
 import vip.gadfly.chakkispring.model.ClassDO;
+import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.StudentSignDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.StudentService;
@@ -42,7 +43,7 @@ public class StudentServiceImpl implements StudentService {
     public boolean confirmSign(Long signId) {
         UserDO user = LocalUser.getLocalUser();
         QueryWrapper<StudentSignDO> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(StudentSignDO::getUserId, user.getId());
+        wrapper.lambda().eq(StudentSignDO::getUserId, user.getId()).eq(StudentSignDO::getSignId, signId);
         if (studentSignMapper.selectCount(wrapper) == 0) {
             return studentSignMapper.insert(new StudentSignDO(signId, user.getId(), SignStatusConstant.STATUS_SIGNED)) > 0;
         }
@@ -50,7 +51,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public boolean signAvailable(Long signId) {
+        return signListMapper.selectById(signId).getEndTime().getTime() > System.currentTimeMillis();
+    }
+
+    @Override
     public SignListVO getLatestSignByClassId(Long classId) {
-        return signListMapper.getLatestSignByClassId(classId);
+        Long userId = LocalUser.getLocalUser().getId();
+        return signListMapper.getStudentLatestSignByClassId(classId, userId);
     }
 }

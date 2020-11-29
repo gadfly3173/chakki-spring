@@ -84,10 +84,13 @@ public class StudentController {
         if (!ClassPermissionCheckUtil.isStudentInClassBySignId(signId)) {
             return ResponseUtil.generateUnifyResponse(10205);
         }
-        if (studentService.confirmSign(signId)) {
-            return ResponseUtil.generateUnifyResponse(20);
+        if (!studentService.signAvailable(signId)) {
+            return ResponseUtil.generateUnifyResponse(10211);
         }
-        return ResponseUtil.generateUnifyResponse(10210);
+        if (!studentService.confirmSign(signId)) {
+            return ResponseUtil.generateUnifyResponse(10210);
+        }
+        return ResponseUtil.generateUnifyResponse(20);
     }
 
 //    @GetMapping("")
