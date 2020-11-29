@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.core.annotation.GroupMeta;
 import io.github.talelin.core.annotation.LoginRequired;
 import vip.gadfly.chakkispring.common.util.ClassPermissionCheckUtil;
+import vip.gadfly.chakkispring.common.util.IPUtil;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.model.BookDO;
 import vip.gadfly.chakkispring.dto.book.CreateOrUpdateBookDTO;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -80,14 +82,16 @@ public class StudentController {
     @PostMapping("/sign/confirm/{signId}")
     public UnifyResponseVO confirmStudentSign(
             @Min(value = 1, message = "{lesson.sign.id.positive}")
-            @PathVariable Long signId) {
+            @PathVariable Long signId,
+            HttpServletRequest request) {
         if (!ClassPermissionCheckUtil.isStudentInClassBySignId(signId)) {
             return ResponseUtil.generateUnifyResponse(10205);
         }
         if (!studentService.signAvailable(signId)) {
             return ResponseUtil.generateUnifyResponse(10211);
         }
-        if (!studentService.confirmSign(signId)) {
+        String ip = IPUtil.getIPFromRequest(request);
+        if (!studentService.confirmSign(signId, ip)) {
             return ResponseUtil.generateUnifyResponse(10210);
         }
         return ResponseUtil.generateUnifyResponse(20);

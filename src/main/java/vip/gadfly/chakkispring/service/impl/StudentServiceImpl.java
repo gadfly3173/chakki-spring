@@ -9,7 +9,6 @@ import vip.gadfly.chakkispring.mapper.ClassMapper;
 import vip.gadfly.chakkispring.mapper.SignListMapper;
 import vip.gadfly.chakkispring.mapper.StudentSignMapper;
 import vip.gadfly.chakkispring.model.ClassDO;
-import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.StudentSignDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.StudentService;
@@ -40,12 +39,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public boolean confirmSign(Long signId) {
+    public boolean confirmSign(Long signId, String ip) {
         UserDO user = LocalUser.getLocalUser();
         QueryWrapper<StudentSignDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(StudentSignDO::getUserId, user.getId()).eq(StudentSignDO::getSignId, signId);
         if (studentSignMapper.selectCount(wrapper) == 0) {
-            return studentSignMapper.insert(new StudentSignDO(signId, user.getId(), SignStatusConstant.STATUS_SIGNED)) > 0;
+            return studentSignMapper.insert(new StudentSignDO(signId, user.getId(), ip, SignStatusConstant.STATUS_SIGNED)) > 0;
         }
         return false;
     }

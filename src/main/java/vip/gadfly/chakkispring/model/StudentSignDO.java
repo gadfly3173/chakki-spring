@@ -32,15 +32,21 @@ public class StudentSignDO implements Serializable {
     private Long signId;
 
     /**
+     * 签到ip
+     */
+    private String ip;
+
+    /**
      * 签到状态
      */
     private int status;
 
     private Date createTime;
 
-    public StudentSignDO(Long signId, Long userId, int status) {
+    public StudentSignDO(Long signId, Long userId, String ip, int status) {
         this.userId = userId;
         this.signId = signId;
+        this.ip = ip;
         this.status = status;
     }
 }

@@ -23,7 +23,7 @@ public interface StudentService {
      *
      * @param signId 签到id
      */
-    boolean confirmSign(Long signId);
+    boolean confirmSign(Long signId, String ip);
 
     /**
      * 获得最新签到项目

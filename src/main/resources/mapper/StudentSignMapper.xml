@@ -16,25 +16,26 @@
         <result column="username" property="username"/>
         <result column="nickname" property="nickname"/>
         <result column="sign_id" property="signId"/>
+        <result column="ip" property="ip"/>
         <result column="status" property="status"/>
     </resultMap>
 
     <select id="selectUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
-        SELECT u.username, u.nickname, ss.sign_id, ss.create_time, ss.id, ss.status
+        SELECT u.username, u.nickname, ss.sign_id, ss.ip, ss.create_time, ss.id, ss.status
         from lin_user AS u, student_sign AS ss
         WHERE
             ss.sign_id = #{signId} AND ss.status = 1
     </select>
 
     <select id="selectLateUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
-        SELECT u.username, u.nickname, ss.sign_id, ss.create_time, ss.id, ss.status
+        SELECT u.username, u.nickname, ss.sign_id, ss.ip, ss.create_time, ss.id, ss.status
         from lin_user AS u, student_sign AS ss
         WHERE
             ss.sign_id = #{signId} AND ss.status = 2
     </select>
 
     <select id="selectCancelUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
-        SELECT u.username, u.nickname, ss.sign_id, ss.create_time, ss.id, ss.status
+        SELECT u.username, u.nickname, ss.sign_id, ss.ip, ss.create_time, ss.id, ss.status
         from lin_user AS u, student_sign AS ss
         WHERE
             ss.sign_id = #{signId} AND ss.status = 3
@@ -58,7 +59,7 @@
     </select>
 
     <select id="selectClassUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
-        SELECT u.username, u.nickname, ss.sign_id, ss.create_time, ss.id, ss.status
+        SELECT u.username, u.nickname, ss.sign_id, ss.ip, ss.create_time, ss.id, ss.status
         from lin_user AS u, student_sign AS ss
         WHERE
             ss.sign_id = #{signId}
@@ -75,6 +76,5 @@
                 )
             )
         )
-
     </select>
 </mapper>

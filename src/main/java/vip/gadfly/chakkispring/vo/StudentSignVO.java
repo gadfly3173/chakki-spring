@@ -32,6 +32,11 @@ public class StudentSignVO {
     private String nickname;
 
     /**
+     * 用户ip
+     */
+    private String ip;
+
+    /**
      * 签到状态
      */
     private Integer status;
