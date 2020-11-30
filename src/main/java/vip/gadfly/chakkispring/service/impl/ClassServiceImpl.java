@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
 import vip.gadfly.chakkispring.common.mybatis.Page;
+import vip.gadfly.chakkispring.common.util.IPUtil;
 import vip.gadfly.chakkispring.dto.admin.*;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
+import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.mapper.ClassMapper;
 import vip.gadfly.chakkispring.mapper.SignListMapper;
 import vip.gadfly.chakkispring.mapper.StudentClassMapper;
@@ -194,6 +196,23 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
                 iPage = studentSignMapper.selectClassUserSignDetailBySignId(pager, signId);
         }
         return iPage;
+    }
+
+    @Override
+    public SignListDO getSign(Long id) {
+        return signListMapper.selectById(id);
+    }
+
+    @Override
+    public boolean updateSignRecord(UpdateSignRecordDTO validator, Long signId) {
+        QueryWrapper<StudentSignDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(StudentSignDO::getUserId, validator.getUserId()).eq(StudentSignDO::getSignId, signId);
+        StudentSignDO studentSignDO = studentSignMapper.selectOne(wrapper);
+        if (studentSignDO == null) {
+            return studentSignMapper.insert(new StudentSignDO(signId, validator.getUserId(), "教师代签", validator.getSignStatus())) > 0;
+        }
+        studentSignDO.setStatus(validator.getSignStatus());
+        return studentSignMapper.updateById(studentSignDO) > 0;
     }
 
     private void throwClassNotExistById(Long id) {

@@ -30,7 +30,6 @@ public class IPUtil {
     };
 
     public static String getIPFromRequest(HttpServletRequest request) {
-        String ip = null;
         if (request == null) {
             if (RequestContextHolder.getRequestAttributes() == null) {
                 return null;
@@ -38,21 +37,15 @@ public class IPUtil {
             request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         }
 
-        try {
-            ip = InetAddress.getLocalHost().getHostAddress();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (!StringUtils.isEmpty(ip))
-            return ip;
-
         for (String header : IP_HEADER_CANDIDATES) {
             String ipList = request.getHeader(header);
             if (ipList != null && ipList.length() != 0 && !"unknown".equalsIgnoreCase(ipList)) {
+                log.info("ipList.split(\",\")[0]::" + ipList.split(",")[0]);
                 return ipList.split(",")[0];
             }
         }
 
+        log.info("request.getRemoteAddr()::" + request.getRemoteAddr());
         return request.getRemoteAddr();
     }
 }

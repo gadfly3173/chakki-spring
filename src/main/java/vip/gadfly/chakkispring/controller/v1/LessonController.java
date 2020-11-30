@@ -11,6 +11,7 @@ import vip.gadfly.chakkispring.dto.admin.DispatchStudentClassDTO;
 import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
+import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.UserDO;
@@ -86,8 +87,8 @@ public class LessonController {
     @GetMapping("/sign/students/query/{signId}")
     @GroupMeta(permission = "查询所有签到项目下的学生", module = "教师", mount = true)
     public PageResponseVO getStudentsBySignId(
-            @Min(value = 1, message = "{sign-status}")
-            @RequestParam(name = "sign_status", required = false, defaultValue = "0") Integer signStatus,
+            @RequestParam(name = "sign_status", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{sign-status}") Integer signStatus,
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Long count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
@@ -96,5 +97,19 @@ public class LessonController {
             @PathVariable Long signId) {
         IPage<StudentSignVO> iPage = classService.getUserPageBySignId(signId, signStatus, count, page);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+    }
+
+    @GetMapping("/sign/{id}")
+    @GroupMeta(permission = "查询一个签到信息", module = "教师", mount = true)
+    public SignListDO getSign(@PathVariable @Positive(message = "{id}") Long id) {
+        return classService.getSign(id);
+    }
+
+    @PostMapping("/sign/record/update/{signId}")
+    @GroupMeta(permission = "修改签到记录", module = "教师", mount = true)
+    public UnifyResponseVO updateStudentSignRecord(@RequestBody @Validated UpdateSignRecordDTO validator,
+                                                   @PathVariable Long signId) {
+        classService.updateSignRecord(validator, signId);
+        return ResponseUtil.generateUnifyResponse(21);
     }
 }

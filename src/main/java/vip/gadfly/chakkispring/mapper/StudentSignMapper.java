@@ -55,5 +55,5 @@ public interface StudentSignMapper extends BaseMapper<StudentSignDO> {
      * @param pager 分页
      * @return 签到用户列表
      */
-    IPage<StudentSignVO> selectClassUserSignDetailBySignId(Page pager, Long signId);
+    IPage<StudentSignVO> selectClassUserSignDetailBySignId(Page pager, @Param("signId") Long signId);
 }

@@ -3,6 +3,7 @@ package vip.gadfly.chakkispring.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import vip.gadfly.chakkispring.dto.admin.*;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
+import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.UserDO;
@@ -146,4 +147,14 @@ public interface ClassService {
      * @return 用户数据
      */
     IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, Long count, Long page);
+
+    /**
+     * 获得签到数据
+     *
+     * @param id 签到id
+     * @return 签到数据
+     */
+    SignListDO getSign(Long id);
+
+    boolean updateSignRecord(UpdateSignRecordDTO validator, Long signId);
 }
