@@ -17,6 +17,7 @@ import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.vo.PageResponseVO;
+import vip.gadfly.chakkispring.vo.SignCountVO;
 import vip.gadfly.chakkispring.vo.StudentSignVO;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 
@@ -93,15 +94,17 @@ public class LessonController {
             @Min(value = 1, message = "{count}") Long count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Long page,
+            @RequestParam(name = "username", required = false, defaultValue = "")
+            String username,
             @Min(value = 1, message = "{lesson.sign.id.positive}")
             @PathVariable Long signId) {
-        IPage<StudentSignVO> iPage = classService.getUserPageBySignId(signId, signStatus, count, page);
+        IPage<StudentSignVO> iPage = classService.getUserPageBySignId(signId, signStatus, username, count, page);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
 
     @GetMapping("/sign/{id}")
     @GroupMeta(permission = "查询一个签到信息", module = "教师", mount = true)
-    public SignListDO getSign(@PathVariable @Positive(message = "{id}") Long id) {
+    public SignCountVO getSign(@PathVariable @Positive(message = "{id}") Long id) {
         return classService.getSign(id);
     }
 

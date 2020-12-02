@@ -20,6 +20,7 @@ import vip.gadfly.chakkispring.mapper.StudentClassMapper;
 import vip.gadfly.chakkispring.mapper.StudentSignMapper;
 import vip.gadfly.chakkispring.model.*;
 import vip.gadfly.chakkispring.service.*;
+import vip.gadfly.chakkispring.vo.SignCountVO;
 import vip.gadfly.chakkispring.vo.StudentSignVO;
 
 import java.text.SimpleDateFormat;
@@ -178,29 +179,29 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, Long count, Long page) {
+    public IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Long count, Long page) {
         Page pager = new Page(page, count);
         IPage<StudentSignVO> iPage;
         switch (signStatus) {
             case SignStatusConstant.STATUS_SIGNED:
-                iPage = studentSignMapper.selectUserSignDetailBySignId(pager, signId);
+                iPage = studentSignMapper.selectUserSignDetailBySignId(pager, signId, username);
                 break;
             case SignStatusConstant.STATUS_LATE:
-                iPage = studentSignMapper.selectLateUserSignDetailBySignId(pager, signId);
+                iPage = studentSignMapper.selectLateUserSignDetailBySignId(pager, signId, username);
                 break;
             case SignStatusConstant.STATUS_CANCEL:
-                iPage = studentSignMapper.selectUnsignedUserDetailBySignId(pager, signId);
+                iPage = studentSignMapper.selectUnsignedUserDetailBySignId(pager, signId, username);
                 break;
             case 0:
             default:
-                iPage = studentSignMapper.selectClassUserSignDetailBySignId(pager, signId);
+                iPage = studentSignMapper.selectClassUserSignDetailBySignId(pager, signId, username);
         }
         return iPage;
     }
 
     @Override
-    public SignListDO getSign(Long id) {
-        return signListMapper.selectById(id);
+    public SignCountVO getSign(Long id) {
+        return signListMapper.selectSignCountInfoById(id);
     }
 
     @Override

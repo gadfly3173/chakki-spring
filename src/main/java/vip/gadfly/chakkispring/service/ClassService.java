@@ -7,6 +7,7 @@ import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.UserDO;
+import vip.gadfly.chakkispring.vo.SignCountVO;
 import vip.gadfly.chakkispring.vo.StudentSignVO;
 
 import java.util.List;
@@ -146,7 +147,7 @@ public interface ClassService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, Long count, Long page);
+    IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Long count, Long page);
 
     /**
      * 获得签到数据
@@ -154,7 +155,7 @@ public interface ClassService {
      * @param id 签到id
      * @return 签到数据
      */
-    SignListDO getSign(Long id);
+    SignCountVO getSign(Long id);
 
     boolean updateSignRecord(UpdateSignRecordDTO validator, Long signId);
 }
