@@ -147,7 +147,7 @@ public interface ClassService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Long count, Long page);
+    IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Long count, Long page, boolean orderByIP);
 
     /**
      * 获得签到数据

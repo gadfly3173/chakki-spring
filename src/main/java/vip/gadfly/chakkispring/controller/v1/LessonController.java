@@ -6,10 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
-import vip.gadfly.chakkispring.dto.admin.AddStudentClassDTO;
-import vip.gadfly.chakkispring.dto.admin.DispatchStudentClassDTO;
-import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
-import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
@@ -22,7 +18,6 @@ import vip.gadfly.chakkispring.vo.StudentSignVO;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -90,6 +85,8 @@ public class LessonController {
     public PageResponseVO getStudentsBySignId(
             @RequestParam(name = "sign_status", required = false, defaultValue = "0")
             @Min(value = 0, message = "{sign-status}") Integer signStatus,
+            @RequestParam(name = "order_by_IP", required = false, defaultValue = "false")
+            boolean orderByIP,
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Long count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
@@ -98,7 +95,7 @@ public class LessonController {
             String username,
             @Min(value = 1, message = "{lesson.sign.id.positive}")
             @PathVariable Long signId) {
-        IPage<StudentSignVO> iPage = classService.getUserPageBySignId(signId, signStatus, username, count, page);
+        IPage<StudentSignVO> iPage = classService.getUserPageBySignId(signId, signStatus, username, count, page, orderByIP);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
 

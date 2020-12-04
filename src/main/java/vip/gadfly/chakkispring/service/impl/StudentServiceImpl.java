@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
+import vip.gadfly.chakkispring.common.util.IPUtil;
 import vip.gadfly.chakkispring.mapper.ClassMapper;
 import vip.gadfly.chakkispring.mapper.SignListMapper;
 import vip.gadfly.chakkispring.mapper.StudentSignMapper;
@@ -42,7 +43,15 @@ public class StudentServiceImpl implements StudentService {
     public boolean confirmSign(Long signId, String ip) {
         UserDO user = LocalUser.getLocalUser();
         QueryWrapper<StudentSignDO> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(StudentSignDO::getUserId, user.getId()).eq(StudentSignDO::getSignId, signId);
+        if (IPUtil.isInternalIp(ip)) {
+            wrapper.lambda()
+                    .eq(StudentSignDO::getSignId, signId)
+                    .and(i -> i.eq(StudentSignDO::getUserId, user.getId())
+                            .or()
+                            .eq(StudentSignDO::getIp, ip));
+        } else {
+            wrapper.lambda().eq(StudentSignDO::getSignId, signId).eq(StudentSignDO::getUserId, user.getId());
+        }
         if (studentSignMapper.selectCount(wrapper) == 0) {
             return studentSignMapper.insert(new StudentSignDO(signId, user.getId(), ip, SignStatusConstant.STATUS_SIGNED)) > 0;
         }

@@ -23,7 +23,7 @@ public interface StudentSignMapper extends BaseMapper<StudentSignDO> {
      * @param pager 分页
      * @return 签到用户列表
      */
-    IPage<StudentSignVO> selectUserSignDetailBySignId(Page pager, @Param("signId") Long signId, @Param("username") String username);
+    IPage<StudentSignVO> selectUserSignDetailBySignId(Page pager, @Param("signId") Long signId, @Param("username") String username, @Param("orderByIP") boolean orderByIP);
 
     /**
      * 根据signId查询迟到签到了该项目的学生
@@ -31,7 +31,7 @@ public interface StudentSignMapper extends BaseMapper<StudentSignDO> {
      * @param pager 分页
      * @return 签到用户列表
      */
-    IPage<StudentSignVO> selectLateUserSignDetailBySignId(Page pager, @Param("signId") Long signId, @Param("username") String username);
+    IPage<StudentSignVO> selectLateUserSignDetailBySignId(Page pager, @Param("signId") Long signId, @Param("username") String username, @Param("orderByIP") boolean orderByIP);
 
     /**
      * 根据signId查询作废签到了该项目的学生
@@ -39,7 +39,7 @@ public interface StudentSignMapper extends BaseMapper<StudentSignDO> {
      * @param pager 分页
      * @return 签到用户列表
      */
-    IPage<StudentSignVO> selectCancelUserSignDetailBySignId(Page pager, @Param("signId") Long signId, @Param("username") String username);
+    IPage<StudentSignVO> selectCancelUserSignDetailBySignId(Page pager, @Param("signId") Long signId, @Param("username") String username, @Param("orderByIP") boolean orderByIP);
 
     /**
      * 根据signId查询未签到该项目的学生
@@ -55,5 +55,5 @@ public interface StudentSignMapper extends BaseMapper<StudentSignDO> {
      * @param pager 分页
      * @return 签到用户列表
      */
-    IPage<StudentSignVO> selectClassUserSignDetailBySignId(Page pager, @Param("signId") Long signId, @Param("username") String username);
+    IPage<StudentSignVO> selectClassUserSignDetailBySignId(Page pager, @Param("signId") Long signId, @Param("username") String username, @Param("orderByIP") boolean orderByIP);
 }

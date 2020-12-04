@@ -29,6 +29,10 @@
         <if test="username != null and username != ''">
             AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
         </if>
+            ORDER BY ss.ip
+        <if test="orderByIP">
+            DESC
+        </if>
     </select>
 
     <select id="selectLateUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
@@ -39,6 +43,10 @@
         <if test="username != null and username != ''">
             AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
         </if>
+            ORDER BY ss.ip
+        <if test="orderByIP">
+            DESC
+        </if>
     </select>
 
     <select id="selectCancelUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
@@ -48,6 +56,10 @@
             u.id = ss.user_id AND ss.sign_id = #{signId} AND ss.status = 3
         <if test="username != null and username != ''">
             AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
+        </if>
+            ORDER BY ss.ip
+        <if test="orderByIP">
+            DESC
         </if>
     </select>
 
@@ -85,6 +97,10 @@
         )
         <if test="username != null and username != ''">
             AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
+        </if>
+            ORDER BY ss.ip
+        <if test="orderByIP">
+            DESC
         </if>
     </select>
 </mapper>

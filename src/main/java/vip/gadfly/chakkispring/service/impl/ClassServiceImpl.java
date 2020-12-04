@@ -128,14 +128,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Override
     public boolean deleteStudentClassRelations(Long userId, List<Long> deleteIds) {
-        if (deleteIds == null || deleteIds.isEmpty()) {
-            return true;
-        }
-        QueryWrapper<StudentClassDO> wrapper = new QueryWrapper<>();
-        wrapper.lambda()
-                .eq(StudentClassDO::getUserId, userId)
-                .in(StudentClassDO::getClassId, deleteIds);
-        return studentClassMapper.delete(wrapper) > 0;
+        return classManageService.deleteUserClassRelations(userId, deleteIds);
     }
 
     @Override
@@ -147,14 +140,13 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         return studentClassMapper.insertBatch(relations) > 0;
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean createSign(NewSignDTO validator) {
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SignListDO sign = new SignListDO();
         sign.setClassId(validator.getClassId());
         sign.setName(validator.getTitle());
-//        设置结束时间
+        // 设置结束时间
         Calendar calendar = Calendar.getInstance();
         sign.setCreateTime(calendar.getTime());
         calendar.add(Calendar.MINUTE, validator.getEndMinutes());
@@ -179,22 +171,22 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Long count, Long page) {
+    public IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Long count, Long page, boolean orderByIP) {
         Page pager = new Page(page, count);
         IPage<StudentSignVO> iPage;
         switch (signStatus) {
             case SignStatusConstant.STATUS_SIGNED:
-                iPage = studentSignMapper.selectUserSignDetailBySignId(pager, signId, username);
+                iPage = studentSignMapper.selectUserSignDetailBySignId(pager, signId, username, orderByIP);
                 break;
             case SignStatusConstant.STATUS_LATE:
-                iPage = studentSignMapper.selectLateUserSignDetailBySignId(pager, signId, username);
+                iPage = studentSignMapper.selectLateUserSignDetailBySignId(pager, signId, username, orderByIP);
                 break;
             case SignStatusConstant.STATUS_CANCEL:
                 iPage = studentSignMapper.selectUnsignedUserDetailBySignId(pager, signId, username);
                 break;
             case 0:
             default:
-                iPage = studentSignMapper.selectClassUserSignDetailBySignId(pager, signId, username);
+                iPage = studentSignMapper.selectClassUserSignDetailBySignId(pager, signId, username, orderByIP);
         }
         return iPage;
     }
