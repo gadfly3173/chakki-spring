@@ -1,6 +1,5 @@
 package vip.gadfly.chakkispring.mapper;
 
-import vip.gadfly.chakkispring.model.FileDO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +10,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.model.FileDO;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,11 +21,10 @@ import static org.junit.Assert.assertEquals;
 @ActiveProfiles("test")
 public class FileMapperTest {
 
+    private final String md5 = "iiiiilllllll";
+    private final String name = "千里之外";
     @Autowired
     private FileMapper fileMapper;
-
-    private String md5 = "iiiiilllllll";
-    private String name = "千里之外";
 
     @Before
     public void setUp() throws Exception {

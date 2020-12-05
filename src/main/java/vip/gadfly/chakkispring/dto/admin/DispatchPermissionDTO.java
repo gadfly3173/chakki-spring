@@ -1,6 +1,6 @@
 package vip.gadfly.chakkispring.dto.admin;
 
-import lombok.*;
+import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

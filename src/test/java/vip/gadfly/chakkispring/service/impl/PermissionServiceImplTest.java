@@ -1,11 +1,5 @@
 package vip.gadfly.chakkispring.service.impl;
 
-import vip.gadfly.chakkispring.mapper.GroupMapper;
-import vip.gadfly.chakkispring.mapper.GroupPermissionMapper;
-import vip.gadfly.chakkispring.mapper.PermissionMapper;
-import vip.gadfly.chakkispring.model.GroupDO;
-import vip.gadfly.chakkispring.model.GroupPermissionDO;
-import vip.gadfly.chakkispring.model.PermissionDO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,10 +10,20 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.mapper.GroupMapper;
+import vip.gadfly.chakkispring.mapper.GroupPermissionMapper;
+import vip.gadfly.chakkispring.mapper.PermissionMapper;
+import vip.gadfly.chakkispring.model.GroupDO;
+import vip.gadfly.chakkispring.model.GroupPermissionDO;
+import vip.gadfly.chakkispring.model.PermissionDO;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

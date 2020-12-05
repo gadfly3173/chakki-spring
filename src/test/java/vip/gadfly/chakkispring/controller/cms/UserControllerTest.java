@@ -2,17 +2,6 @@ package vip.gadfly.chakkispring.controller.cms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import vip.gadfly.chakkispring.dto.user.*;
-import vip.gadfly.chakkispring.dto.user.ChangePasswordDTO;
-import vip.gadfly.chakkispring.dto.user.LoginDTO;
-import vip.gadfly.chakkispring.dto.user.RegisterDTO;
-import vip.gadfly.chakkispring.dto.user.UpdateInfoDTO;
-import vip.gadfly.chakkispring.mapper.GroupMapper;
-import vip.gadfly.chakkispring.mapper.UserMapper;
-import vip.gadfly.chakkispring.model.GroupDO;
-import vip.gadfly.chakkispring.model.UserDO;
-import vip.gadfly.chakkispring.common.LocalUser;
-import vip.gadfly.chakkispring.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
@@ -29,12 +18,21 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.common.LocalUser;
+import vip.gadfly.chakkispring.dto.user.ChangePasswordDTO;
+import vip.gadfly.chakkispring.dto.user.LoginDTO;
+import vip.gadfly.chakkispring.dto.user.RegisterDTO;
+import vip.gadfly.chakkispring.dto.user.UpdateInfoDTO;
+import vip.gadfly.chakkispring.mapper.GroupMapper;
+import vip.gadfly.chakkispring.mapper.UserMapper;
+import vip.gadfly.chakkispring.model.GroupDO;
+import vip.gadfly.chakkispring.model.UserDO;
+import vip.gadfly.chakkispring.service.UserService;
 
 import java.util.Arrays;
 import java.util.Random;
 
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,23 +46,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class UserControllerTest {
 
+    private final String email = "13129982604@qq.com";
+    private final String password = "123456";
+    private final String username = "pedro大大";
     @Autowired
     private MockMvc mvc;
-
     @Autowired
     private UserMapper userMapper;
-
     @Autowired
     private GroupMapper groupMapper;
-
     @Autowired
     private UserService userService;
-
-    private String email = "13129982604@qq.com";
-
-    private String password = "123456";
-
-    private String username = "pedro大大";
 
     @Before
     public void setUp() throws Exception {

@@ -7,7 +7,7 @@ import vip.gadfly.chakkispring.model.UserDO;
  */
 public class LocalUser {
 
-    private static ThreadLocal<UserDO> local = new ThreadLocal<>();
+    private static final ThreadLocal<UserDO> local = new ThreadLocal<>();
 
     /**
      * 得到当前登录用户

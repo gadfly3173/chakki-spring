@@ -1,10 +1,9 @@
 package vip.gadfly.chakkispring.common.configuration;
 
-import vip.gadfly.chakkispring.common.interceptor.RequestLogInterceptor;
+import cn.hutool.core.io.FileUtil;
 import io.github.talelin.autoconfigure.interceptor.AuthorizeInterceptor;
 import io.github.talelin.autoconfigure.interceptor.LogInterceptor;
 import lombok.extern.slf4j.Slf4j;
-import cn.hutool.core.io.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import vip.gadfly.chakkispring.common.interceptor.RequestLogInterceptor;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;

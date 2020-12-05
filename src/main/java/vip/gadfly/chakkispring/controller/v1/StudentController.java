@@ -2,8 +2,12 @@ package vip.gadfly.chakkispring.controller.v1;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.core.annotation.GroupMeta;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.common.util.ClassPermissionCheckUtil;
 import vip.gadfly.chakkispring.common.util.IPUtil;
+import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.service.ClassService;
@@ -11,10 +15,6 @@ import vip.gadfly.chakkispring.service.StudentService;
 import vip.gadfly.chakkispring.vo.PageResponseVO;
 import vip.gadfly.chakkispring.vo.SignListVO;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
-import vip.gadfly.chakkispring.common.util.ResponseUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;

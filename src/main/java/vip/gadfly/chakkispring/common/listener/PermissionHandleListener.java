@@ -3,12 +3,12 @@ package vip.gadfly.chakkispring.common.listener;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.github.talelin.autoconfigure.bean.MetaInfo;
 import io.github.talelin.autoconfigure.bean.RouteMetaCollector;
-import vip.gadfly.chakkispring.model.PermissionDO;
-import vip.gadfly.chakkispring.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import vip.gadfly.chakkispring.model.PermissionDO;
+import vip.gadfly.chakkispring.service.PermissionService;
 
 import java.util.List;
 import java.util.Map;

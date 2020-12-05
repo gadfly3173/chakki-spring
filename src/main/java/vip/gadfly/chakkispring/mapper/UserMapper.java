@@ -1,11 +1,11 @@
 package vip.gadfly.chakkispring.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.model.UserDO;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springframework.stereotype.Repository;
 
 
 /**
@@ -34,8 +34,8 @@ public interface UserMapper extends BaseMapper<UserDO> {
     /**
      * 通过分组id分页获取用户数据
      *
-     * @param pager   分页
-     * @param groupId 分组id
+     * @param pager       分页
+     * @param groupId     分组id
      * @param rootGroupId 超级用户组id(不返回超级用户组的用户)
      * @return 分页数据
      */

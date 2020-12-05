@@ -17,17 +17,14 @@
     <select id="selectByTitleLikeKeyword" resultMap="BaseResultMap">
         SELECT *
         FROM book b
-        WHERE
-        b.title LIKE #{q}
-        AND
-        b.delete_time IS NULL
+        WHERE b.title LIKE #{q}
+          AND b.delete_time IS NULL
     </select>
 
     <select id="selectByTitle" resultMap="BaseResultMap">
         SELECT *
         FROM book b
-        WHERE b.title=#{title}
-        AND
-        b.delete_time IS NULL
+        WHERE b.title = #{title}
+          AND b.delete_time IS NULL
     </select>
 </mapper>

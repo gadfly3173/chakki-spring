@@ -1,8 +1,6 @@
 package vip.gadfly.chakkispring.controller.cms;
 
 import cn.hutool.core.date.DateUtil;
-import vip.gadfly.chakkispring.mapper.LogMapper;
-import vip.gadfly.chakkispring.model.LogDO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
@@ -18,11 +16,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.mapper.LogMapper;
+import vip.gadfly.chakkispring.model.LogDO;
 
 import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

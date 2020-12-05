@@ -2,9 +2,6 @@ package vip.gadfly.chakkispring.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import vip.gadfly.chakkispring.mapper.LogMapper;
-import vip.gadfly.chakkispring.model.LogDO;
-import vip.gadfly.chakkispring.service.LogService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +12,12 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.mapper.LogMapper;
+import vip.gadfly.chakkispring.model.LogDO;
+import vip.gadfly.chakkispring.service.LogService;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

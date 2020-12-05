@@ -1,7 +1,8 @@
 package vip.gadfly.chakkispring.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import vip.gadfly.chakkispring.dto.admin.*;
+import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
+import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
@@ -11,7 +12,6 @@ import vip.gadfly.chakkispring.vo.SignCountVO;
 import vip.gadfly.chakkispring.vo.StudentSignVO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author pedro
@@ -117,7 +117,7 @@ public interface ClassService {
      * 添加用户与班级直接的关联
      *
      * @param classId 班级id
-     * @param addIds 用户id
+     * @param addIds  用户id
      */
     boolean addStudentClassRelations(Long classId, List<Long> addIds);
 
@@ -141,10 +141,10 @@ public interface ClassService {
     /**
      * 通过id分页获取签到项目详情
      *
-     * @param signId  签到项目id
-     * @param signStatus  筛选签到状态：0-全部，false-未签到
-     * @param count   当前页数目
-     * @param page    当前分页
+     * @param signId     签到项目id
+     * @param signStatus 筛选签到状态：0-全部，false-未签到
+     * @param count      当前页数目
+     * @param page       当前分页
      * @return 用户数据
      */
     IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Long count, Long page, boolean orderByIP);

@@ -4,11 +4,11 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="vip.gadfly.chakkispring.model.UserIdentityDO">
-        <id column="id" property="id" />
-        <result column="user_id" property="userId" />
-        <result column="identity_type" property="identityType" />
-        <result column="identifier" property="identifier" />
-        <result column="credential" property="credential" />
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="identity_type" property="identityType"/>
+        <result column="identifier" property="identifier"/>
+        <result column="credential" property="credential"/>
     </resultMap>
 
 </mapper>

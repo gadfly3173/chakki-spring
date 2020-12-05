@@ -1,15 +1,15 @@
 package vip.gadfly.chakkispring.common.interceptor;
 
-import vip.gadfly.chakkispring.common.LocalUser;
-import vip.gadfly.chakkispring.model.UserDO;
 import io.github.talelin.autoconfigure.interfaces.LoggerResolver;
 import io.github.talelin.core.annotation.Logger;
 import io.github.talelin.core.annotation.RouteMeta;
 import io.github.talelin.core.util.BeanUtil;
-import vip.gadfly.chakkispring.service.LogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import vip.gadfly.chakkispring.common.LocalUser;
+import vip.gadfly.chakkispring.model.UserDO;
+import vip.gadfly.chakkispring.service.LogService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,13 +20,10 @@ import java.util.regex.Pattern;
 @Component
 public class LoggerImpl implements LoggerResolver {
 
+    public static String REG_XP = "(?<=\\{)[^}]*(?=\\})";
+    private final Pattern pattern = Pattern.compile(REG_XP);
     @Autowired
     private LogService logService;
-
-    public static String REG_XP = "(?<=\\{)[^}]*(?=\\})";
-
-    private Pattern pattern = Pattern.compile(REG_XP);
-
 
     @Override
     public void handle(RouteMeta meta, Logger logger, HttpServletRequest request, HttpServletResponse response) {

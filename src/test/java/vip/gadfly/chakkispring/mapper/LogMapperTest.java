@@ -1,8 +1,6 @@
 package vip.gadfly.chakkispring.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import vip.gadfly.chakkispring.common.mybatis.Page;
-import vip.gadfly.chakkispring.model.LogDO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,11 +11,13 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.common.mybatis.Page;
+import vip.gadfly.chakkispring.model.LogDO;
 
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,17 +27,16 @@ import static org.junit.Assert.*;
 public class LogMapperTest {
 
 
+    private final String permission = "查看lin的信息";
+    private final String message = "就是个瓜皮";
+    private final String method = "GET";
+    private final String path = "/";
+    private final Integer statusCode = 200;
+    private final Long userId = 1L;
+    private final String username = "super";
     @Autowired
     private LogMapper logMapper;
-
     private Date start = new Date();
-    private String permission = "查看lin的信息";
-    private String message = "就是个瓜皮";
-    private String method = "GET";
-    private String path = "/";
-    private Integer statusCode = 200;
-    private Long userId = 1L;
-    private String username = "super";
 
     @Before
     public void setUp() throws Exception {

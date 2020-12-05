@@ -1,12 +1,12 @@
 package vip.gadfly.chakkispring.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.dto.user.BatchRegisterDTO;
 import vip.gadfly.chakkispring.dto.user.ChangePasswordDTO;
 import vip.gadfly.chakkispring.dto.user.RegisterDTO;
 import vip.gadfly.chakkispring.dto.user.UpdateInfoDTO;
-import com.baomidou.mybatisplus.extension.service.IService;
 import vip.gadfly.chakkispring.model.GroupDO;
 import vip.gadfly.chakkispring.model.PermissionDO;
 import vip.gadfly.chakkispring.model.UserDO;

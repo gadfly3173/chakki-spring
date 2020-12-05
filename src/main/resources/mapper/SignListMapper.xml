@@ -13,43 +13,59 @@
     </resultMap>
 
     <select id="selectSignPageByClassId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT u.id, u.name, (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = u.id AND ss.status &lt; 3) AS signed, u.create_time,
-               u.class_id, u.end_time
+        SELECT u.id,
+               u.name,
+               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = u.id AND ss.status &lt; 3) AS signed,
+               u.create_time,
+               u.class_id,
+               u.end_time
         FROM sign_list AS u
         WHERE u.class_id = #{classId}
         ORDER BY u.id DESC
     </select>
 
     <select id="getLatestSignByClassId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT u.id, u.name, (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = u.id AND ss.status &lt; 3) AS signed, u.create_time,
-              u.class_id, u.end_time
+        SELECT u.id,
+               u.name,
+               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = u.id AND ss.status &lt; 3) AS signed,
+               u.create_time,
+               u.class_id,
+               u.end_time
         FROM sign_list AS u
         WHERE u.class_id = #{classId}
         ORDER BY u.id DESC
         LIMIT 1
     </select>
     <select id="getStudentLatestSignByClassId" resultType="vip.gadfly.chakkispring.vo.SignListVO">
-        SELECT u.id, u.name, (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.user_id = #{userId} AND ss.sign_id = u.id) AS signed, u.create_time,
-               u.class_id, u.end_time
+        SELECT u.id,
+               u.name,
+               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.user_id = #{userId} AND ss.sign_id = u.id) AS signed,
+               u.create_time,
+               u.class_id,
+               u.end_time
         FROM sign_list AS u
         WHERE u.class_id = #{classId}
         ORDER BY u.id DESC
         LIMIT 1
     </select>
     <select id="selectSignCountInfoById" resultType="vip.gadfly.chakkispring.vo.SignCountVO">
-        SELECT sl.*, (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = sl.id AND ss.status = 1) AS signed,
+        SELECT sl.*,
+               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = sl.id AND ss.status = 1) AS signed,
                (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = sl.id AND ss.status = 2) AS late,
                (SELECT COUNT(*)
-                FROM lin_user AS u LEFT JOIN student_sign AS ss
-                                             ON u.id = ss.user_id
-                WHERE ss.user_id is null AND u.id IN (
+                FROM lin_user AS u
+                         LEFT JOIN student_sign AS ss
+                                   ON u.id = ss.user_id
+                WHERE ss.user_id is null
+                  AND u.id IN (
                     SELECT sc.user_id
                     FROM student_class AS sc
                     WHERE sc.class_id = (
-                        SELECT sl.class_id from sign_list AS sl
+                        SELECT sl.class_id
+                        from sign_list AS sl
                         WHERE sl.id = #{signId}
                     )
-                )) AS 'unSigned',
+                ))                                                                                  AS 'unSigned',
                (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = sl.id AND ss.status = 3) AS cancel
         FROM sign_list AS sl
         WHERE sl.id = #{signId}

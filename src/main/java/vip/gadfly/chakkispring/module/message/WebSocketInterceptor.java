@@ -3,9 +3,6 @@ package vip.gadfly.chakkispring.module.message;
 import com.auth0.jwt.exceptions.*;
 import com.auth0.jwt.interfaces.Claim;
 import io.github.talelin.core.token.DoubleJWT;
-import vip.gadfly.chakkispring.model.UserDO;
-import vip.gadfly.chakkispring.service.GroupService;
-import vip.gadfly.chakkispring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
@@ -13,9 +10,11 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
+import vip.gadfly.chakkispring.model.UserDO;
+import vip.gadfly.chakkispring.service.GroupService;
+import vip.gadfly.chakkispring.service.UserService;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 

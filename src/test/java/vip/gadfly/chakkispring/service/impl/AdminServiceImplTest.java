@@ -2,11 +2,6 @@ package vip.gadfly.chakkispring.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import vip.gadfly.chakkispring.mapper.*;
-import vip.gadfly.chakkispring.model.*;
-import vip.gadfly.chakkispring.bo.GroupPermissionBO;
-import vip.gadfly.chakkispring.dto.admin.*;
-import vip.gadfly.chakkispring.dto.user.RegisterDTO;
 import io.github.talelin.autoconfigure.exception.ForbiddenException;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +15,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.bo.GroupPermissionBO;
 import vip.gadfly.chakkispring.dto.admin.*;
+import vip.gadfly.chakkispring.dto.user.RegisterDTO;
 import vip.gadfly.chakkispring.mapper.*;
 import vip.gadfly.chakkispring.model.*;
 

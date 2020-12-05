@@ -2,20 +2,23 @@ package vip.gadfly.chakkispring.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import vip.gadfly.chakkispring.model.*;
-import vip.gadfly.chakkispring.service.*;
-import vip.gadfly.chakkispring.bo.GroupPermissionBO;
-import vip.gadfly.chakkispring.common.mybatis.Page;
-import vip.gadfly.chakkispring.dto.admin.*;
-import vip.gadfly.chakkispring.mapper.GroupPermissionMapper;
 import io.github.talelin.autoconfigure.exception.ForbiddenException;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.bo.GroupPermissionBO;
+import vip.gadfly.chakkispring.common.mybatis.Page;
+import vip.gadfly.chakkispring.dto.admin.*;
+import vip.gadfly.chakkispring.mapper.GroupPermissionMapper;
+import vip.gadfly.chakkispring.model.*;
+import vip.gadfly.chakkispring.service.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

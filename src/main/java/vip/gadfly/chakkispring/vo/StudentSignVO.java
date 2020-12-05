@@ -9,6 +9,7 @@ import java.util.Date;
 
 /**
  * 用户签到信息 view object
+ *
  * @author Gadfly
  */
 @Data

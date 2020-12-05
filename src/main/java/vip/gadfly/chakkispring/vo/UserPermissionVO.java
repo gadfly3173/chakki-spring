@@ -1,8 +1,8 @@
 package vip.gadfly.chakkispring.vo;
 
-import vip.gadfly.chakkispring.model.UserDO;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
+import vip.gadfly.chakkispring.model.UserDO;
 
 import java.util.List;
 

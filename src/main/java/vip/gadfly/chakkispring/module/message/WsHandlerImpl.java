@@ -1,11 +1,11 @@
 package vip.gadfly.chakkispring.module.message;
 
-import vip.gadfly.chakkispring.model.UserDO;
-import vip.gadfly.chakkispring.service.GroupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import vip.gadfly.chakkispring.model.UserDO;
+import vip.gadfly.chakkispring.service.GroupService;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,7 +19,7 @@ public class WsHandlerImpl implements WsHandler {
 
     private final AtomicInteger connectionCount = new AtomicInteger(0);
 
-    private CopyOnWriteArraySet<WebSocketSession> sessions = new CopyOnWriteArraySet<>();
+    private final CopyOnWriteArraySet<WebSocketSession> sessions = new CopyOnWriteArraySet<>();
 
     @Autowired
     private GroupService groupService;

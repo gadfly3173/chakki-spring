@@ -15,53 +15,56 @@
 
 
     <select id="selectUserClasses" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT g.id, g.name, g.info,
-        g.create_time,g.update_time,g.delete_time
+        SELECT g.id,
+               g.name,
+               g.info,
+               g.create_time,
+               g.update_time,
+               g.delete_time
         from class AS g
-        WHERE
-        g.delete_time IS NULL
-        AND
-        g.id IN
-        (
-        SELECT ug.class_id
-        FROM lin_user AS u
-        LEFT JOIN student_class as ug
-        ON ug.user_id = u.id
-        WHERE u.id = #{userId}
-        AND u.delete_time IS NULL
-        )
+        WHERE g.delete_time IS NULL
+          AND g.id IN
+              (
+                  SELECT ug.class_id
+                  FROM lin_user AS u
+                           LEFT JOIN student_class as ug
+                                     ON ug.user_id = u.id
+                  WHERE u.id = #{userId}
+                    AND u.delete_time IS NULL
+              )
         ORDER BY g.id DESC
     </select>
 
     <select id="selectUserClassIds" parameterType="java.lang.Long" resultType="java.lang.Long">
         SELECT g.id
         from class AS g
-        WHERE
-        g.delete_time IS NULL
-        AND
-        g.id IN
-        (
-        SELECT ug.class_id
-        FROM lin_user AS u
-        LEFT JOIN student_class as ug
-        ON ug.user_id = u.id
-        WHERE u.id = #{userId}
-        AND u.delete_time IS NULL
-        )
+        WHERE g.delete_time IS NULL
+          AND g.id IN
+              (
+                  SELECT ug.class_id
+                  FROM lin_user AS u
+                           LEFT JOIN student_class as ug
+                                     ON ug.user_id = u.id
+                  WHERE u.id = #{userId}
+                    AND u.delete_time IS NULL
+              )
     </select>
 
     <select id="selectCountById" parameterType="java.lang.Long" resultType="java.lang.Integer">
-        SELECT COUNT(*) AS count FROM class WHERE delete_time IS NULL AND id = #{id}
+        SELECT COUNT(*) AS count
+        FROM class
+        WHERE delete_time IS NULL
+          AND id = #{id}
     </select>
 
-<!--    <select id="selectCountUserByUserIdAndGroupName" resultType="java.lang.Integer">-->
-<!--        SELECT COUNT(*) AS count-->
-<!--        FROM student_class AS ug-->
-<!--        WHERE-->
-<!--        ug.user_id = #{userId}-->
-<!--        AND-->
-<!--        ug.class_id =-->
-<!--        (SELECT g.id FROM class AS g WHERE g.name = #{className} AND g.delete_time IS NULL)-->
-<!--    </select>-->
+    <!--    <select id="selectCountUserByUserIdAndGroupName" resultType="java.lang.Integer">-->
+    <!--        SELECT COUNT(*) AS count-->
+    <!--        FROM student_class AS ug-->
+    <!--        WHERE-->
+    <!--        ug.user_id = #{userId}-->
+    <!--        AND-->
+    <!--        ug.class_id =-->
+    <!--        (SELECT g.id FROM class AS g WHERE g.name = #{className} AND g.delete_time IS NULL)-->
+    <!--    </select>-->
 
 </mapper>

@@ -1,13 +1,13 @@
 package vip.gadfly.chakkispring.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import vip.gadfly.chakkispring.common.constant.IdentityConstant;
-import io.github.talelin.core.util.EncryptUtil;
-import vip.gadfly.chakkispring.model.UserIdentityDO;
-import vip.gadfly.chakkispring.mapper.UserIdentityMapper;
-import vip.gadfly.chakkispring.service.UserIdentityService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.github.talelin.core.util.EncryptUtil;
 import org.springframework.stereotype.Service;
+import vip.gadfly.chakkispring.common.constant.IdentityConstant;
+import vip.gadfly.chakkispring.mapper.UserIdentityMapper;
+import vip.gadfly.chakkispring.model.UserIdentityDO;
+import vip.gadfly.chakkispring.service.UserIdentityService;
 
 /**
  * @author pedro

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.mapper.SignListMapper;
 import vip.gadfly.chakkispring.mapper.StudentClassMapper;
-import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.StudentClassDO;
 import vip.gadfly.chakkispring.model.UserDO;
 
@@ -22,19 +21,11 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class ClassPermissionCheckUtil {
 
+    private static ClassPermissionCheckUtil classPermissionCheckUtil;
     @Autowired
     private StudentClassMapper studentClassMapper;
     @Autowired
     private SignListMapper signListMapper;
-
-    private static ClassPermissionCheckUtil classPermissionCheckUtil;
-
-    @PostConstruct
-    public void init() {
-        classPermissionCheckUtil = this;
-        classPermissionCheckUtil.studentClassMapper = this.studentClassMapper;
-        classPermissionCheckUtil.signListMapper = this.signListMapper;
-    }
 
     public static boolean isStudentInClassByClassId(Long classId) {
         return isStudentInClas(classId);
@@ -55,5 +46,12 @@ public class ClassPermissionCheckUtil {
             log.warn("学生用户：" + userId + "非法访问班级id：" + classId);
         }
         return result;
+    }
+
+    @PostConstruct
+    public void init() {
+        classPermissionCheckUtil = this;
+        classPermissionCheckUtil.studentClassMapper = this.studentClassMapper;
+        classPermissionCheckUtil.signListMapper = this.signListMapper;
     }
 }

@@ -5,12 +5,12 @@ import com.baomidou.mybatisplus.core.injector.ISqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import io.github.talelin.autoconfigure.bean.RouteMetaCollector;
-import vip.gadfly.chakkispring.extension.file.FileProperties;
-import vip.gadfly.chakkispring.common.interceptor.RequestLogInterceptor;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import vip.gadfly.chakkispring.common.interceptor.RequestLogInterceptor;
+import vip.gadfly.chakkispring.extension.file.FileProperties;
 
 
 @Configuration(proxyBeanMethods = false)

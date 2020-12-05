@@ -1,10 +1,10 @@
 package vip.gadfly.chakkispring.service;
 
-import vip.gadfly.chakkispring.bo.FileBO;
-import vip.gadfly.chakkispring.model.FileDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
+import vip.gadfly.chakkispring.bo.FileBO;
+import vip.gadfly.chakkispring.model.FileDO;
 
 import java.util.List;
 

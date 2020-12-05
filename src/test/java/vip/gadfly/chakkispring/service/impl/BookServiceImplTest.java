@@ -1,8 +1,5 @@
 package vip.gadfly.chakkispring.service.impl;
 
-import vip.gadfly.chakkispring.dto.book.CreateOrUpdateBookDTO;
-import vip.gadfly.chakkispring.mapper.BookMapper;
-import vip.gadfly.chakkispring.model.BookDO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +8,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.dto.book.CreateOrUpdateBookDTO;
+import vip.gadfly.chakkispring.mapper.BookMapper;
+import vip.gadfly.chakkispring.model.BookDO;
 
 import java.util.List;
 
@@ -23,16 +23,14 @@ import static org.junit.Assert.*;
 @ActiveProfiles("test")
 public class BookServiceImplTest {
 
+    private final String title = "千里之外";
+    private final String author = "pedro";
+    private final String image = "千里之外.png";
+    private final String summary = "千里之外，是周杰伦和费玉清一起发售的歌曲";
     @Autowired
     private BookServiceImpl bookService;
-
     @Autowired
     private BookMapper bookMapper;
-
-    private String title = "千里之外";
-    private String author = "pedro";
-    private String image = "千里之外.png";
-    private String summary = "千里之外，是周杰伦和费玉清一起发售的歌曲";
 
     @Test
     public void createBook() {

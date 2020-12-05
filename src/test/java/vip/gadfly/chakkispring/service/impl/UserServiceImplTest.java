@@ -1,11 +1,5 @@
 package vip.gadfly.chakkispring.service.impl;
 
-import vip.gadfly.chakkispring.common.LocalUser;
-import vip.gadfly.chakkispring.dto.user.ChangePasswordDTO;
-import vip.gadfly.chakkispring.dto.user.RegisterDTO;
-import vip.gadfly.chakkispring.dto.user.UpdateInfoDTO;
-import vip.gadfly.chakkispring.model.*;
-import vip.gadfly.chakkispring.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +10,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.common.LocalUser;
+import vip.gadfly.chakkispring.dto.user.ChangePasswordDTO;
+import vip.gadfly.chakkispring.dto.user.RegisterDTO;
+import vip.gadfly.chakkispring.dto.user.UpdateInfoDTO;
 import vip.gadfly.chakkispring.mapper.*;
 import vip.gadfly.chakkispring.model.*;
 

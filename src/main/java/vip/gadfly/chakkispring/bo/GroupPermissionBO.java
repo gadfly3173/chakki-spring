@@ -1,9 +1,11 @@
 package vip.gadfly.chakkispring.bo;
 
 import cn.hutool.core.bean.BeanUtil;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import vip.gadfly.chakkispring.model.GroupDO;
 import vip.gadfly.chakkispring.model.PermissionDO;
-import lombok.*;
 
 import java.util.List;
 

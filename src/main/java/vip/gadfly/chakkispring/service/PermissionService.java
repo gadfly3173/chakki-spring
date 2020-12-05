@@ -1,7 +1,7 @@
 package vip.gadfly.chakkispring.service;
 
-import vip.gadfly.chakkispring.model.PermissionDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import vip.gadfly.chakkispring.model.PermissionDO;
 
 import java.util.List;
 import java.util.Map;
@@ -56,7 +56,7 @@ public interface PermissionService extends IService<PermissionDO> {
      * 通过分组id和权限模块得到分组的权限与分组id的映射
      *
      * @param groupIds 分组id
-     * @param module 权限模块
+     * @param module   权限模块
      * @return 权限map
      */
     List<PermissionDO> getPermissionByGroupIdsAndModule(List<Long> groupIds, String module);

@@ -2,9 +2,6 @@ package vip.gadfly.chakkispring.controller.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import vip.gadfly.chakkispring.dto.book.CreateOrUpdateBookDTO;
-import vip.gadfly.chakkispring.mapper.BookMapper;
-import vip.gadfly.chakkispring.model.BookDO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,11 +17,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.dto.book.CreateOrUpdateBookDTO;
+import vip.gadfly.chakkispring.mapper.BookMapper;
+import vip.gadfly.chakkispring.model.BookDO;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,17 +33,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class BookControllerTest {
 
+    private final String title = "千里之外";
+    private final String author = "pedro";
+    private final String image = "千里之外.png";
+    private final String summary = "千里之外，是周杰伦和费玉清一起发售的歌曲";
     @Autowired
     private MockMvc mvc;
-
     @Autowired
     private BookMapper bookMapper;
-
     private Long id;
-    private String title = "千里之外";
-    private String author = "pedro";
-    private String image = "千里之外.png";
-    private String summary = "千里之外，是周杰伦和费玉清一起发售的歌曲";
 
     @Before
     public void setUp() throws Exception {

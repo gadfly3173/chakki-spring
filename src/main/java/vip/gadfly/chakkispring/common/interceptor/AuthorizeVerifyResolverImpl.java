@@ -1,23 +1,22 @@
 package vip.gadfly.chakkispring.common.interceptor;
 
 import com.auth0.jwt.exceptions.*;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import io.github.talelin.autoconfigure.bean.MetaInfo;
 import io.github.talelin.autoconfigure.exception.AuthenticationException;
 import io.github.talelin.autoconfigure.exception.AuthorizationException;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
 import io.github.talelin.autoconfigure.exception.TokenInvalidException;
-import vip.gadfly.chakkispring.common.LocalUser;
-import vip.gadfly.chakkispring.model.PermissionDO;
-import vip.gadfly.chakkispring.model.UserDO;
-import vip.gadfly.chakkispring.service.GroupService;
-import vip.gadfly.chakkispring.service.UserService;
 import io.github.talelin.autoconfigure.interfaces.AuthorizeVerifyResolver;
 import io.github.talelin.core.token.DoubleJWT;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import vip.gadfly.chakkispring.common.LocalUser;
+import vip.gadfly.chakkispring.model.PermissionDO;
+import vip.gadfly.chakkispring.model.UserDO;
+import vip.gadfly.chakkispring.service.GroupService;
+import vip.gadfly.chakkispring.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

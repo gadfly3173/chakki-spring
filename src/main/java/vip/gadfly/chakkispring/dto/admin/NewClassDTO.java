@@ -1,11 +1,9 @@
 package vip.gadfly.chakkispring.dto.admin;
 
 import io.github.talelin.autoconfigure.validator.Length;
-import io.github.talelin.autoconfigure.validator.LongList;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 /**
  * @author gadfly

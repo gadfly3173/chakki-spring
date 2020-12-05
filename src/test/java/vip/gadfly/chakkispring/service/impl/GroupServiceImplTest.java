@@ -1,9 +1,6 @@
 package vip.gadfly.chakkispring.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import vip.gadfly.chakkispring.bo.GroupPermissionBO;
-import vip.gadfly.chakkispring.mapper.*;
-import vip.gadfly.chakkispring.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Before;
@@ -16,13 +13,15 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.bo.GroupPermissionBO;
 import vip.gadfly.chakkispring.mapper.*;
 import vip.gadfly.chakkispring.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringRunner.class)

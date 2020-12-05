@@ -1,7 +1,7 @@
 package vip.gadfly.chakkispring.service;
 
-import vip.gadfly.chakkispring.model.UserIdentityDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import vip.gadfly.chakkispring.model.UserIdentityDO;
 
 /**
  * @author pedro

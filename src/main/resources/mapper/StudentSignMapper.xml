@@ -25,11 +25,11 @@
         SELECT u.id AS user_id, u.username, u.nickname, ss.sign_id, ss.ip, ss.create_time, ss.id, ss.status
         from lin_user AS u, student_sign AS ss
         WHERE
-            u.id = ss.user_id AND ss.sign_id = #{signId} AND ss.status = 1
+        u.id = ss.user_id AND ss.sign_id = #{signId} AND ss.status = 1
         <if test="username != null and username != ''">
             AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
         </if>
-            ORDER BY ss.ip
+        ORDER BY ss.ip
         <if test="orderByIP">
             DESC
         </if>
@@ -39,11 +39,11 @@
         SELECT u.id AS user_id, u.username, u.nickname, ss.sign_id, ss.ip, ss.create_time, ss.id, ss.status
         from lin_user AS u, student_sign AS ss
         WHERE
-            u.id = ss.user_id AND ss.sign_id = #{signId} AND ss.status = 2
+        u.id = ss.user_id AND ss.sign_id = #{signId} AND ss.status = 2
         <if test="username != null and username != ''">
             AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
         </if>
-            ORDER BY ss.ip
+        ORDER BY ss.ip
         <if test="orderByIP">
             DESC
         </if>
@@ -53,11 +53,11 @@
         SELECT u.id AS user_id, u.username, u.nickname, ss.sign_id, ss.ip, ss.create_time, ss.id, ss.status
         from lin_user AS u, student_sign AS ss
         WHERE
-            u.id = ss.user_id AND ss.sign_id = #{signId} AND ss.status = 3
+        u.id = ss.user_id AND ss.sign_id = #{signId} AND ss.status = 3
         <if test="username != null and username != ''">
             AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
         </if>
-            ORDER BY ss.ip
+        ORDER BY ss.ip
         <if test="orderByIP">
             DESC
         </if>
@@ -67,17 +67,17 @@
         SELECT u.id AS user_id, u.username, u.nickname, 0 AS sign_status
         from lin_user AS u
         WHERE
-            u.id NOT IN (
-                    SELECT ssi.user_id FROM student_sign AS ssi
-                    WHERE ssi.sign_id = #{signId}
-                )
+        u.id NOT IN (
+        SELECT ssi.user_id FROM student_sign AS ssi
+        WHERE ssi.sign_id = #{signId}
+        )
         AND u.id IN (
-                SELECT sc.user_id from student_class AS sc
-                WHERE sc.class_id = (
-                        SELECT sl.class_id from sign_list AS sl
-                        WHERE sl.id = #{signId}
-                    )
-            )
+        SELECT sc.user_id from student_class AS sc
+        WHERE sc.class_id = (
+        SELECT sl.class_id from sign_list AS sl
+        WHERE sl.id = #{signId}
+        )
+        )
         <if test="username != null and username != ''">
             AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
         </if>
@@ -88,17 +88,17 @@
         FROM lin_user AS u LEFT JOIN student_sign AS ss
         ON u.id = ss.user_id
         WHERE u.id IN (
-            SELECT sc.user_id
-            FROM student_class AS sc
-            WHERE sc.class_id = (
-                    SELECT sl.class_id from sign_list AS sl
-                    WHERE sl.id = #{signId}
-                )
+        SELECT sc.user_id
+        FROM student_class AS sc
+        WHERE sc.class_id = (
+        SELECT sl.class_id from sign_list AS sl
+        WHERE sl.id = #{signId}
+        )
         )
         <if test="username != null and username != ''">
             AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
         </if>
-            ORDER BY ss.ip
+        ORDER BY ss.ip
         <if test="orderByIP">
             DESC
         </if>

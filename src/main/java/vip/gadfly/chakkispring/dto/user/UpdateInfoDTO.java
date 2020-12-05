@@ -1,7 +1,8 @@
 package vip.gadfly.chakkispring.dto.user;
 
 import io.github.talelin.autoconfigure.validator.Length;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 

@@ -15,46 +15,67 @@
     </resultMap>
 
     <select id="selectCountByUsername" parameterType="java.lang.String" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM lin_user as u WHERE u.username = #{username} AND u.delete_time IS NULL
+        SELECT COUNT(*)
+        FROM lin_user as u
+        WHERE u.username = #{username}
+          AND u.delete_time IS NULL
     </select>
 
     <select id="selectCountById" parameterType="java.lang.Long" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM lin_user as u WHERE u.id = #{id} AND u.delete_time IS NULL
+        SELECT COUNT(*)
+        FROM lin_user as u
+        WHERE u.id = #{id}
+          AND u.delete_time IS NULL
     </select>
 
     <select id="selectPageByGroupId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT u.username, u.nickname, u.id,
-        u.avatar, u.email, u.create_time,
-        u.update_time, u.delete_time
+        SELECT u.username,
+               u.nickname,
+               u.id,
+               u.avatar,
+               u.email,
+               u.create_time,
+               u.update_time,
+               u.delete_time
         FROM lin_user AS u
         WHERE u.id IN
-        (
-        SELECT ug.user_id
-        FROM lin_user_group AS ug
-        WHERE ug.group_id = #{groupId}
-        AND ug.group_id != #{rootGroupId}
-        )
-        AND u.delete_time IS NULL
+              (
+                  SELECT ug.user_id
+                  FROM lin_user_group AS ug
+                  WHERE ug.group_id = #{groupId}
+                    AND ug.group_id != #{rootGroupId}
+              )
+          AND u.delete_time IS NULL
     </select>
 
     <select id="selectPageByClassId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT u.username, u.nickname, u.id,
-        u.avatar, u.email, u.create_time,
-        u.update_time, u.delete_time
+        SELECT u.username,
+               u.nickname,
+               u.id,
+               u.avatar,
+               u.email,
+               u.create_time,
+               u.update_time,
+               u.delete_time
         FROM lin_user AS u
         WHERE u.id IN
-        (
-        SELECT ug.user_id
-        FROM student_class AS ug
-        WHERE ug.class_id = #{classId}
-        )
-        AND u.delete_time IS NULL
+              (
+                  SELECT ug.user_id
+                  FROM student_class AS ug
+                  WHERE ug.class_id = #{classId}
+              )
+          AND u.delete_time IS NULL
     </select>
 
     <select id="selectFreshUserPageByClassId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT u.username, u.nickname, u.id,
-               u.avatar, u.email, u.create_time,
-               u.update_time, u.delete_time
+        SELECT u.username,
+               u.nickname,
+               u.id,
+               u.avatar,
+               u.email,
+               u.create_time,
+               u.update_time,
+               u.delete_time
         FROM lin_user AS u
         WHERE u.id NOT IN
               (
@@ -66,9 +87,14 @@
     </select>
 
     <select id="selectFreshUserPageByClassIdAndName" resultMap="BaseResultMap">
-        SELECT u.username, u.nickname, u.id,
-               u.avatar, u.email, u.create_time,
-               u.update_time, u.delete_time
+        SELECT u.username,
+               u.nickname,
+               u.id,
+               u.avatar,
+               u.email,
+               u.create_time,
+               u.update_time,
+               u.delete_time
         FROM lin_user AS u
         WHERE u.id NOT IN
               (
@@ -77,7 +103,7 @@
                   WHERE ug.class_id = #{classId}
               )
           AND u.delete_time IS NULL
-          AND ( u.nickname LIKE CONCAT('%', #{name}, '%') OR u.username LIKE CONCAT('%', #{name}, '%'))
+          AND (u.nickname LIKE CONCAT('%', #{name}, '%') OR u.username LIKE CONCAT('%', #{name}, '%'))
     </select>
 
 </mapper>

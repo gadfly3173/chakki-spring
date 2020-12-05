@@ -1,8 +1,6 @@
 package vip.gadfly.chakkispring.service.impl;
 
-import vip.gadfly.chakkispring.common.constant.IdentityConstant;
 import io.github.talelin.core.util.EncryptUtil;
-import vip.gadfly.chakkispring.model.UserIdentityDO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +10,11 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.common.constant.IdentityConstant;
+import vip.gadfly.chakkispring.model.UserIdentityDO;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringRunner.class)

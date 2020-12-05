@@ -1,8 +1,5 @@
 package vip.gadfly.chakkispring.mapper;
 
-import vip.gadfly.chakkispring.model.GroupDO;
-import vip.gadfly.chakkispring.model.UserDO;
-import vip.gadfly.chakkispring.model.UserGroupDO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +8,13 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.model.GroupDO;
+import vip.gadfly.chakkispring.model.UserDO;
+import vip.gadfly.chakkispring.model.UserGroupDO;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
