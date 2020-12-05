@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.gadfly.chakkispring.mapper.TeacherClassMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="vip.gadfly.chakkispring.model.TeacherClassDO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="class_id" property="classId"/>
+        <result column="level" property="level"/>
+    </resultMap>
+    <insert id="insertBatch">
+        INSERT INTO teacher_class(user_id, class_id, `level`)
+        VALUES
+        <foreach collection="relations" item="relation" separator=",">
+            (#{relation.userId}, #{relation.classId}, #{relation.level})
+        </foreach>
+    </insert>
+
+    <select id="selectTeacherDetailByClassId" resultType="vip.gadfly.chakkispring.vo.TeacherClassVO">
+        SELECT u.id, u.username, u.nickname, tc.`level`
+        FROM lin_user AS u,
+             teacher_class AS tc
+        WHERE tc.class_id = #{classId}
+          AND u.id = tc.user_id
+    </select>
+
+</mapper>

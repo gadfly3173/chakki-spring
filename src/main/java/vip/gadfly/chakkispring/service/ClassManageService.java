@@ -69,18 +69,18 @@ public interface ClassManageService extends IService<ClassDO> {
     boolean deleteUserClassRelations(Long userId, List<Long> deleteIds);
 
     /**
-     * 添加用户与班级直接的关联
-     *
-     * @param userId 用户id
-     * @param addIds 班级id
-     */
-    boolean addUserClassRelations(Long userId, List<Long> addIds);
-
-    /**
      * 获得班级下所有用户的id
      *
      * @param id 班级id
      * @return 用户id
      */
     List<Long> getClassUserIds(Long id);
+
+    /**
+     * 删除用户与班级直接的关联
+     *
+     * @param userId    用户id
+     * @param classIds 班级id
+     */
+    boolean deleteTeacherClassRelations(Long userId, List<Long> classIds);
 }

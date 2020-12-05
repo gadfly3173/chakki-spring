@@ -227,6 +227,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         return this.baseMapper.selectFreshUserPageByClassIdAndName(pager, classId, name);
     }
 
+    @Override
+    public IPage<UserDO> getFreshTeacherPageByClassIdAndName(Page pager, Long classId, String name) {
+        return this.baseMapper.selectFreshTeacherPageByClassIdAndName(pager, classId, name);
+    }
+
     private void checkGroupsExist(List<Long> ids) {
         for (long id : ids) {
             if (!groupService.checkGroupExistById(id)) {

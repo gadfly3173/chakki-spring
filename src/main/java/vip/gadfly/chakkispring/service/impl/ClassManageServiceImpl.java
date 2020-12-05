@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.mapper.ClassMapper;
 import vip.gadfly.chakkispring.mapper.StudentClassMapper;
+import vip.gadfly.chakkispring.mapper.TeacherClassMapper;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.StudentClassDO;
+import vip.gadfly.chakkispring.model.TeacherClassDO;
 import vip.gadfly.chakkispring.service.ClassManageService;
 
 import java.util.List;
@@ -23,6 +25,9 @@ import java.util.stream.Collectors;
 public class ClassManageServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implements ClassManageService {
     @Autowired
     private StudentClassMapper studentClassMapper;
+
+    @Autowired
+    private TeacherClassMapper teacherClassMapper;
 
     @Override
     public List<ClassDO> getUserClassesByUserId(Long userId) {
@@ -70,25 +75,23 @@ public class ClassManageServiceImpl extends ServiceImpl<ClassMapper, ClassDO> im
     }
 
     @Override
-    public boolean addUserClassRelations(Long userId, List<Long> addIds) {
-        if (addIds == null || addIds.isEmpty()) {
-            return true;
-        }
-        boolean ok = checkClassExistByIds(addIds);
-        if (!ok) {
-            throw new ForbiddenException("cant't add user to non-existent class", 10204);
-        }
-        List<StudentClassDO> relations =
-                addIds.stream().map(it -> new StudentClassDO(userId, it)).collect(Collectors.toList());
-        return studentClassMapper.insertBatch(relations) > 0;
-    }
-
-    @Override
     public List<Long> getClassUserIds(Long id) {
         QueryWrapper<StudentClassDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(StudentClassDO::getClassId, id);
         List<StudentClassDO> list = studentClassMapper.selectList(wrapper);
         return list.stream().map(StudentClassDO::getUserId).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean deleteTeacherClassRelations(Long userId, List<Long> classIds) {
+        if (classIds == null || classIds.isEmpty()) {
+            return false;
+        }
+        QueryWrapper<TeacherClassDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda()
+                .eq(TeacherClassDO::getUserId, userId)
+                .in(TeacherClassDO::getClassId, classIds);
+        return teacherClassMapper.delete(wrapper) > 0;
     }
 
     private boolean checkClassExistByIds(List<Long> ids) {

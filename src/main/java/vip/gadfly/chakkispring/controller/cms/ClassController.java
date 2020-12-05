@@ -6,14 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
-import vip.gadfly.chakkispring.dto.admin.AddStudentClassDTO;
-import vip.gadfly.chakkispring.dto.admin.DispatchStudentClassDTO;
-import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
-import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
+import vip.gadfly.chakkispring.dto.admin.*;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.vo.PageResponseVO;
+import vip.gadfly.chakkispring.vo.TeacherClassVO;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 
 import javax.validation.constraints.Min;
@@ -33,7 +31,7 @@ public class ClassController {
     @Autowired
     private ClassService classService;
 
-//    班级接口
+   // 班级接口
 
     @GetMapping("/class/all")
     @GroupMeta(permission = "查询所有班级", module = "管理员", mount = true)
@@ -79,10 +77,6 @@ public class ClassController {
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Long page) {
         IPage<UserDO> iPage = classService.getUserPageByClassId(classId, count, page);
-//        List<UserInfoVO> userInfos = iPage.getRecords().stream().map(user -> {
-//            List<ClassDO> lesson = classService.getUserClassByUserId(user.getId());
-//            return new UserInfoVO(user, lesson);
-//        }).collect(Collectors.toList());
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
 
@@ -96,10 +90,6 @@ public class ClassController {
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Long page) {
         IPage<UserDO> iPage = classService.getFreshUserPageByClassId(classId, count, page);
-//        List<UserInfoVO> userInfos = iPage.getRecords().stream().map(user -> {
-//            List<ClassDO> lesson = classService.getUserClassByUserId(user.getId());
-//            return new UserInfoVO(user, lesson);
-//        }).collect(Collectors.toList());
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
 
@@ -120,15 +110,61 @@ public class ClassController {
 
     @PostMapping("/students/del")
     @GroupMeta(permission = "移除班级内学生", module = "管理员", mount = true)
-    public UnifyResponseVO moveStudentClass(@RequestBody @Validated DispatchStudentClassDTO validator) {
-        classService.deleteStudentClassRelations(validator.getUserId(), validator.getClassIds());
-        return ResponseUtil.generateUnifyResponse(17);
+    public UnifyResponseVO removeStudentClass(@RequestBody @Validated DispatchStudentClassDTO validator) {
+        if (classService.deleteStudentClassRelations(validator.getUserId(), validator.getClassIds())) {
+            return ResponseUtil.generateUnifyResponse(17);
+        }
+        return ResponseUtil.generateUnifyResponse(10206);
     }
 
     @PostMapping("/students/add")
     @GroupMeta(permission = "添加班级内学生", module = "管理员", mount = true)
     public UnifyResponseVO addStudentClass(@RequestBody @Validated AddStudentClassDTO validator) {
-        classService.addStudentClassRelations(validator.getClassId(), validator.getUserIds());
-        return ResponseUtil.generateUnifyResponse(18);
+        if (classService.addStudentClassRelations(validator.getClassId(), validator.getUserIds())) {
+            return ResponseUtil.generateUnifyResponse(18);
+        }
+        return ResponseUtil.generateUnifyResponse(10207);
+    }
+
+    @GetMapping("/teacher/list")
+    @GroupMeta(permission = "查询班级内教师", module = "管理员", mount = true)
+    public PageResponseVO getClassTeachers(
+            @RequestParam(name = "class_id")
+            @Min(value = 1, message = "{class-id}") Long classId) {
+        IPage<TeacherClassVO> iPage = classService.getTeacherPageByClassId(classId);
+        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), 0, 10);
+    }
+
+    @GetMapping("/teacher/fresh_by_name")
+    @GroupMeta(permission = "查询不在班级内的教师", module = "管理员", mount = true)
+    public PageResponseVO getFreshTeachersByName(
+            @RequestParam(name = "name")
+            @NotBlank(message = "{search-text.blank}") String name,
+            @RequestParam(name = "class_id")
+            @Min(value = 1, message = "{class-id}") Long classId,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "{count}") Long count,
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{page}") Long page) {
+        IPage<UserDO> iPage = classService.getFreshTeacherPageByClassIdAndName(classId, name, count, page);
+        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+    }
+
+    @PostMapping("/teacher/del")
+    @GroupMeta(permission = "移除班级内教师", module = "管理员", mount = true)
+    public UnifyResponseVO removeTeacherClass(@RequestBody @Validated DispatchTeacherClassDTO validator) {
+        if (classService.deleteTeacherClassRelations(validator.getUserId(), validator.getClassIds())) {
+            return ResponseUtil.generateUnifyResponse(22);
+        }
+        return ResponseUtil.generateUnifyResponse(10208);
+    }
+
+    @PostMapping("/teacher/add")
+    @GroupMeta(permission = "添加班级内教师", module = "管理员", mount = true)
+    public UnifyResponseVO addTeacherClass(@RequestBody @Validated AddTeacherClassDTO validator) {
+        if (classService.addTeacherClassRelations(validator.getClassId(), validator.getUserIds(), validator.getLevel())) {
+            return ResponseUtil.generateUnifyResponse(23);
+        }
+        return ResponseUtil.generateUnifyResponse(10209);
     }
 }

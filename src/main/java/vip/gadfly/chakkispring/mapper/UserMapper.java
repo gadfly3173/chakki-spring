@@ -69,4 +69,14 @@ public interface UserMapper extends BaseMapper<UserDO> {
      */
     IPage<UserDO> selectFreshUserPageByClassIdAndName(Page pager, @Param("classId") Long classId,
                                                       @Param("name") String name);
+    /**
+     * 通过班级id分页和姓名获取非此班级教师数据
+     *
+     * @param pager   分页
+     * @param classId 班级id
+     * @param name    名字
+     * @return 分页数据
+     */
+    IPage<UserDO> selectFreshTeacherPageByClassIdAndName(Page pager, @Param("classId") Long classId,
+                                                         @Param("name") String name);
 }

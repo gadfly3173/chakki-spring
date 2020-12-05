@@ -106,4 +106,26 @@
           AND (u.nickname LIKE CONCAT('%', #{name}, '%') OR u.username LIKE CONCAT('%', #{name}, '%'))
     </select>
 
+    <select id="selectFreshTeacherPageByClassIdAndName" resultType="vip.gadfly.chakkispring.model.UserDO">
+        SELECT u.username,
+               u.nickname,
+               u.id,
+               u.avatar,
+               u.email,
+               u.create_time,
+               u.update_time,
+               u.delete_time
+        FROM lin_user AS u, lin_user_group AS ug
+        WHERE u.id NOT IN
+              (
+                  SELECT tc.user_id
+                  FROM teacher_class AS tc
+                  WHERE tc.class_id = #{classId}
+              )
+          AND ug.group_id = 2
+          AND ug.user_id = u.id
+          AND u.delete_time IS NULL
+          AND (u.nickname LIKE CONCAT('%', #{name}, '%') OR u.username LIKE CONCAT('%', #{name}, '%'))
+    </select>
+
 </mapper>

@@ -110,7 +110,9 @@ public class LessonController {
     @GroupMeta(permission = "修改签到记录", module = "教师", mount = true)
     public UnifyResponseVO updateStudentSignRecord(@RequestBody @Validated UpdateSignRecordDTO validator,
                                                    @PathVariable Long signId) {
-        classService.updateSignRecord(validator, signId);
-        return ResponseUtil.generateUnifyResponse(21);
+        if (classService.updateSignRecord(validator, signId)) {
+            return ResponseUtil.generateUnifyResponse(21);
+        }
+        return ResponseUtil.generateUnifyResponse(10212);
     }
 }

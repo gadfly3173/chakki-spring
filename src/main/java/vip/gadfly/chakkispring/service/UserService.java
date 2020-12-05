@@ -160,4 +160,14 @@ public interface UserService extends IService<UserDO> {
      * @return 数据页
      */
     IPage<UserDO> getFreshUserPageByClassIdAndName(Page pager, Long classId, String name);
+
+    /**
+     * 根据班级id分页和名字获取非此班级教师数据
+     *
+     * @param pager   分页
+     * @param classId 班级id
+     * @param name    名字
+     * @return 数据页
+     */
+    IPage<UserDO> getFreshTeacherPageByClassIdAndName(Page pager, Long classId, String name);
 }

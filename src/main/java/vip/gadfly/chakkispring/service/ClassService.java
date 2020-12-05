@@ -10,6 +10,7 @@ import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.vo.SignCountVO;
 import vip.gadfly.chakkispring.vo.StudentSignVO;
+import vip.gadfly.chakkispring.vo.TeacherClassVO;
 
 import java.util.List;
 
@@ -105,7 +106,7 @@ public interface ClassService {
     List<ClassDO> getAllClasses();
 
     /**
-     * 删除用户与班级直接的关联
+     * 删除用户与班级之间的关联
      *
      * @param userId    用户id
      * @param deleteIds 班级id
@@ -113,7 +114,7 @@ public interface ClassService {
     boolean deleteStudentClassRelations(Long userId, List<Long> deleteIds);
 
     /**
-     * 添加用户与班级直接的关联
+     * 添加用户与班级之间的关联
      *
      * @param classId 班级id
      * @param addIds  用户id
@@ -157,5 +158,45 @@ public interface ClassService {
      */
     SignCountVO getSign(Long id);
 
+    /**
+     * 修改签到记录信息
+     *
+     * @param validator 签到内容
+     */
     boolean updateSignRecord(UpdateSignRecordDTO validator, Long signId);
+
+    /**
+     * 通过班级id分页获取班级内的教师
+     *
+     * @param classId 班级id
+     * @return 用户数据
+     */
+    IPage<TeacherClassVO> getTeacherPageByClassId(Long classId);
+
+    /**
+     * 通过姓名、班级id分页获取不在班级的教师
+     *
+     * @param classId 班级id
+     * @param name    名字
+     * @param count   当前页数目
+     * @param page    当前分页
+     * @return 用户数据
+     */
+    IPage<UserDO> getFreshTeacherPageByClassIdAndName(Long classId, String name, Long count, Long page);
+
+    /**
+     * 添加教师与班级之间的关联
+     *
+     * @param classIds 班级id
+     * @param userId  用户id
+     */
+    boolean deleteTeacherClassRelations(Long userId, List<Long> classIds);
+
+    /**
+     * 添加教师与班级之间的关联
+     *
+     * @param classId 班级id
+     * @param userIds  用户id
+     */
+    boolean addTeacherClassRelations(Long classId, List<Long> userIds, Integer level);
 }

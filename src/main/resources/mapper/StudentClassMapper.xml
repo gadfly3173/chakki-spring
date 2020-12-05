@@ -18,6 +18,6 @@
     </insert>
 
     <delete id="removeByClassId" parameterType="java.lang.Long">
-        DELETE FROM student_class WHERE class_id=#{class_id}
+        DELETE FROM student_class WHERE class_id = #{class_id}
     </delete>
 </mapper>
