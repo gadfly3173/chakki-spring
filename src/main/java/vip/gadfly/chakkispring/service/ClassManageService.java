@@ -7,8 +7,7 @@ import vip.gadfly.chakkispring.model.ClassDO;
 import java.util.List;
 
 /**
- * @author pedro
- * @since 2019-11-30
+ * @author Gadfly
  */
 public interface ClassManageService extends IService<ClassDO> {
 

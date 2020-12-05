@@ -14,8 +14,7 @@ import vip.gadfly.chakkispring.vo.StudentSignVO;
 import java.util.List;
 
 /**
- * @author pedro
- * @since 2019-11-30
+ * @author Gadfly
  */
 public interface ClassService {
 

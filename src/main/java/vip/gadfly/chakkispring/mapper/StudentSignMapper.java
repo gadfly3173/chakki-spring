@@ -9,8 +9,7 @@ import vip.gadfly.chakkispring.model.StudentSignDO;
 import vip.gadfly.chakkispring.vo.StudentSignVO;
 
 /**
- * @author pedro
- * @since 2019-11-30
+ * @author Gadfly
  */
 @Repository
 public interface StudentSignMapper extends BaseMapper<StudentSignDO> {

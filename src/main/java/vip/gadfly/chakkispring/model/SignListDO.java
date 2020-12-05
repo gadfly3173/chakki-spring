@@ -9,8 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author pedro
- * @since 2019-11-30
+ * @author Gadfly
  */
 @TableName("sign_list")
 @Data

@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import vip.gadfly.chakkispring.common.interceptor.RequestLogInterceptor;
+import vip.gadfly.chakkispring.extension.limit.LimitInterceptor;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -39,6 +40,9 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Autowired
     private RequestLogInterceptor requestLogInterceptor;
 
+    @Autowired
+    private LimitInterceptor limitInterceptor;
+
     @Value("${lin.cms.file.store-dir:assets/}")
     private String dir;
 
@@ -63,6 +67,8 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 高频访问拦截器
+        registry.addInterceptor(limitInterceptor);
         if (authEnabled) {
             //开发环境忽略签名认证
             registry.addInterceptor(authorizeInterceptor)

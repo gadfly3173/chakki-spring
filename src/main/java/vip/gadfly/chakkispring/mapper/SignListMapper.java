@@ -10,8 +10,7 @@ import vip.gadfly.chakkispring.vo.SignCountVO;
 import vip.gadfly.chakkispring.vo.SignListVO;
 
 /**
- * @author pedro
- * @since 2019-11-30
+ * @author Gadfly
  */
 @Repository
 public interface SignListMapper extends BaseMapper<SignListDO> {

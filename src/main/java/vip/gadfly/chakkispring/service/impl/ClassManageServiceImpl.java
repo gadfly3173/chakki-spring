@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author pedro
- * @since 2019-11-30
+ * @author Gadfly
  */
 @Service
 public class ClassManageServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implements ClassManageService {

@@ -8,8 +8,7 @@ import vip.gadfly.chakkispring.model.StudentClassDO;
 import java.util.List;
 
 /**
- * @author pedro
- * @since 2019-11-30
+ * @author Gadfly
  */
 @Repository
 public interface StudentClassMapper extends BaseMapper<StudentClassDO> {
