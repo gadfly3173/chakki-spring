@@ -138,7 +138,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Override
     public UserDO changeUserPassword(ChangePasswordDTO dto) {
         UserDO user = LocalUser.getLocalUser();
-        boolean valid = userIdentityService.verifyUsernamePassword(user.getId(), user.getUsername(), dto.getOldPassword());
+        boolean valid = userIdentityService.verifyUsernamePassword(user.getId(), user.getUsername(),
+                dto.getOldPassword());
         if (!valid) {
             throw new ParameterException("password invalid, please enter correct password", 10032);
         }

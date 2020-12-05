@@ -19,7 +19,8 @@ public class RequestLogInterceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+                                Exception ex) throws Exception {
         super.afterCompletion(request, response, handler, ex);
         log.info("[{}] -> [{}] from: {} costs: {}ms",
                 request.getMethod(),

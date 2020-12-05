@@ -97,7 +97,8 @@ public class PermissionServiceImplTest {
     public void structuringPermissions() {
         Long id = mockData();
         List<PermissionDO> permissions = permissionService.getPermissionByGroupIds(Collections.singletonList(id));
-        List<Map<String, List<Map<String, String>>>> structuringPermissions = permissionService.structuringPermissions(permissions);
+        List<Map<String, List<Map<String, String>>>> structuringPermissions =
+                permissionService.structuringPermissions(permissions);
         assertTrue(structuringPermissions.size() > 0);
         log.info("structuringPermissions: {}", structuringPermissions);
         boolean anyMatch = structuringPermissions.stream().anyMatch(it -> it.containsKey("炉石传说"));

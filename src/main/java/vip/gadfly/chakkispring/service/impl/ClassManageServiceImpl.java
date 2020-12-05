@@ -79,7 +79,8 @@ public class ClassManageServiceImpl extends ServiceImpl<ClassMapper, ClassDO> im
         if (!ok) {
             throw new ForbiddenException("cant't add user to non-existent class", 10204);
         }
-        List<StudentClassDO> relations = addIds.stream().map(it -> new StudentClassDO(userId, it)).collect(Collectors.toList());
+        List<StudentClassDO> relations =
+                addIds.stream().map(it -> new StudentClassDO(userId, it)).collect(Collectors.toList());
         return studentClassMapper.insertBatch(relations) > 0;
     }
 

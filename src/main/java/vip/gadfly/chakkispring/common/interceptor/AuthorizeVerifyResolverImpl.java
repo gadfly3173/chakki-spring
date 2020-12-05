@@ -65,7 +65,8 @@ public class AuthorizeVerifyResolverImpl implements AuthorizeVerifyResolver {
         String permission = meta.getPermission();
         String module = meta.getModule();
         List<PermissionDO> permissions = userService.getUserPermissions(userId);
-        boolean matched = permissions.stream().anyMatch(it -> it.getModule().equals(module) && it.getName().equals(permission));
+        boolean matched =
+                permissions.stream().anyMatch(it -> it.getModule().equals(module) && it.getName().equals(permission));
         if (!matched)
             throw new AuthenticationException("you don't have the permission to access", 10001);
         return true;
@@ -99,7 +100,8 @@ public class AuthorizeVerifyResolverImpl implements AuthorizeVerifyResolver {
     }
 
     @Override
-    public void handleAfterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+    public void handleAfterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+                                      Exception ex) {
         // 记住：很重要，请求结束后，一定要清理 ThreadLocal 中的用户信息
         LocalUser.clearLocalUser();
     }

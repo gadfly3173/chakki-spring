@@ -136,7 +136,8 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         if (addIds == null || addIds.isEmpty()) {
             return true;
         }
-        List<StudentClassDO> relations = addIds.stream().map(it -> new StudentClassDO(classId, it)).collect(Collectors.toList());
+        List<StudentClassDO> relations =
+                addIds.stream().map(it -> new StudentClassDO(classId, it)).collect(Collectors.toList());
         return studentClassMapper.insertBatch(relations) > 0;
     }
 
@@ -171,7 +172,8 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Long count, Long page, boolean orderByIP) {
+    public IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Long count,
+                                                    Long page, boolean orderByIP) {
         Page pager = new Page(page, count);
         IPage<StudentSignVO> iPage;
         switch (signStatus) {
@@ -202,7 +204,8 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         wrapper.lambda().eq(StudentSignDO::getUserId, validator.getUserId()).eq(StudentSignDO::getSignId, signId);
         StudentSignDO studentSignDO = studentSignMapper.selectOne(wrapper);
         if (studentSignDO == null) {
-            return studentSignMapper.insert(new StudentSignDO(signId, validator.getUserId(), "教师代签", validator.getSignStatus())) > 0;
+            return studentSignMapper.insert(new StudentSignDO(signId, validator.getUserId(), "教师代签",
+                    validator.getSignStatus())) > 0;
         }
         studentSignDO.setStatus(validator.getSignStatus());
         return studentSignMapper.updateById(studentSignDO) > 0;

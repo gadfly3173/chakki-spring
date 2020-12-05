@@ -146,7 +146,8 @@ public abstract class AbstractUploader implements Uploader {
      * @param length          文件大小
      * @return 文件的扩展名，例如： .jpg
      */
-    protected String checkOneFile(String[] include, String[] exclude, long singleFileLimit, String originName, int length) {
+    protected String checkOneFile(String[] include, String[] exclude, long singleFileLimit, String originName,
+                                  int length) {
         // 写到了本地
         String ext = FileUtil.getFileExt(originName);
         // 检测扩展

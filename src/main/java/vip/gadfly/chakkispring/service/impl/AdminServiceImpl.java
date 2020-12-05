@@ -93,7 +93,8 @@ public class AdminServiceImpl implements AdminService {
         }
         List<Long> existGroupIds = groupService.getUserGroupIdsByUserId(id);
         // 删除existGroupIds有，而newGroupIds没有的
-        List<Long> deleteIds = existGroupIds.stream().filter(it -> !newGroupIds.contains(it)).collect(Collectors.toList());
+        List<Long> deleteIds =
+                existGroupIds.stream().filter(it -> !newGroupIds.contains(it)).collect(Collectors.toList());
         // 添加newGroupIds有，而existGroupIds没有的
         List<Long> addIds = newGroupIds.stream().filter(it -> !existGroupIds.contains(it)).collect(Collectors.toList());
         return groupService.deleteUserGroupRelations(id, deleteIds) && groupService.addUserGroupRelations(id, addIds);

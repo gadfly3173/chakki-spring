@@ -40,7 +40,8 @@ public class LoggerImpl implements LoggerResolver {
         logService.createLog(template, permission, userId, username, method, path, status);
     }
 
-    private String parseTemplate(String template, UserDO user, HttpServletRequest request, HttpServletResponse response) {
+    private String parseTemplate(String template, UserDO user, HttpServletRequest request,
+                                 HttpServletResponse response) {
         // 调用 get 方法
         Matcher m = pattern.matcher(template);
         while (m.find()) {

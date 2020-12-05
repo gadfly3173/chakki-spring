@@ -64,7 +64,8 @@ public class AdminController {
 
     @PutMapping("/user/{id}/password")
     @AdminMeta(permission = "修改用户密码", module = "管理员", mount = true)
-    public UnifyResponseVO changeUserPassword(@PathVariable @Positive(message = "{id}") Long id, @RequestBody @Validated ResetPasswordDTO validator) {
+    public UnifyResponseVO changeUserPassword(@PathVariable @Positive(message = "{id}") Long id,
+                                              @RequestBody @Validated ResetPasswordDTO validator) {
         adminService.changeUserPassword(id, validator);
         return ResponseUtil.generateUnifyResponse(2);
     }
@@ -78,7 +79,8 @@ public class AdminController {
 
     @PutMapping("/user/{id}")
     @AdminMeta(permission = "管理员更新用户信息", module = "管理员", mount = true)
-    public UnifyResponseVO updateUser(@PathVariable @Positive(message = "{id}") Long id, @RequestBody @Validated UpdateUserInfoDTO validator) {
+    public UnifyResponseVO updateUser(@PathVariable @Positive(message = "{id}") Long id,
+                                      @RequestBody @Validated UpdateUserInfoDTO validator) {
         adminService.updateUserInfo(id, validator);
         return ResponseUtil.generateUnifyResponse(4);
     }

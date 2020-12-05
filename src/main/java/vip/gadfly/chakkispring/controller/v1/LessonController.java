@@ -95,7 +95,8 @@ public class LessonController {
                     String username,
             @Min(value = 1, message = "{lesson.sign.id.positive}")
             @PathVariable Long signId) {
-        IPage<StudentSignVO> iPage = classService.getUserPageBySignId(signId, signStatus, username, count, page, orderByIP);
+        IPage<StudentSignVO> iPage = classService.getUserPageBySignId(signId, signStatus, username, count, page,
+                orderByIP);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
 

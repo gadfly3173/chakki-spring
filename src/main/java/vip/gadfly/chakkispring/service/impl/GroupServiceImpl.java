@@ -107,7 +107,8 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
         if (!ok) {
             throw new ForbiddenException("cant't add user to non-existent group", 10077);
         }
-        List<UserGroupDO> relations = addIds.stream().map(it -> new UserGroupDO(userId, it)).collect(Collectors.toList());
+        List<UserGroupDO> relations =
+                addIds.stream().map(it -> new UserGroupDO(userId, it)).collect(Collectors.toList());
         return userGroupMapper.insertBatch(relations) > 0;
     }
 

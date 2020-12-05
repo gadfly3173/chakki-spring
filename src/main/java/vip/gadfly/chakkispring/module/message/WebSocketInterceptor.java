@@ -32,7 +32,8 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
     private GroupService groupService;
 
     @Override
-    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler webSocketHandler, Map<String, Object> attributes) throws Exception {
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,
+                                   WebSocketHandler webSocketHandler, Map<String, Object> attributes) throws Exception {
         if (request instanceof ServletServerHttpRequest) {
             ServletServerHttpRequest httpServletRequest = (ServletServerHttpRequest) request;
             String tokenStr = httpServletRequest.getServletRequest().getParameter("token");
@@ -67,7 +68,8 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
     }
 
     @Override
-    public void afterHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Exception e) {
+    public void afterHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse,
+                               WebSocketHandler webSocketHandler, Exception e) {
 
     }
 

@@ -27,7 +27,8 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, LogDO> implements Log
     @Override
     public IPage<LogDO> searchLogPage(Long page, Long count, String name, String keyword, Date start, Date end) {
         Page<LogDO> pager = new Page<>(page, count);
-        IPage<LogDO> iPage = this.baseMapper.searchLogsByUsernameAndKeywordAndRange(pager, name, "%" + keyword + "%", start, end);
+        IPage<LogDO> iPage = this.baseMapper.searchLogsByUsernameAndKeywordAndRange(pager, name, "%" + keyword + "%",
+                start, end);
         return iPage;
     }
 
@@ -39,7 +40,8 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, LogDO> implements Log
     }
 
     @Override
-    public boolean createLog(String message, String permission, Long userId, String username, String method, String path, Integer status) {
+    public boolean createLog(String message, String permission, Long userId, String username, String method,
+                             String path, Integer status) {
         LogDO record = LogDO.builder()
                 .message(message)
                 .userId(userId)

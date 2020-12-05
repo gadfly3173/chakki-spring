@@ -16,5 +16,6 @@ public interface GroupPermissionMapper extends BaseMapper<GroupPermissionDO> {
 
     int insertBatch(@Param("relations") List<GroupPermissionDO> relations);
 
-    int deleteBatchByGroupIdAndPermissionId(@Param("groupId") Long groupId, @Param("permissionIds") List<Long> permissionIds);
+    int deleteBatchByGroupIdAndPermissionId(@Param("groupId") Long groupId,
+                                            @Param("permissionIds") List<Long> permissionIds);
 }

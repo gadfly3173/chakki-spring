@@ -46,7 +46,8 @@ public class RestExceptionHandler {
      * HttpException
      */
     @ExceptionHandler({HttpException.class})
-    public UnifyResponseVO processException(HttpException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO processException(HttpException exception, HttpServletRequest request,
+                                            HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO unifyResponse = new UnifyResponseVO();
         unifyResponse.setRequest(getSimpleRequest(request));
@@ -66,7 +67,8 @@ public class RestExceptionHandler {
      * ConstraintViolationException
      */
     @ExceptionHandler({ConstraintViolationException.class})
-    public UnifyResponseVO processException(ConstraintViolationException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO processException(ConstraintViolationException exception, HttpServletRequest request,
+                                            HttpServletResponse response) {
         log.error("", exception);
         Map<String, Object> msg = new HashMap<>();
         exception.getConstraintViolations().forEach(constraintViolation -> {
@@ -86,7 +88,8 @@ public class RestExceptionHandler {
      * NoHandlerFoundException
      */
     @ExceptionHandler({NoHandlerFoundException.class})
-    public UnifyResponseVO processException(NoHandlerFoundException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO processException(NoHandlerFoundException exception, HttpServletRequest request,
+                                            HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO unifyResponse = new UnifyResponseVO();
         unifyResponse.setRequest(getSimpleRequest(request));
@@ -105,7 +108,8 @@ public class RestExceptionHandler {
      * MissingServletRequestParameterException
      */
     @ExceptionHandler({MissingServletRequestParameterException.class})
-    public UnifyResponseVO processException(MissingServletRequestParameterException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO processException(MissingServletRequestParameterException exception,
+                                            HttpServletRequest request, HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO result = new UnifyResponseVO();
         result.setRequest(getSimpleRequest(request));
@@ -125,7 +129,8 @@ public class RestExceptionHandler {
      * MethodArgumentTypeMismatchException
      */
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    public UnifyResponseVO processException(MethodArgumentTypeMismatchException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO processException(MethodArgumentTypeMismatchException exception, HttpServletRequest request,
+                                            HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO result = new UnifyResponseVO();
         result.setRequest(getSimpleRequest(request));
@@ -144,7 +149,8 @@ public class RestExceptionHandler {
      * ServletException
      */
     @ExceptionHandler({ServletException.class})
-    public UnifyResponseVO processException(ServletException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO processException(ServletException exception, HttpServletRequest request,
+                                            HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO result = new UnifyResponseVO();
         result.setRequest(getSimpleRequest(request));
@@ -158,7 +164,8 @@ public class RestExceptionHandler {
      * MethodArgumentNotValidException
      */
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public UnifyResponseVO processException(MethodArgumentNotValidException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO processException(MethodArgumentNotValidException exception, HttpServletRequest request,
+                                            HttpServletResponse response) {
         log.error("", exception);
         BindingResult bindingResult = exception.getBindingResult();
         List<ObjectError> errors = bindingResult.getAllErrors();
@@ -183,7 +190,8 @@ public class RestExceptionHandler {
      * HttpMessageNotReadableException
      */
     @ExceptionHandler({HttpMessageNotReadableException.class})
-    public UnifyResponseVO processException(HttpMessageNotReadableException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO processException(HttpMessageNotReadableException exception, HttpServletRequest request,
+                                            HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO result = new UnifyResponseVO();
         result.setRequest(getSimpleRequest(request));
@@ -202,7 +210,8 @@ public class RestExceptionHandler {
      * TypeMismatchException
      */
     @ExceptionHandler({TypeMismatchException.class})
-    public UnifyResponseVO processException(TypeMismatchException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO processException(TypeMismatchException exception, HttpServletRequest request,
+                                            HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO result = new UnifyResponseVO();
         result.setRequest(getSimpleRequest(request));
@@ -216,7 +225,8 @@ public class RestExceptionHandler {
      * MaxUploadSizeExceededException
      */
     @ExceptionHandler({MaxUploadSizeExceededException.class})
-    public UnifyResponseVO processException(MaxUploadSizeExceededException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO processException(MaxUploadSizeExceededException exception, HttpServletRequest request,
+                                            HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO result = new UnifyResponseVO();
         result.setRequest(getSimpleRequest(request));
@@ -235,7 +245,8 @@ public class RestExceptionHandler {
      * Exception
      */
     @ExceptionHandler({Exception.class})
-    public UnifyResponseVO processException(Exception exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO processException(Exception exception, HttpServletRequest request,
+                                            HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO result = new UnifyResponseVO();
         result.setRequest(getSimpleRequest(request));

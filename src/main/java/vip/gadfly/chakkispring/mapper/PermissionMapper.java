@@ -37,5 +37,6 @@ public interface PermissionMapper extends BaseMapper<PermissionDO> {
      * @param module   权限模块
      * @return 权限
      */
-    List<PermissionDO> selectPermissionsByGroupIdsAndModule(@Param("groupIds") List<Long> groupIds, @Param("module") String module);
+    List<PermissionDO> selectPermissionsByGroupIdsAndModule(@Param("groupIds") List<Long> groupIds,
+                                                            @Param("module") String module);
 }
