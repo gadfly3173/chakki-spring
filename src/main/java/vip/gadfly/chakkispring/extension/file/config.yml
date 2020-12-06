@@ -19,6 +19,8 @@ lin:
     single-limit: 2MB
     # 本地文件保存位置
     store-dir: assets/
+    # 上传实现
+    uploader: local
 spring:
   servlet:
     multipart:

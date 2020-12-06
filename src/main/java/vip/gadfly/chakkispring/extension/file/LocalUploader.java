@@ -21,7 +21,6 @@ public class LocalUploader extends AbstractUploader {
     @Autowired
     private FileProperties fileProperties;
 
-
     @PostConstruct
     public void initStoreDir() {
         // 本地存储需先初始化存储文件夹
