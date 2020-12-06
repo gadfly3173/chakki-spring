@@ -3,12 +3,13 @@ package vip.gadfly.chakkispring.extension.file;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+import vip.gadfly.chakkispring.common.factory.YamlPropertySourceFactory;
 
 @Component
 @ConfigurationProperties(prefix = "lin.cms.file")
-@PropertySource(value = "classpath:vip/gadfly/chakkispring/extension/file/config-${spring.profiles.active}.properties",
+@PropertySource(value = "classpath:vip/gadfly/chakkispring/extension/file/config.yml",
         encoding = "UTF-8",
-        factory = FilePropertySourceFactory.class)
+        factory = YamlPropertySourceFactory.class)
 public class FileProperties {
 
     private static final String[] DEFAULT_EMPTY_ARRAY = new String[0];
