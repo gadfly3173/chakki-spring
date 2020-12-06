@@ -397,7 +397,7 @@ public class AdminControllerTest {
         PermissionDO permission1 = PermissionDO.builder().name(permissionName1).module(module).build();
         permissionMapper.insert(permission1);
 
-        DispatchPermissionsDTO dto = new DispatchPermissionsDTO();
+        DispatchPermissionListDTO dto = new DispatchPermissionListDTO();
         dto.setGroupId(group.getId());
         dto.setPermissionIds(Arrays.asList(permission.getId(), permission1.getId()));
 
@@ -430,7 +430,7 @@ public class AdminControllerTest {
         groupPermissionMapper.insert(new GroupPermissionDO(group.getId(), permission.getId()));
         groupPermissionMapper.insert(new GroupPermissionDO(group.getId(), permission1.getId()));
 
-        RemovePermissionsDTO dto = new RemovePermissionsDTO();
+        RemovePermissionListDTO dto = new RemovePermissionListDTO();
         dto.setGroupId(group.getId());
         dto.setPermissionIds(Arrays.asList(permission1.getId()));
 

@@ -160,7 +160,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean dispatchPermissions(DispatchPermissionsDTO dto) {
+    public boolean dispatchPermissions(DispatchPermissionListDTO dto) {
         List<GroupPermissionDO> relations = dto.getPermissionIds().stream()
                 .map(id -> new GroupPermissionDO(dto.getGroupId(), id))
                 .collect(Collectors.toList());
@@ -168,7 +168,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public boolean removePermissions(RemovePermissionsDTO dto) {
+    public boolean removePermissions(RemovePermissionListDTO dto) {
         return groupPermissionMapper.deleteBatchByGroupIdAndPermissionId(dto.getGroupId(), dto.getPermissionIds()) > 0;
     }
 

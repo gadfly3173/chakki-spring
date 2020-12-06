@@ -141,14 +141,14 @@ public class AdminController {
 
     @PostMapping("/permission/dispatch/batch")
     @AdminMeta(permission = "分配多个权限", module = "管理员")
-    public UnifyResponseVO dispatchPermissions(@RequestBody @Validated DispatchPermissionsDTO validator) {
+    public UnifyResponseVO dispatchPermissions(@RequestBody @Validated DispatchPermissionListDTO validator) {
         adminService.dispatchPermissions(validator);
         return ResponseUtil.generateUnifyResponse(7);
     }
 
     @PostMapping("/permission/remove")
     @AdminMeta(permission = "删除多个权限", module = "管理员")
-    public UnifyResponseVO removePermissions(@RequestBody @Validated RemovePermissionsDTO validator) {
+    public UnifyResponseVO removePermissions(@RequestBody @Validated RemovePermissionListDTO validator) {
         adminService.removePermissions(validator);
         return ResponseUtil.generateUnifyResponse(8);
     }

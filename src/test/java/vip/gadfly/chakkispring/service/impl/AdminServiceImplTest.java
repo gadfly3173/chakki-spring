@@ -432,7 +432,7 @@ public class AdminServiceImplTest {
         PermissionDO permission4 = PermissionDO.builder().name("权限4").module("炉石传说").build();
         permissionMapper.insert(permission4);
 
-        DispatchPermissionsDTO dto = new DispatchPermissionsDTO();
+        DispatchPermissionListDTO dto = new DispatchPermissionListDTO();
         dto.setGroupId(group.getId());
         dto.setPermissionIds(Arrays.asList(permission3.getId(), permission4.getId()));
         boolean ok = adminService.dispatchPermissions(dto);
@@ -470,7 +470,7 @@ public class AdminServiceImplTest {
         relations.add(relation3);
         groupPermissionMapper.insertBatch(relations);
 
-        RemovePermissionsDTO dto = new RemovePermissionsDTO();
+        RemovePermissionListDTO dto = new RemovePermissionListDTO();
         dto.setGroupId(group.getId());
         // 2, 3
         dto.setPermissionIds(Arrays.asList(permission3.getId(), permission2.getId()));
@@ -509,7 +509,7 @@ public class AdminServiceImplTest {
         relations.add(relation3);
         groupPermissionMapper.insertBatch(relations);
 
-        RemovePermissionsDTO dto = new RemovePermissionsDTO();
+        RemovePermissionListDTO dto = new RemovePermissionListDTO();
         dto.setGroupId(group.getId());
         // 3
         dto.setPermissionIds(Arrays.asList(permission3.getId()));
