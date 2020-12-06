@@ -170,4 +170,11 @@ public interface UserService extends IService<UserDO> {
      * @return 数据页
      */
     IPage<UserDO> getFreshTeacherPageByClassIdAndName(Page pager, Long classId, String name);
+
+    /**
+     * 获取超级管理员的id
+     *
+     * @return 超级管理员的id
+     */
+    Long getRootUserId();
 }
