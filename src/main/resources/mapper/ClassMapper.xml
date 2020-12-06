@@ -7,7 +7,7 @@
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="info" property="info"/>
-        <result column="sign_id" property="signId"/>
+        <result column="semester_id" property="semesterId"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="delete_time" property="deleteTime"/>
@@ -55,6 +55,26 @@
         FROM class
         WHERE delete_time IS NULL
           AND id = #{id}
+    </select>
+
+    <select id="selectClassesBySemesterAndTeacher" resultType="vip.gadfly.chakkispring.model.ClassDO">
+        SELECT c.id, c.name, c.info, c.create_time, c.semester_id
+        FROM class AS c,
+             teacher_class AS tc
+        WHERE c.delete_time IS NULL
+          AND c.semester_id = #{semesterId}
+          AND c.id = tc.class_id
+          AND tc.user_id = #{teacherId}
+    </select>
+
+    <select id="selectClassesBySemesterAndStudent" resultType="vip.gadfly.chakkispring.model.ClassDO">
+        SELECT c.id, c.name, c.info, c.create_time, c.semester_id
+        FROM class AS c,
+             student_class AS sc
+        WHERE c.delete_time IS NULL
+          AND c.semester_id = #{semesterId}
+          AND c.id = sc.class_id
+          AND sc.user_id = #{userId}
     </select>
 
     <!--    <select id="selectCountUserByUserIdAndGroupName" resultType="java.lang.Integer">-->

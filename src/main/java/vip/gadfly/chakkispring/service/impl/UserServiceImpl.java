@@ -89,7 +89,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                     .collect(Collectors.toList());
             userGroupMapper.insertBatch(relations);
         } else {
-            // id为2的分组为游客分组
+            // id为3的分组为学生分组
             UserGroupDO relation = new UserGroupDO(user.getId(), guestGroupId);
             userGroupMapper.insert(relation);
         }

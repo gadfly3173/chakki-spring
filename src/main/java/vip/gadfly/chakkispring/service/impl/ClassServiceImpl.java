@@ -12,7 +12,9 @@ import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
 import vip.gadfly.chakkispring.common.constant.TeacherLevelConstant;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
+import vip.gadfly.chakkispring.dto.admin.NewSemesterDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
+import vip.gadfly.chakkispring.dto.admin.UpdateSemesterDTO;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.mapper.*;
@@ -53,6 +55,9 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Autowired
     private StudentSignMapper studentSignMapper;
+
+    @Autowired
+    private SemesterMapper semesterMapper;
 
     @Override
     public IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page) {
@@ -98,7 +103,12 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     @Override
     public boolean createClass(NewClassDTO dto) {
         throwClassNameExist(dto.getName());
-        ClassDO lesson = ClassDO.builder().name(dto.getName()).info(dto.getInfo()).build();
+        throwSemesterNotExistById(dto.getSemesterId());
+        ClassDO lesson = ClassDO.builder()
+                .name(dto.getName())
+                .info(dto.getInfo())
+                .semesterId(dto.getSemesterId())
+                .build();
         classManageService.save(lesson);
         return true;
     }
@@ -112,7 +122,13 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         if (!exist.getName().equals(dto.getName())) {
             throwClassNameExist(dto.getName());
         }
-        ClassDO lesson = ClassDO.builder().id(id).name(dto.getName()).info(dto.getInfo()).build();
+        throwSemesterNotExistById(dto.getSemesterId());
+        ClassDO lesson = ClassDO.builder()
+                .id(id)
+                .name(dto.getName())
+                .info(dto.getInfo())
+                .semesterId(dto.getSemesterId())
+                .build();
         return classManageService.updateById(lesson);
     }
 
@@ -142,7 +158,6 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Override
     public boolean createSign(NewSignDTO validator) {
-        // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SignListDO sign = new SignListDO();
         sign.setClassId(validator.getClassId());
         sign.setName(validator.getTitle());
@@ -249,10 +264,71 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         return teacherClassMapper.insertBatch(relations) > 0;
     }
 
+    @Override
+    public boolean createSemester(NewSemesterDTO validator) {
+        throwSemesterNameExist(validator.getName());
+        return semesterMapper.insert(
+                SemesterDO.builder()
+                        .name(validator.getName())
+                        .info(validator.getInfo())
+                        .build()) > 0;
+    }
+
+    @Override
+    public List<SemesterDO> getAllSemesters() {
+        QueryWrapper<SemesterDO> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("id");
+        return semesterMapper.selectList(wrapper);
+    }
+
+    @Override
+    public boolean updateSemester(Long id, UpdateSemesterDTO dto) {
+        SemesterDO exist = semesterMapper.selectById(id);
+        if (exist == null) {
+            throw new NotFoundException("semester not found", 10220);
+        }
+        if (!exist.getName().equals(dto.getName())) {
+            throwSemesterNameExist(dto.getName());
+        }
+        SemesterDO semester = SemesterDO.builder().id(id).name(dto.getName()).info(dto.getInfo()).build();
+        return semesterMapper.updateById(semester) > 0;
+    }
+
+    @Override
+    public boolean deleteSemester(Long id) {
+        return semesterMapper.deleteById(id) > 0;
+    }
+
+    @Override
+    public List<ClassDO> getClassesBySemesterAndTeacher(Long semesterId, Long teacherId) {
+        return classManageService.getClassesBySemesterAndTeacher(semesterId, teacherId);
+    }
+
+    @Override
+    public List<ClassDO> getClassesBySemesterAndStudent(Long semesterId, Long userId) {
+        return classManageService.getClassesBySemesterAndStudent(semesterId, userId);
+    }
+
+    private void throwSemesterNameExist(String name) {
+        QueryWrapper<SemesterDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(SemesterDO::getName, name);
+        boolean exist = semesterMapper.selectCount(wrapper) > 0;
+        if (exist) {
+            throw new ForbiddenException("semester name already exist, please enter a new one", 10221);
+        }
+    }
+
     private void throwClassNotExistById(Long id) {
         boolean exist = classManageService.checkClassExistById(id);
         if (!exist) {
             throw new NotFoundException("class not found", 10202);
+        }
+    }
+
+    private void throwSemesterNotExistById(Long id) {
+        SemesterDO exist = semesterMapper.selectById(id);
+        if (exist == null) {
+            throw new NotFoundException("semester not found", 10220);
         }
     }
 

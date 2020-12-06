@@ -83,4 +83,22 @@ public interface ClassManageService extends IService<ClassDO> {
      * @param classIds 班级id
      */
     boolean deleteTeacherClassRelations(Long userId, List<Long> classIds);
+
+    /**
+     * 根据学期id和教师id查询班级列表
+     *
+     * @param semesterId 学期id
+     * @param teacherId 教师id
+     * @return 班级列表
+     */
+    List<ClassDO> getClassesBySemesterAndTeacher(Long semesterId, Long teacherId);
+
+    /**
+     * 根据学期id和学生id查询班级列表
+     *
+     * @param semesterId 学期id
+     * @param userId 学生id
+     * @return 班级列表
+     */
+    List<ClassDO> getClassesBySemesterAndStudent(Long semesterId, Long userId);
 }

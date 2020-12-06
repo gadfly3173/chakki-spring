@@ -94,6 +94,16 @@ public class ClassManageServiceImpl extends ServiceImpl<ClassMapper, ClassDO> im
         return teacherClassMapper.delete(wrapper) > 0;
     }
 
+    @Override
+    public List<ClassDO> getClassesBySemesterAndTeacher(Long semesterId, Long teacherId) {
+        return this.baseMapper.selectClassesBySemesterAndTeacher(semesterId, teacherId);
+    }
+
+    @Override
+    public List<ClassDO> getClassesBySemesterAndStudent(Long semesterId, Long userId) {
+        return this.baseMapper.selectClassesBySemesterAndStudent(semesterId, userId);
+    }
+
     private boolean checkClassExistByIds(List<Long> ids) {
         return ids.stream().allMatch(this::checkClassExistById);
     }

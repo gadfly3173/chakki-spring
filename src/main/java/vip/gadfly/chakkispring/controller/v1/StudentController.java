@@ -5,10 +5,12 @@ import io.github.talelin.core.annotation.GroupMeta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.util.ClassPermissionCheckUtil;
 import vip.gadfly.chakkispring.common.util.IPUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.model.ClassDO;
+import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.service.StudentService;
@@ -38,6 +40,13 @@ public class StudentController {
     @GetMapping("/list")
     public List<ClassDO> getClassList() {
         return studentService.getStudentClassList();
+    }
+
+    @GetMapping("/class/list")
+    @GroupMeta(permission = "查询学生本学期所属班级", module = "学生", mount = true)
+    public List<ClassDO> getClassesBySemesterAndStudent(@RequestParam("semester_id") Long semesterId) {
+        Long userId = LocalUser.getLocalUser().getId();
+        return classService.getClassesBySemesterAndStudent(semesterId, userId);
     }
 
     @GetMapping("/{id}")
@@ -90,5 +99,11 @@ public class StudentController {
             return ResponseUtil.generateUnifyResponse(10210);
         }
         return ResponseUtil.generateUnifyResponse(20);
+    }
+
+    @GetMapping("/semester/all")
+    @GroupMeta(permission = "学生查询所有学期", module = "学生", mount = true)
+    public List<SemesterDO> getAllSemesters() {
+        return classService.getAllSemesters();
     }
 }

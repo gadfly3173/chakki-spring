@@ -2,10 +2,13 @@ package vip.gadfly.chakkispring.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
+import vip.gadfly.chakkispring.dto.admin.NewSemesterDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
+import vip.gadfly.chakkispring.dto.admin.UpdateSemesterDTO;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
+import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.vo.SignCountVO;
@@ -199,4 +202,53 @@ public interface ClassService {
      * @param userIds  用户id
      */
     boolean addTeacherClassRelations(Long classId, List<Long> userIds, Integer level);
+
+    /**
+     * 新建学期
+     *
+     * @param validator 学期信息
+     * @return 是否成功
+     */
+    boolean createSemester(NewSemesterDTO validator);
+
+    /**
+     * 全部学期
+     *
+     * @return 列表
+     */
+    List<SemesterDO> getAllSemesters();
+
+    /**
+     * 更新学期
+     *
+     * @param validator 学期信息
+     * @return 是否成功
+     */
+    boolean updateSemester(Long id, UpdateSemesterDTO validator);
+
+    /**
+     * 删除学期
+     *
+     * @param id 学期id
+     * @return 是否成功
+     */
+    boolean deleteSemester(Long id);
+
+    /**
+     * 根据学期id和教师id查询班级列表
+     *
+     * @param semesterId 学期id
+     * @param teacherId 教师id
+     * @return 班级列表
+     */
+    List<ClassDO> getClassesBySemesterAndTeacher(Long semesterId, Long teacherId);
+
+    /**
+     * 根据学期id和学生id查询班级列表
+     *
+     * @param semesterId 学期id
+     * @param userId 学生id
+     * @return 班级列表
+     */
+    List<ClassDO> getClassesBySemesterAndStudent(Long semesterId, Long userId);
 }

@@ -5,10 +5,13 @@ import io.github.talelin.core.annotation.GroupMeta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import vip.gadfly.chakkispring.common.LocalUser;
+import vip.gadfly.chakkispring.common.util.ClassPermissionCheckUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
+import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.ClassService;
@@ -33,17 +36,28 @@ public class LessonController {
     @Autowired
     private ClassService classService;
 
-//    班级接口
+    // 班级接口
 
+    // 本接口暂时作废
     @GetMapping("/class/all")
     @GroupMeta(permission = "查询所有班级", module = "教师", mount = true)
-    public List<ClassDO> getAllClasses() {
+    private List<ClassDO> getAllClasses() {
         return classService.getAllClasses();
+    }
+
+    @GetMapping("/class/list")
+    @GroupMeta(permission = "查询教师本学期所属班级", module = "教师", mount = true)
+    public List<ClassDO> getClassesBySemesterAndTeacher(@RequestParam("semester_id") Long semesterId) {
+        Long teacherId = LocalUser.getLocalUser().getId();
+        return classService.getClassesBySemesterAndTeacher(semesterId, teacherId);
     }
 
     @GetMapping("/class/{id}")
     @GroupMeta(permission = "查询一个班级", module = "教师", mount = true)
     public ClassDO getClass(@PathVariable @Positive(message = "{id}") Long id) {
+        if (!ClassPermissionCheckUtil.isTeacherInClassByClassId(id)) {
+            return null;
+        }
         return classService.getClass(id);
     }
 
@@ -56,6 +70,9 @@ public class LessonController {
             @Min(value = 1, message = "{count}") Long count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Long page) {
+        if (!ClassPermissionCheckUtil.isTeacherInClassByClassId(classId)) {
+            return null;
+        }
         IPage<UserDO> iPage = classService.getUserPageByClassId(classId, count, page);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
@@ -63,6 +80,9 @@ public class LessonController {
     @PostMapping("/sign/create")
     @GroupMeta(permission = "发起签到", module = "教师", mount = true)
     public UnifyResponseVO createStudentSign(@RequestBody @Validated NewSignDTO validator) {
+        if (!ClassPermissionCheckUtil.isTeacherInClassByClassId(validator.getClassId())) {
+            return null;
+        }
         classService.createSign(validator);
         return ResponseUtil.generateUnifyResponse(19);
     }
@@ -76,6 +96,9 @@ public class LessonController {
             @Min(value = 1, message = "{count}") Long count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Long page) {
+        if (!ClassPermissionCheckUtil.isTeacherInClassByClassId(classId)) {
+            return null;
+        }
         IPage<SignListDO> iPage = classService.getSignPageByClassId(classId, count, page);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
@@ -95,6 +118,9 @@ public class LessonController {
                     String username,
             @Min(value = 1, message = "{lesson.sign.id.positive}")
             @PathVariable Long signId) {
+        if (!ClassPermissionCheckUtil.isTeacherInClassBySignId(signId)) {
+            return null;
+        }
         IPage<StudentSignVO> iPage = classService.getUserPageBySignId(signId, signStatus, username, count, page,
                 orderByIP);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
@@ -103,6 +129,9 @@ public class LessonController {
     @GetMapping("/sign/{id}")
     @GroupMeta(permission = "查询一个签到信息", module = "教师", mount = true)
     public SignCountVO getSign(@PathVariable @Positive(message = "{id}") Long id) {
+        if (!ClassPermissionCheckUtil.isTeacherInClassBySignId(id)) {
+            return null;
+        }
         return classService.getSign(id);
     }
 
@@ -110,9 +139,18 @@ public class LessonController {
     @GroupMeta(permission = "修改签到记录", module = "教师", mount = true)
     public UnifyResponseVO updateStudentSignRecord(@RequestBody @Validated UpdateSignRecordDTO validator,
                                                    @PathVariable Long signId) {
+        if (!ClassPermissionCheckUtil.isTeacherInClassBySignId(signId)) {
+            return null;
+        }
         if (classService.updateSignRecord(validator, signId)) {
             return ResponseUtil.generateUnifyResponse(21);
         }
         return ResponseUtil.generateUnifyResponse(10212);
+    }
+
+    @GetMapping("/semester/all")
+    @GroupMeta(permission = "教师查询所有学期", module = "教师", mount = true)
+    public List<SemesterDO> getAllSemesters() {
+        return classService.getAllSemesters();
     }
 }

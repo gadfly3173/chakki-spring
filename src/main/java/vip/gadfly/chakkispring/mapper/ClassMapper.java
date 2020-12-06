@@ -37,11 +37,29 @@ public interface ClassMapper extends BaseMapper<ClassDO> {
      */
     int selectCountById(@Param("id") Long id);
 
+    // /**
+    //  * 检查用户是否在该名称的班级里
+    //  *
+    //  * @param userId    用户id
+    //  * @param className 班级名
+    //  */
+    // int selectCountUserByUserIdAndClassName(@Param("userId") Long userId, @Param("className") String className);
+
     /**
-     * 检查用户是否在该名称的班级里
+     * 根据学期id和教师id查询班级列表
      *
-     * @param userId    用户id
-     * @param className 班级名
+     * @param semesterId 学期id
+     * @param teacherId 教师id
+     * @return 班级列表
      */
-    int selectCountUserByUserIdAndClassName(@Param("userId") Long userId, @Param("className") String className);
+    List<ClassDO> selectClassesBySemesterAndTeacher(Long semesterId, Long teacherId);
+
+    /**
+     * 根据学期id和学生id查询班级列表
+     *
+     * @param semesterId 学期id
+     * @param userId 学生id
+     * @return 班级列表
+     */
+    List<ClassDO> selectClassesBySemesterAndStudent(Long semesterId, Long userId);
 }

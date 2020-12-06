@@ -3,6 +3,8 @@ package vip.gadfly.chakkispring.dto.admin;
 import io.github.talelin.autoconfigure.validator.Length;
 import lombok.Data;
 
+import javax.validation.constraints.Min;
+
 /**
  * @author gadfly
  */
@@ -14,4 +16,7 @@ public class UpdateClassDTO {
 
     @Length(min = 1, max = 255, message = "{class.info.length}")
     private String info;
+
+    @Min(value = 1, message = "{semester.id.positive}")
+    private Long semesterId;
 }

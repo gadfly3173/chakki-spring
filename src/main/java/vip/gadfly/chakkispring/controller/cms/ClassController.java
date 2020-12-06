@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.dto.admin.*;
 import vip.gadfly.chakkispring.model.ClassDO;
+import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.vo.PageResponseVO;
@@ -31,7 +32,7 @@ public class ClassController {
     @Autowired
     private ClassService classService;
 
-   // 班级接口
+    // 班级接口
 
     @GetMapping("/class/all")
     @GroupMeta(permission = "查询所有班级", module = "管理员", mount = true)
@@ -48,23 +49,29 @@ public class ClassController {
     @PostMapping("/class")
     @GroupMeta(permission = "新建班级", module = "管理员", mount = true)
     public UnifyResponseVO createClass(@RequestBody @Validated NewClassDTO validator) {
-        classService.createClass(validator);
-        return ResponseUtil.generateUnifyResponse(16);
+        if (classService.createClass(validator)) {
+            return ResponseUtil.generateUnifyResponse(16);
+        }
+        return ResponseUtil.generateUnifyResponse(10200);
     }
 
     @PutMapping("/class/{id}")
     @GroupMeta(permission = "更新一个班级", module = "管理员", mount = true)
     public UnifyResponseVO updateClass(@PathVariable @Positive(message = "{id}") Long id,
                                        @RequestBody @Validated UpdateClassDTO validator) {
-        classService.updateClass(id, validator);
-        return ResponseUtil.generateUnifyResponse(14);
+        if (classService.updateClass(id, validator)) {
+            return ResponseUtil.generateUnifyResponse(14);
+        }
+        return ResponseUtil.generateUnifyResponse(10200);
     }
 
     @DeleteMapping("/class/{id}")
     @GroupMeta(permission = "删除一个班级", module = "管理员", mount = true)
     public UnifyResponseVO deleteClass(@PathVariable @Positive(message = "{id}") Long id) {
-        classService.deleteClass(id);
-        return ResponseUtil.generateUnifyResponse(15);
+        if (classService.deleteClass(id)) {
+            return ResponseUtil.generateUnifyResponse(15);
+        }
+        return ResponseUtil.generateUnifyResponse(10200);
     }
 
     @GetMapping("/students")
@@ -166,5 +173,39 @@ public class ClassController {
             return ResponseUtil.generateUnifyResponse(23);
         }
         return ResponseUtil.generateUnifyResponse(10209);
+    }
+
+    @PostMapping("/semester")
+    @GroupMeta(permission = "新建学期", module = "管理员", mount = true)
+    public UnifyResponseVO createSemester(@RequestBody @Validated NewSemesterDTO validator) {
+        if (classService.createSemester(validator)) {
+            return ResponseUtil.generateUnifyResponse(26);
+        }
+        return ResponseUtil.generateUnifyResponse(10200);
+    }
+
+    @GetMapping("/semester/all")
+    @GroupMeta(permission = "查询所有学期", module = "管理员", mount = true)
+    public List<SemesterDO> getAllSemesters() {
+        return classService.getAllSemesters();
+    }
+
+    @PutMapping("/semester/{id}")
+    @GroupMeta(permission = "更新一个学期", module = "管理员", mount = true)
+    public UnifyResponseVO updateSemester(@PathVariable @Positive(message = "{id}") Long id,
+                                       @RequestBody @Validated UpdateSemesterDTO validator) {
+        if (classService.updateSemester(id, validator)) {
+            return ResponseUtil.generateUnifyResponse(24);
+        }
+        return ResponseUtil.generateUnifyResponse(10200);
+    }
+
+    @DeleteMapping("/semester/{id}")
+    @GroupMeta(permission = "删除一个学期", module = "管理员", mount = true)
+    public UnifyResponseVO deleteSemester(@PathVariable @Positive(message = "{id}") Long id) {
+        if (classService.deleteSemester(id)) {
+            return ResponseUtil.generateUnifyResponse(25);
+        }
+        return ResponseUtil.generateUnifyResponse(10200);
     }
 }
