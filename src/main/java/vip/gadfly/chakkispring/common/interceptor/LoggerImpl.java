@@ -20,8 +20,10 @@ import java.util.regex.Pattern;
 @Component
 public class LoggerImpl implements LoggerResolver {
 
-    public static String REG_XP = "(?<=\\{)[^}]*(?=\\})";
-    private final Pattern pattern = Pattern.compile(REG_XP);
+    /**
+     * 日志格式匹配正则
+     */
+    private static final Pattern LOG_PATTERN = Pattern.compile("(?<=\\{)[^}]*(?=})");
     @Autowired
     private LogService logService;
 
@@ -43,7 +45,7 @@ public class LoggerImpl implements LoggerResolver {
     private String parseTemplate(String template, UserDO user, HttpServletRequest request,
                                  HttpServletResponse response) {
         // 调用 get 方法
-        Matcher m = pattern.matcher(template);
+        Matcher m = LOG_PATTERN.matcher(template);
         while (m.find()) {
             String group = m.group();
             String property = this.extractProperty(group, user, request, response);

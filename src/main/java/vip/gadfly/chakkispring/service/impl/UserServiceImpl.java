@@ -208,27 +208,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     }
 
     @Override
-    public IPage<UserDO> getUserPageByGroupId(Page pager, Long groupId) {
+    public IPage<UserDO> getUserPageByGroupId(Page<UserDO> pager, Long groupId) {
         return this.baseMapper.selectPageByGroupId(pager, groupId, rootGroupId);
     }
 
     @Override
-    public IPage<UserDO> getUserPageByClassId(Page pager, Long classId) {
+    public IPage<UserDO> getUserPageByClassId(Page<UserDO> pager, Long classId) {
         return this.baseMapper.selectPageByClassId(pager, classId);
     }
 
     @Override
-    public IPage<UserDO> getFreshUserPageByClassId(Page pager, Long classId) {
+    public IPage<UserDO> getFreshUserPageByClassId(Page<UserDO> pager, Long classId) {
         return this.baseMapper.selectFreshUserPageByClassId(pager, classId);
     }
 
     @Override
-    public IPage<UserDO> getFreshUserPageByClassIdAndName(Page pager, Long classId, String name) {
+    public IPage<UserDO> getFreshUserPageByClassIdAndName(Page<UserDO> pager, Long classId, String name) {
         return this.baseMapper.selectFreshUserPageByClassIdAndName(pager, classId, name);
     }
 
     @Override
-    public IPage<UserDO> getFreshTeacherPageByClassIdAndName(Page pager, Long classId, String name) {
+    public IPage<UserDO> getFreshTeacherPageByClassIdAndName(Page<UserDO> pager, Long classId, String name) {
         return this.baseMapper.selectFreshTeacherPageByClassIdAndName(pager, classId, name);
     }
 

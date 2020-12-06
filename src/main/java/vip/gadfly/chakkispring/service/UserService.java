@@ -80,7 +80,6 @@ public interface UserService extends IService<UserDO> {
      */
     List<PermissionDO> getUserPermissions(Long userId);
 
-
     /**
      * 获得用户在模块下的所有权限
      *
@@ -89,7 +88,6 @@ public interface UserService extends IService<UserDO> {
      * @return 权限
      */
     List<PermissionDO> getUserPermissionsByModule(Long userId, String module);
-
 
     /**
      * 通过用户名查找用户
@@ -106,7 +104,6 @@ public interface UserService extends IService<UserDO> {
      * @return true代表存在
      */
     boolean checkUserExistByUsername(String username);
-
 
     /**
      * 根据用户名检查用户是否存在
@@ -131,7 +128,7 @@ public interface UserService extends IService<UserDO> {
      * @param groupId 分组id
      * @return 数据页
      */
-    IPage<UserDO> getUserPageByGroupId(Page pager, Long groupId);
+    IPage<UserDO> getUserPageByGroupId(Page<UserDO> pager, Long groupId);
 
     /**
      * 根据班级id分页获取用户数据
@@ -140,7 +137,7 @@ public interface UserService extends IService<UserDO> {
      * @param classId 班级id
      * @return 数据页
      */
-    IPage<UserDO> getUserPageByClassId(Page pager, Long classId);
+    IPage<UserDO> getUserPageByClassId(Page<UserDO> pager, Long classId);
 
     /**
      * 根据班级id分页获取非此班级学生数据
@@ -149,7 +146,7 @@ public interface UserService extends IService<UserDO> {
      * @param classId 班级id
      * @return 数据页
      */
-    IPage<UserDO> getFreshUserPageByClassId(Page pager, Long classId);
+    IPage<UserDO> getFreshUserPageByClassId(Page<UserDO> pager, Long classId);
 
     /**
      * 根据班级id分页和名字获取非此班级学生数据
@@ -159,7 +156,7 @@ public interface UserService extends IService<UserDO> {
      * @param name    名字
      * @return 数据页
      */
-    IPage<UserDO> getFreshUserPageByClassIdAndName(Page pager, Long classId, String name);
+    IPage<UserDO> getFreshUserPageByClassIdAndName(Page<UserDO> pager, Long classId, String name);
 
     /**
      * 根据班级id分页和名字获取非此班级教师数据
@@ -169,7 +166,7 @@ public interface UserService extends IService<UserDO> {
      * @param name    名字
      * @return 数据页
      */
-    IPage<UserDO> getFreshTeacherPageByClassIdAndName(Page pager, Long classId, String name);
+    IPage<UserDO> getFreshTeacherPageByClassIdAndName(Page<UserDO> pager, Long classId, String name);
 
     /**
      * 获取超级管理员的id
