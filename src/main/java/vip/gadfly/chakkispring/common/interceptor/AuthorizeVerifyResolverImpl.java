@@ -11,6 +11,7 @@ import io.github.talelin.autoconfigure.interfaces.AuthorizeVerifyResolver;
 import io.github.talelin.core.token.DoubleJWT;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.model.PermissionDO;
@@ -41,16 +42,22 @@ public class AuthorizeVerifyResolverImpl implements AuthorizeVerifyResolver {
     @Autowired
     private GroupService groupService;
 
+    @Value("${lin.file.domain}")
+    private String domain;
 
+    @Value("${lin.file.serve-path:assets/**}")
+    private String servePath;
+
+    @Override
     public boolean handleLogin(HttpServletRequest request, HttpServletResponse response, MetaInfo meta) {
         String tokenStr = verifyHeader(request, response);
-        Map<String, Claim> claims = null;
+        Map<String, Claim> claims;
         try {
             claims = jwt.decodeAccessToken(tokenStr);
         } catch (TokenExpiredException e) {
-            throw new io.github.talelin.autoconfigure.exception.TokenExpiredException(e.getMessage(), 10051);
+            throw new io.github.talelin.autoconfigure.exception.TokenExpiredException(10051);
         } catch (AlgorithmMismatchException | SignatureVerificationException | JWTDecodeException | InvalidClaimException e) {
-            throw new TokenInvalidException(e.getMessage(), 10041);
+            throw new TokenInvalidException(10041);
         }
         return getClaim(claims);
     }
@@ -80,16 +87,16 @@ public class AuthorizeVerifyResolverImpl implements AuthorizeVerifyResolver {
         return true;
     }
 
-
+    @Override
     public boolean handleRefresh(HttpServletRequest request, HttpServletResponse response, MetaInfo meta) {
         String tokenStr = verifyHeader(request, response);
-        Map<String, Claim> claims = null;
+        Map<String, Claim> claims;
         try {
             claims = jwt.decodeRefreshToken(tokenStr);
         } catch (TokenExpiredException e) {
-            throw new io.github.talelin.autoconfigure.exception.TokenExpiredException(e.getMessage(), 10051);
+            throw new io.github.talelin.autoconfigure.exception.TokenExpiredException(10052);
         } catch (AlgorithmMismatchException | SignatureVerificationException | JWTDecodeException | InvalidClaimException e) {
-            throw new TokenInvalidException(e.getMessage(), 10041);
+            throw new TokenInvalidException(10042);
         }
         return getClaim(claims);
     }
@@ -108,13 +115,22 @@ public class AuthorizeVerifyResolverImpl implements AuthorizeVerifyResolver {
 
     private boolean getClaim(Map<String, Claim> claims) {
         if (claims == null) {
-            throw new TokenInvalidException("token is invalid, can't be decode", 10041);
+            throw new TokenInvalidException("token is invalid, can't be decode", 10042);
         }
         int identity = claims.get("identity").asInt();
         UserDO user = userService.getById(identity);
         if (user == null) {
             throw new NotFoundException("user is not found", 10021);
         }
+        String avatarUrl;
+        if (user.getAvatar() == null) {
+            avatarUrl = null;
+        } else if (user.getAvatar().startsWith("http")) {
+            avatarUrl = user.getAvatar();
+        } else {
+            avatarUrl = domain + servePath.split("/")[0] + "/" + user.getAvatar();
+        }
+        user.setAvatar(avatarUrl);
         LocalUser.setLocalUser(user);
         return true;
     }

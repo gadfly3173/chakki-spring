@@ -169,7 +169,8 @@ public class ClassController {
     @PostMapping("/teacher/add")
     @GroupMeta(permission = "添加班级内教师", module = "管理员", mount = true)
     public UnifyResponseVO addTeacherClass(@RequestBody @Validated AddTeacherClassDTO validator) {
-        if (classService.addTeacherClassRelations(validator.getClassId(), validator.getUserIds(), validator.getLevel())) {
+        if (classService.addTeacherClassRelations(validator.getClassId(), validator.getUserIds(),
+                validator.getLevel())) {
             return ResponseUtil.generateUnifyResponse(23);
         }
         return ResponseUtil.generateUnifyResponse(10209);
@@ -193,7 +194,7 @@ public class ClassController {
     @PutMapping("/semester/{id}")
     @GroupMeta(permission = "更新一个学期", module = "管理员", mount = true)
     public UnifyResponseVO updateSemester(@PathVariable @Positive(message = "{id}") Long id,
-                                       @RequestBody @Validated UpdateSemesterDTO validator) {
+                                          @RequestBody @Validated UpdateSemesterDTO validator) {
         if (classService.updateSemester(id, validator)) {
             return ResponseUtil.generateUnifyResponse(24);
         }

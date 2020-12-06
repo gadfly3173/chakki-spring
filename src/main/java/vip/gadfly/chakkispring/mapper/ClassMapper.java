@@ -49,7 +49,7 @@ public interface ClassMapper extends BaseMapper<ClassDO> {
      * 根据学期id和教师id查询班级列表
      *
      * @param semesterId 学期id
-     * @param teacherId 教师id
+     * @param teacherId  教师id
      * @return 班级列表
      */
     List<ClassDO> selectClassesBySemesterAndTeacher(Long semesterId, Long teacherId);
@@ -58,7 +58,7 @@ public interface ClassMapper extends BaseMapper<ClassDO> {
      * 根据学期id和学生id查询班级列表
      *
      * @param semesterId 学期id
-     * @param userId 学生id
+     * @param userId     学生id
      * @return 班级列表
      */
     List<ClassDO> selectClassesBySemesterAndStudent(Long semesterId, Long userId);

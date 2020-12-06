@@ -115,7 +115,8 @@
                u.create_time,
                u.update_time,
                u.delete_time
-        FROM lin_user AS u, lin_user_group AS ug
+        FROM lin_user AS u,
+             lin_user_group AS ug
         WHERE u.id NOT IN
               (
                   SELECT tc.user_id

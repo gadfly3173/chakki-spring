@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import vip.gadfly.chakkispring.bo.FileBO;
 import vip.gadfly.chakkispring.service.FileService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController

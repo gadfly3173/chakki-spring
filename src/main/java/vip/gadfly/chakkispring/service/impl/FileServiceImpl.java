@@ -71,9 +71,9 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
             String s = servePath.split("/")[0];
 
             // replaceAll 是将 windows 平台下的 \ 替换为 /
-            if(System.getProperties().getProperty("os.name").toUpperCase().contains("WINDOWS")){
-                bo.setUrl(domain + s + "/" + file.getPath().replaceAll("\\\\","/"));
-            }else {
+            if (System.getProperties().getProperty("os.name").toUpperCase().contains("WINDOWS")) {
+                bo.setUrl(domain + s + "/" + file.getPath().replaceAll("\\\\", "/"));
+            } else {
                 bo.setUrl(domain + s + "/" + file.getPath());
             }
         } else {

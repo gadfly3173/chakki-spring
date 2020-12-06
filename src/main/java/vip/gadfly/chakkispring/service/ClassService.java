@@ -191,7 +191,7 @@ public interface ClassService {
      * 添加教师与班级之间的关联
      *
      * @param classIds 班级id
-     * @param userId  用户id
+     * @param userId   用户id
      */
     boolean deleteTeacherClassRelations(Long userId, List<Long> classIds);
 
@@ -199,7 +199,7 @@ public interface ClassService {
      * 添加教师与班级之间的关联
      *
      * @param classId 班级id
-     * @param userIds  用户id
+     * @param userIds 用户id
      */
     boolean addTeacherClassRelations(Long classId, List<Long> userIds, Integer level);
 
@@ -238,7 +238,7 @@ public interface ClassService {
      * 根据学期id和教师id查询班级列表
      *
      * @param semesterId 学期id
-     * @param teacherId 教师id
+     * @param teacherId  教师id
      * @return 班级列表
      */
     List<ClassDO> getClassesBySemesterAndTeacher(Long semesterId, Long teacherId);
@@ -247,7 +247,7 @@ public interface ClassService {
      * 根据学期id和学生id查询班级列表
      *
      * @param semesterId 学期id
-     * @param userId 学生id
+     * @param userId     学生id
      * @return 班级列表
      */
     List<ClassDO> getClassesBySemesterAndStudent(Long semesterId, Long userId);
