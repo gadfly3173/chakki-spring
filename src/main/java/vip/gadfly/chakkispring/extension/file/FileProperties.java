@@ -25,6 +25,19 @@ public class FileProperties {
 
     private String[] include = DEFAULT_EMPTY_ARRAY;
 
+    /**
+     * 文件存储路径
+     */
+    private String servePath = "assets/**";
+
+    public String getServePath() {
+        return servePath;
+    }
+
+    public void setServePath(String servePath) {
+        this.servePath = servePath;
+    }
+
     public String getStoreDir() {
         return storeDir;
     }

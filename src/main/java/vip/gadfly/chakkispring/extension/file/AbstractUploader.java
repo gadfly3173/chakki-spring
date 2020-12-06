@@ -16,6 +16,7 @@ public abstract class AbstractUploader implements Uploader {
 
     private PreHandler preHandler;
 
+    @Override
     public List<File> upload(MultiValueMap<String, MultipartFile> fileMap) {
         checkFileMap(fileMap);
         // 得到单个文件的大小限制
@@ -23,6 +24,7 @@ public abstract class AbstractUploader implements Uploader {
         return handleMultipartFiles(fileMap);
     }
 
+    @Override
     public List<File> upload(MultiValueMap<String, MultipartFile> fileMap, PreHandler preHandler) {
         this.preHandler = preHandler;
         return this.upload(fileMap);
@@ -58,8 +60,9 @@ public abstract class AbstractUploader implements Uploader {
                 extension(ext).
                 build();
         // 如果预处理器不为空，且处理结果为false，直接返回, 否则处理
-        if (preHandler != null && !preHandler.handle(fileData))
+        if (preHandler != null && !preHandler.handle(fileData)) {
             return;
+        }
         boolean ok = handleOneFile(bytes, newFilename);
         if (ok) {
             res.add(fileData);
@@ -114,11 +117,11 @@ public abstract class AbstractUploader implements Uploader {
      */
     protected void checkFileMap(MultiValueMap<String, MultipartFile> fileMap) {
         if (fileMap.isEmpty()) {
-            throw new NotFoundException("file not found", 10026);
+            throw new NotFoundException(10026);
         }
         int nums = getFileProperties().getNums();
         if (fileMap.size() > nums) {
-            throw new FileTooManyException("too many files, amount of files must less than" + nums, 10180);
+            throw new FileTooManyException(10121);
         }
     }
 
@@ -146,8 +149,7 @@ public abstract class AbstractUploader implements Uploader {
      * @param length          文件大小
      * @return 文件的扩展名，例如： .jpg
      */
-    protected String checkOneFile(String[] include, String[] exclude, long singleFileLimit, String originName,
-                                  int length) {
+    protected String checkOneFile(String[] include, String[] exclude, long singleFileLimit, String originName, int length) {
         // 写到了本地
         String ext = FileUtil.getFileExt(originName);
         // 检测扩展

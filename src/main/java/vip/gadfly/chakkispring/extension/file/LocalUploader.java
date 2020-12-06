@@ -39,7 +39,7 @@ public class LocalUploader extends AbstractUploader {
             stream.close();
         } catch (Exception e) {
             log.error("write file to local err:", e);
-            // throw new FailedException("read file date failed", 10190);
+            // throw new FailedException(10190);
             return false;
         }
         return true;
