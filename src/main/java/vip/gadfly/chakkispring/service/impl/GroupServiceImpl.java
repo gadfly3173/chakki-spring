@@ -41,7 +41,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
 
     @Override
     public List<GroupDO> getUserGroupsByUserId(Long userId) {
-        return this.baseMapper.selectUserGroups(userId);
+        return this.baseMapper.selectGroupsByUserId(userId);
     }
 
     @Override

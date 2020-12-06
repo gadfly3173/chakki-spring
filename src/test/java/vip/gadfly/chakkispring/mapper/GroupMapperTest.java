@@ -46,7 +46,7 @@ public class GroupMapperTest {
 
         userGroupMapper.insert(new UserGroupDO(user.getId(), group.getId()));
 
-        List<GroupDO> groups = groupMapper.selectUserGroups(user.getId());
+        List<GroupDO> groups = groupMapper.selectGroupsByUserId(user.getId());
         boolean anyMatch = groups.stream().anyMatch(it -> it.getName().equals("group"));
         assertTrue(anyMatch);
     }

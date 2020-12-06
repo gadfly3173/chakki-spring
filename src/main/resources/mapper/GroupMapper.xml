@@ -13,7 +13,7 @@
     </resultMap>
 
 
-    <select id="selectUserGroups" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectGroupsByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT g.id,
                g.name,
                g.info,

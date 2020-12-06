@@ -1,5 +1,6 @@
 package vip.gadfly.chakkispring.controller.cms;
 
+import io.github.talelin.core.annotation.LoginRequired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,11 +22,11 @@ public class FileController {
     private FileService fileService;
 
     @PostMapping("")
-    public List<FileBO> upload(HttpServletRequest request) {
-        MultipartHttpServletRequest multipartHttpServletRequest = ((MultipartHttpServletRequest) request);
-        MultiValueMap<String, MultipartFile> fileMap = multipartHttpServletRequest.getMultiFileMap();
-        List<FileBO> files = fileService.upload(fileMap);
-        return files;
+    @LoginRequired
+    public List<FileBO> upload(MultipartHttpServletRequest multipartHttpServletRequest) {
+        MultiValueMap<String, MultipartFile> fileMap =
+                multipartHttpServletRequest.getMultiFileMap();
+        return fileService.upload(fileMap);
     }
 
 }
