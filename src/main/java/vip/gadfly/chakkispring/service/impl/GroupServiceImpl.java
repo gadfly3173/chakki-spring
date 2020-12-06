@@ -51,7 +51,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
 
     @Override
     public IPage<GroupDO> getGroupPage(long page, long count) {
-        Page pager = new Page(page, count);
+        Page<GroupDO> pager = new Page<>(page, count);
         return this.baseMapper.selectPage(pager, null);
     }
 

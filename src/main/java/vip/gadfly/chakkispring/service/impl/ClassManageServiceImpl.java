@@ -41,7 +41,7 @@ public class ClassManageServiceImpl extends ServiceImpl<ClassMapper, ClassDO> im
 
     @Override
     public IPage<ClassDO> getClassPage(long page, long count) {
-        Page pager = new Page(page, count);
+        Page<ClassDO> pager = new Page<>(page, count);
         return this.baseMapper.selectPage(pager, null);
     }
 

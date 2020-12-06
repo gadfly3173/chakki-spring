@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "lin.cms.file")
-@PropertySource(value = "classpath:vip/gadfly/chakkispring/extension/file/config.properties", encoding = "UTF-8")
+@PropertySource(value = "classpath:vip/gadfly/chakkispring/extension/file/config-${spring.profiles.active}.properties", encoding = "UTF-8", factory = FilePropertySourceFactory.class)
 public class FileProperties {
 
     private static final String[] DEFAULT_EMPTY_ARRAY = new String[0];
