@@ -232,6 +232,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         return this.baseMapper.selectFreshTeacherPageByClassIdAndName(pager, classId, name);
     }
 
+    @Override
+    public Long getRootUserId() {
+        QueryWrapper<UserGroupDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(UserGroupDO::getGroupId, rootGroupId);
+        UserGroupDO userGroupDO = userGroupMapper.selectOne(wrapper);
+        return userGroupDO == null ? 0 : userGroupDO.getUserId();
+    }
+
     private void checkGroupsExist(List<Long> ids) {
         for (long id : ids) {
             if (!groupService.checkGroupExistById(id)) {
