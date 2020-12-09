@@ -42,7 +42,7 @@ public class AdminController {
     @GetMapping("/permission")
     @AdminMeta(permission = "查询所有可分配的权限", module = "管理员")
     public Map<String, List<PermissionDO>> getAllPermissions() {
-        return adminService.getAllStructualPermissions();
+        return adminService.getAllStructuralPermissions();
     }
 
     @GetMapping("/users")

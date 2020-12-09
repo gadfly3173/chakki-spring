@@ -197,7 +197,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Map<String, List<PermissionDO>> getAllStructualPermissions() {
+    public Map<String, List<PermissionDO>> getAllStructuralPermissions() {
         List<PermissionDO> permissions = permissionService.list();
         Map<String, List<PermissionDO>> res = new HashMap<>();
         permissions.forEach(permission -> {

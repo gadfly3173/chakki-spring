@@ -33,7 +33,7 @@ public class LocalUploader extends AbstractUploader {
                 FileUtil.getFileAbsolutePath(fileProperties.getStoreDir(), getStorePath(newFilename));
         try {
             BufferedOutputStream stream =
-                    new BufferedOutputStream(new FileOutputStream(new java.io.File(absolutePath)));
+                    new BufferedOutputStream(new FileOutputStream(new File(absolutePath)));
             stream.write(bytes);
             stream.close();
         } catch (Exception e) {
