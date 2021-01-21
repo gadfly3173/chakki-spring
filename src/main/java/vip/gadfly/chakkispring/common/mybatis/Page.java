@@ -1,15 +1,5 @@
 package vip.gadfly.chakkispring.common.mybatis;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Predicate;
-
 /**
  * 简单分页模型
  * mybatis-plus的默认分页实现，起始页都是1，为了与其它端保持一致，故重写了Page，起始页从 0 开始
@@ -19,7 +9,7 @@ import java.util.function.Predicate;
  */
 public class Page<T> extends com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> {
 
-    private static final long serialVersionUID = 8545996863226528798L;
+    private static final long serialVersionUID = -2183463672525305273L;
 
     /**
      * 该构造方法使得 current 总为 0
