@@ -36,7 +36,7 @@ public interface GroupService extends IService<GroupDO> {
      * @param page  那一页
      * @return 分组页
      */
-    IPage<GroupDO> getGroupPage(long page, long count);
+    IPage<GroupDO> getGroupPage(Integer page, Integer count);
 
     /**
      * 通过id检查分组是否存在

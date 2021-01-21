@@ -67,9 +67,9 @@ public class LessonController {
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Long count,
+            @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Long page) {
+            @Min(value = 0, message = "{page}") Integer page) {
         if (!ClassPermissionCheckUtil.isTeacherInClassByClassId(classId)) {
             return null;
         }
@@ -93,9 +93,9 @@ public class LessonController {
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Long count,
+            @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Long page) {
+            @Min(value = 0, message = "{page}") Integer page) {
         if (!ClassPermissionCheckUtil.isTeacherInClassByClassId(classId)) {
             return null;
         }
@@ -111,9 +111,9 @@ public class LessonController {
             @RequestParam(name = "order_by_IP", required = false, defaultValue = "false")
                     boolean orderByIP,
             @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Long count,
+            @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Long page,
+            @Min(value = 0, message = "{page}") Integer page,
             @RequestParam(name = "username", required = false, defaultValue = "")
                     String username,
             @Min(value = 1, message = "{lesson.sign.id.positive}")

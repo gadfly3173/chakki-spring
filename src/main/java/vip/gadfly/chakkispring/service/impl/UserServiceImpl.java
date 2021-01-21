@@ -1,7 +1,5 @@
 package vip.gadfly.chakkispring.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -9,10 +7,12 @@ import io.github.talelin.autoconfigure.exception.FailedException;
 import io.github.talelin.autoconfigure.exception.ForbiddenException;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
 import io.github.talelin.autoconfigure.exception.ParameterException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.dto.user.BatchRegisterDTO;
@@ -67,7 +67,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         if (exist) {
             throw new ForbiddenException("username already exist, please choose a new one", 10071);
         }
-        if (StrUtil.isNotBlank(dto.getEmail())) {
+        if (StringUtils.hasText(dto.getEmail())) {
             exist = this.checkUserExistByEmail(dto.getEmail());
             if (exist) {
                 throw new ForbiddenException("email already exist, please choose a new one", 10076);
@@ -78,7 +78,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             dto.setEmail(null);
         }
         UserDO user = new UserDO();
-        BeanUtil.copyProperties(dto, user);
+        BeanUtils.copyProperties(dto, user);
         this.baseMapper.insert(user);
         if (dto.getGroupIds() != null && !dto.getGroupIds().isEmpty()) {
             checkGroupsValid(dto.getGroupIds());
@@ -112,7 +112,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Override
     public UserDO updateUserInfo(UpdateInfoDTO dto) {
         UserDO user = LocalUser.getLocalUser();
-        if (StrUtil.isNotBlank(dto.getUsername())) {
+        if (StringUtils.hasText(dto.getUsername())) {
             boolean exist = this.checkUserExistByUsername(dto.getUsername());
             if (exist) {
                 throw new ForbiddenException("username already exist, please choose a new one", 10071);
@@ -120,7 +120,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             user.setUsername(dto.getUsername());
             userIdentityService.changeUsername(user.getId(), dto.getUsername());
         }
-        BeanUtil.copyProperties(dto, user);
+        BeanUtils.copyProperties(dto, user);
         this.baseMapper.updateById(user);
         return user;
     }

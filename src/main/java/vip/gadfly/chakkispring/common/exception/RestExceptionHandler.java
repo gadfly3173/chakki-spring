@@ -1,6 +1,5 @@
 package vip.gadfly.chakkispring.common.exception;
 
-import cn.hutool.core.util.StrUtil;
 import io.github.talelin.autoconfigure.bean.Code;
 import io.github.talelin.autoconfigure.exception.HttpException;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -55,7 +55,7 @@ public class RestExceptionHandler {
         unifyResponse.setCode(code);
         response.setStatus(exception.getHttpCode());
         String errorMessage = CodeMessageConfiguration.getMessage(code);
-        if (StrUtil.isBlank(errorMessage)) {
+        if (!StringUtils.hasText(errorMessage)) {
             unifyResponse.setMessage(exception.getMessage());
         } else {
             unifyResponse.setMessage(errorMessage);
@@ -74,7 +74,7 @@ public class RestExceptionHandler {
         exception.getConstraintViolations().forEach(constraintViolation -> {
             String template = constraintViolation.getMessage();
             String path = constraintViolation.getPropertyPath().toString();
-            msg.put(StrUtil.toUnderlineCase(path), template);
+            msg.put(com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(path), template);
         });
         UnifyResponseVO unifyResponse = new UnifyResponseVO();
         unifyResponse.setRequest(getSimpleRequest(request));
@@ -94,7 +94,7 @@ public class RestExceptionHandler {
         UnifyResponseVO unifyResponse = new UnifyResponseVO();
         unifyResponse.setRequest(getSimpleRequest(request));
         String message = CodeMessageConfiguration.getMessage(10025);
-        if (StrUtil.isBlank(message)) {
+        if (!StringUtils.hasText(message)) {
             unifyResponse.setMessage(exception.getMessage());
         } else {
             unifyResponse.setMessage(message);
@@ -115,7 +115,7 @@ public class RestExceptionHandler {
         result.setRequest(getSimpleRequest(request));
 
         String errorMessage = CodeMessageConfiguration.getMessage(10150);
-        if (StrUtil.isBlank(errorMessage)) {
+        if (!StringUtils.hasText(errorMessage)) {
             result.setMessage(exception.getMessage());
         } else {
             result.setMessage(errorMessage + exception.getParameterName());
@@ -135,7 +135,7 @@ public class RestExceptionHandler {
         UnifyResponseVO result = new UnifyResponseVO();
         result.setRequest(getSimpleRequest(request));
         String errorMessage = CodeMessageConfiguration.getMessage(10160);
-        if (StrUtil.isBlank(errorMessage)) {
+        if (!StringUtils.hasText(errorMessage)) {
             result.setMessage(exception.getMessage());
         } else {
             result.setMessage(exception.getValue() + errorMessage);
@@ -173,9 +173,11 @@ public class RestExceptionHandler {
         errors.forEach(error -> {
             if (error instanceof FieldError) {
                 FieldError fieldError = (FieldError) error;
-                msg.put(StrUtil.toUnderlineCase(fieldError.getField()), fieldError.getDefaultMessage());
+                msg.put(com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(fieldError.getField()),
+                        fieldError.getDefaultMessage());
             } else {
-                msg.put(StrUtil.toUnderlineCase(error.getObjectName()), error.getDefaultMessage());
+                msg.put(com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(error.getObjectName()),
+                        error.getDefaultMessage());
             }
         });
         UnifyResponseVO result = new UnifyResponseVO();
@@ -196,7 +198,7 @@ public class RestExceptionHandler {
         UnifyResponseVO result = new UnifyResponseVO();
         result.setRequest(getSimpleRequest(request));
         String errorMessage = CodeMessageConfiguration.getMessage(10170);
-        if (StrUtil.isBlank(errorMessage)) {
+        if (!StringUtils.hasText(errorMessage)) {
             result.setMessage(exception.getMessage());
         } else {
             result.setMessage(errorMessage);
@@ -231,7 +233,7 @@ public class RestExceptionHandler {
         UnifyResponseVO result = new UnifyResponseVO();
         result.setRequest(getSimpleRequest(request));
         String errorMessage = CodeMessageConfiguration.getMessage(10180);
-        if (StrUtil.isBlank(errorMessage)) {
+        if (!StringUtils.hasText(errorMessage)) {
             result.setMessage(exception.getMessage());
         } else {
             result.setMessage(errorMessage + maxFileSize);

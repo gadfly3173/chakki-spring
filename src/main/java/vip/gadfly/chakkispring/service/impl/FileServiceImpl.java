@@ -1,7 +1,7 @@
 package vip.gadfly.chakkispring.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -47,7 +47,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
             // 数据库中不存在
             if (found == null) {
                 FileDO fileDO = new FileDO();
-                BeanUtil.copyProperties(file, fileDO);
+                BeanUtils.copyProperties(file, fileDO);
                 this.getBaseMapper().insert(fileDO);
                 res.add(transformDoToBo(fileDO, file.getKey()));
                 return true;
@@ -66,7 +66,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
 
     private FileBO transformDoToBo(FileDO file, String key) {
         FileBO bo = new FileBO();
-        BeanUtil.copyProperties(file, bo);
+        BeanUtils.copyProperties(file, bo);
         if (file.getType().equals(FileConstant.LOCAL)) {
             String s = fileProperties.getServePath().split("/")[0];
 

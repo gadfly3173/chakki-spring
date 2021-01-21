@@ -18,14 +18,14 @@ import java.util.Date;
 public class LogServiceImpl extends ServiceImpl<LogMapper, LogDO> implements LogService {
 
     @Override
-    public IPage<LogDO> getLogPage(Long page, Long count, String name, Date start, Date end) {
+    public IPage<LogDO> getLogPage(Integer page, Integer count, String name, Date start, Date end) {
         Page<LogDO> pager = new Page<>(page, count);
         IPage<LogDO> iPage = this.baseMapper.findLogsByUsernameAndRange(pager, name, start, end);
         return iPage;
     }
 
     @Override
-    public IPage<LogDO> searchLogPage(Long page, Long count, String name, String keyword, Date start, Date end) {
+    public IPage<LogDO> searchLogPage(Integer page, Integer count, String name, String keyword, Date start, Date end) {
         Page<LogDO> pager = new Page<>(page, count);
         IPage<LogDO> iPage = this.baseMapper.searchLogsByUsernameAndKeywordAndRange(pager, name, "%" + keyword + "%",
                 start, end);
@@ -33,7 +33,7 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, LogDO> implements Log
     }
 
     @Override
-    public IPage<String> getUserNamePage(Long page, Long count) {
+    public IPage<String> getUserNamePage(Integer page, Integer count) {
         Page<LogDO> pager = new Page<>(page, count);
         IPage<String> iPage = this.baseMapper.getUserNames(pager);
         return iPage;

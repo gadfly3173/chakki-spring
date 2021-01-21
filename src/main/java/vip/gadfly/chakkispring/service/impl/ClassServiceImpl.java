@@ -60,7 +60,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     private SemesterMapper semesterMapper;
 
     @Override
-    public IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page) {
+    public IPage<UserDO> getUserPageByClassId(Long classId, Integer count, Integer page) {
         Page pager = new Page(page, count);
         IPage<UserDO> iPage;
         iPage = userService.getUserPageByClassId(pager, classId);
@@ -68,7 +68,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<UserDO> getFreshUserPageByClassId(Long classId, Long count, Long page) {
+    public IPage<UserDO> getFreshUserPageByClassId(Long classId, Integer count, Integer page) {
         Page pager = new Page(page, count);
         IPage<UserDO> iPage;
         iPage = userService.getFreshUserPageByClassId(pager, classId);
@@ -76,7 +76,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<UserDO> getFreshUserPageByClassIdAndName(Long classId, String name, Long count, Long page) {
+    public IPage<UserDO> getFreshUserPageByClassIdAndName(Long classId, String name, Integer count, Integer page) {
         Page pager = new Page(page, count);
         IPage<UserDO> iPage;
         iPage = userService.getFreshUserPageByClassIdAndName(pager, classId, name);
@@ -89,7 +89,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<ClassDO> getClassPage(Long page, Long count) {
+    public IPage<ClassDO> getClassPage(Integer page, Integer count) {
         return classManageService.getClassPage(page, count);
     }
 
@@ -178,7 +178,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<SignListDO> getSignPageByClassId(Long classId, Long count, Long page) {
+    public IPage<SignListDO> getSignPageByClassId(Long classId, Integer count, Integer page) {
         Page pager = new Page(page, count);
         IPage<SignListDO> iPage;
         iPage = signListMapper.selectSignPageByClassId(pager, classId);
@@ -186,8 +186,8 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Long count,
-                                                    Long page, boolean orderByIP) {
+    public IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Integer count,
+                                                    Integer page, boolean orderByIP) {
         Page pager = new Page(page, count);
         IPage<StudentSignVO> iPage;
         switch (signStatus) {
@@ -234,7 +234,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<UserDO> getFreshTeacherPageByClassIdAndName(Long classId, String name, Long count, Long page) {
+    public IPage<UserDO> getFreshTeacherPageByClassIdAndName(Long classId, String name, Integer count, Integer page) {
         Page pager = new Page(page, count);
         IPage<UserDO> iPage;
         iPage = userService.getFreshTeacherPageByClassIdAndName(pager, classId, name);

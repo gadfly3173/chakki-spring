@@ -22,7 +22,7 @@ public interface LogService extends IService<LogDO> {
      * @param end   日志结束时间
      * @return 日志数据
      */
-    IPage<LogDO> getLogPage(Long page, Long count, String name, Date start, Date end);
+    IPage<LogDO> getLogPage(Integer page, Integer count, String name, Date start, Date end);
 
     /**
      * 分页搜索日志
@@ -35,7 +35,7 @@ public interface LogService extends IService<LogDO> {
      * @param end     日志结束时间
      * @return 日志数据
      */
-    IPage<LogDO> searchLogPage(Long page, Long count, String name, String keyword, Date start, Date end);
+    IPage<LogDO> searchLogPage(Integer page, Integer count, String name, String keyword, Date start, Date end);
 
     /**
      * 分页获取日志用户名（以被记录日志的用户）
@@ -44,7 +44,7 @@ public interface LogService extends IService<LogDO> {
      * @param count 当前页数目
      * @return 用户名
      */
-    IPage<String> getUserNamePage(Long page, Long count);
+    IPage<String> getUserNamePage(Integer page, Integer count);
 
     /**
      * 创建一条日志记录

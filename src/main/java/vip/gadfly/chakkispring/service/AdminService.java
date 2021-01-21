@@ -24,7 +24,7 @@ public interface AdminService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<UserDO> getUserPageByGroupId(Long groupId, Long count, Long page);
+    IPage<UserDO> getUserPageByGroupId(Long groupId, Integer count, Integer page);
 
     /**
      * 通过班级id分页获取用户数据
@@ -34,7 +34,7 @@ public interface AdminService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page);
+    IPage<UserDO> getUserPageByClassId(Long classId, Integer count, Integer page);
 
     /**
      * 修改用户密码（重置用户密码）
@@ -69,7 +69,7 @@ public interface AdminService {
      * @param count 当前页数量
      * @return 分组数据
      */
-    IPage<GroupDO> getGroupPage(Long page, Long count);
+    IPage<GroupDO> getGroupPage(Integer page, Integer count);
 
     /**
      * 获得分组数据

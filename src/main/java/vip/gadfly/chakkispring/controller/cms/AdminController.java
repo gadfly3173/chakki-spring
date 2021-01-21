@@ -51,9 +51,9 @@ public class AdminController {
             @RequestParam(name = "group_id", required = false)
             @Min(value = 1, message = "{group-id}") Long groupId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Long count,
+            @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Long page) {
+            @Min(value = 0, message = "{page}") Integer page) {
         IPage<UserDO> iPage = adminService.getUserPageByGroupId(groupId, count, page);
         List<UserInfoVO> userInfos = iPage.getRecords().stream().map(user -> {
             List<GroupDO> groups = groupService.getUserGroupsByUserId(user.getId());
@@ -89,9 +89,9 @@ public class AdminController {
     @AdminMeta(permission = "查询所有权限组及其权限", module = "管理员")
     public PageResponseVO getGroups(
             @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Long count,
+            @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Long page) {
+            @Min(value = 0, message = "{page}") Integer page) {
         IPage<GroupDO> iPage = adminService.getGroupPage(page, count);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }

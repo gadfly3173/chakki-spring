@@ -64,9 +64,9 @@ public class StudentController {
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Long count,
+            @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Long page) {
+            @Min(value = 0, message = "{page}") Integer page) {
         IPage<SignListDO> iPage = classService.getSignPageByClassId(classId, count, page);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }

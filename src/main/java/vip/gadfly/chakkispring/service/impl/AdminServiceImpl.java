@@ -49,7 +49,7 @@ public class AdminServiceImpl implements AdminService {
     private Long rootUserId;
 
     @Override
-    public IPage<UserDO> getUserPageByGroupId(Long groupId, Long count, Long page) {
+    public IPage<UserDO> getUserPageByGroupId(Long groupId, Integer count, Integer page) {
         Page<UserDO> pager = new Page<>(page, count);
         IPage<UserDO> iPage;
         // 如果group_id为空，则以分页的形式返回所有用户
@@ -104,7 +104,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public IPage<GroupDO> getGroupPage(Long page, Long count) {
+    public IPage<GroupDO> getGroupPage(Integer page, Integer count) {
         IPage<GroupDO> iPage = groupService.getGroupPage(page, count);
         return iPage;
     }
@@ -184,7 +184,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page) {
+    public IPage<UserDO> getUserPageByClassId(Long classId, Integer count, Integer page) {
         Page pager = new Page(page, count);
         IPage<UserDO> iPage;
         iPage = userService.getUserPageByClassId(pager, classId);

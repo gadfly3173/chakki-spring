@@ -32,9 +32,9 @@ public class LogController {
             @RequestParam(name = "end", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date end,
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Long count,
+            @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Long page) {
+            @Min(value = 0, message = "{page}") Integer page) {
         IPage<LogDO> iPage = logService.getLogPage(page, count, name, start, end);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
@@ -47,9 +47,9 @@ public class LogController {
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
             @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Long count,
+            @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Long page) {
+            @Min(value = 0, message = "{page}") Integer page) {
         IPage<LogDO> iPage = logService.searchLogPage(page, count, name, keyword, start, end);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
@@ -58,9 +58,9 @@ public class LogController {
     @GroupMeta(permission = "查询日志记录的用户", module = "日志", mount = true)
     public PageResponseVO getUsers(
             @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Long count,
+            @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Long page) {
+            @Min(value = 0, message = "{page}") Integer page) {
         IPage<String> iPage = logService.getUserNamePage(page, count);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }

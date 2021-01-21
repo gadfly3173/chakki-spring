@@ -20,7 +20,7 @@ public class PageResponseVO<T> {
 
     private List<T> items;
 
-    private long page;
+    private Integer page;
 
-    private long count;
+    private Integer count;
 }

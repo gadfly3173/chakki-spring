@@ -30,7 +30,7 @@ public interface ClassService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<UserDO> getUserPageByClassId(Long classId, Long count, Long page);
+    IPage<UserDO> getUserPageByClassId(Long classId, Integer count, Integer page);
 
     /**
      * 通过班级id分页获取非此班级学生数据
@@ -40,7 +40,7 @@ public interface ClassService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<UserDO> getFreshUserPageByClassId(Long classId, Long count, Long page);
+    IPage<UserDO> getFreshUserPageByClassId(Long classId, Integer count, Integer page);
 
     /**
      * 通过班级id分页和名字获取非此班级学生数据
@@ -51,7 +51,7 @@ public interface ClassService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<UserDO> getFreshUserPageByClassIdAndName(Long classId, String name, Long count, Long page);
+    IPage<UserDO> getFreshUserPageByClassIdAndName(Long classId, String name, Integer count, Integer page);
 
     /**
      * 获得用户的所有班级
@@ -68,7 +68,7 @@ public interface ClassService {
      * @param count 当前页数量
      * @return 班级数据
      */
-    IPage<ClassDO> getClassPage(Long page, Long count);
+    IPage<ClassDO> getClassPage(Integer page, Integer count);
 
     /**
      * 获得班级数据
@@ -139,7 +139,7 @@ public interface ClassService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<SignListDO> getSignPageByClassId(Long classId, Long count, Long page);
+    IPage<SignListDO> getSignPageByClassId(Long classId, Integer count, Integer page);
 
     /**
      * 通过id分页获取签到项目详情
@@ -150,7 +150,7 @@ public interface ClassService {
      * @param page       当前分页
      * @return 用户数据
      */
-    IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Long count, Long page,
+    IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Integer count, Integer page,
                                              boolean orderByIP);
 
     /**
@@ -185,7 +185,7 @@ public interface ClassService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<UserDO> getFreshTeacherPageByClassIdAndName(Long classId, String name, Long count, Long page);
+    IPage<UserDO> getFreshTeacherPageByClassIdAndName(Long classId, String name, Integer count, Integer page);
 
     /**
      * 添加教师与班级之间的关联

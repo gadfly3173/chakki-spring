@@ -34,7 +34,7 @@ public interface ClassManageService extends IService<ClassDO> {
      * @param page  那一页
      * @return 班级页
      */
-    IPage<ClassDO> getClassPage(long page, long count);
+    IPage<ClassDO> getClassPage(Integer page, Integer count);
 
     /**
      * 通过id查找班级
