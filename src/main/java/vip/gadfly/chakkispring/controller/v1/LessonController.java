@@ -75,14 +75,11 @@ public class LessonController {
         IPage<UserDO> iPage = classService.getUserPageByClassId(classId, count, page);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
-    
+
     @PostMapping("/sign/create")
     @GroupMeta(permission = "发起签到", module = "教师", mount = true)
     @TeacherClassCheck(valueType = classIdType, paramType = requestBodyType, valueName = "class_id")
     public UnifyResponseVO createStudentSign(@RequestBody @Validated NewSignDTO validator) {
-        // if (!ClassPermissionCheckUtil.isTeacherInClassByClassId(validator.getClassId())) {
-        //     return null;
-        // }
         classService.createSign(validator);
         return ResponseUtil.generateUnifyResponse(19);
     }
@@ -102,7 +99,7 @@ public class LessonController {
     }
 
     @GetMapping("/sign/students/query/{signId}")
-    @GroupMeta(permission = "查询所有签到项目下的学生", module = "教师", mount = true)
+    @GroupMeta(permission = "查询单个签到项目下的所有学生", module = "教师", mount = true)
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public PageResponseVO getStudentsBySignId(
             @RequestParam(name = "sign_status", required = false, defaultValue = "0")

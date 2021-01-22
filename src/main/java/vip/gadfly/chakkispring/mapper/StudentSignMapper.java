@@ -67,4 +67,6 @@ public interface StudentSignMapper extends BaseMapper<StudentSignDO> {
     IPage<StudentSignVO> selectClassUserSignDetailBySignId(Page pager, @Param("signId") Long signId,
                                                            @Param("username") String username,
                                                            @Param("orderByIP") boolean orderByIP);
+
+    long countClassUserSignDetailBySignId(@Param("signId") Long signId, @Param("username") String username);
 }

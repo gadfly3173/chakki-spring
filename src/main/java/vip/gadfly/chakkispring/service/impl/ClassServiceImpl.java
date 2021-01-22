@@ -202,6 +202,8 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
                 break;
             case 0:
             default:
+                pager.setSearchCount(false);
+                pager.setTotal(studentSignMapper.countClassUserSignDetailBySignId(signId, username));
                 iPage = studentSignMapper.selectClassUserSignDetailBySignId(pager, signId, username, orderByIP);
         }
         return iPage;

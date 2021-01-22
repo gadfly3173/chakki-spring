@@ -68,15 +68,15 @@
         from lin_user AS u
         WHERE
         u.id NOT IN (
-        SELECT ssi.user_id FROM student_sign AS ssi
-        WHERE ssi.sign_id = #{signId}
+            SELECT ssi.user_id FROM student_sign AS ssi
+            WHERE ssi.sign_id = #{signId}
         )
         AND u.id IN (
-        SELECT sc.user_id from student_class AS sc
-        WHERE sc.class_id = (
-        SELECT sl.class_id from sign_list AS sl
-        WHERE sl.id = #{signId}
-        )
+            SELECT sc.user_id from student_class AS sc
+            WHERE sc.class_id = (
+                SELECT sl.class_id from sign_list AS sl
+                WHERE sl.id = #{signId}
+            )
         )
         <if test="username != null and username != ''">
             AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
@@ -84,23 +84,59 @@
     </select>
 
     <select id="selectClassUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
-        SELECT u.id AS user_id, u.username, u.nickname, ss.id, ss.sign_id, ss.ip, ss.create_time, ss.status
+        SELECT u.id AS user_id, u.username, u.nickname, ss.sign_id, ss.ip, ss.create_time, ss.`status`
         FROM lin_user AS u LEFT JOIN student_sign AS ss
         ON u.id = ss.user_id
         WHERE u.id IN (
-        SELECT sc.user_id
-        FROM student_class AS sc
-        WHERE sc.class_id = (
-        SELECT sl.class_id from sign_list AS sl
-        WHERE sl.id = #{signId}
+            SELECT sc.user_id
+            FROM student_class AS sc
+            WHERE sc.class_id = (
+                SELECT sl.class_id from sign_list AS sl
+                WHERE sl.id = #{signId}
+            )
         )
+        AND ss.sign_id = #{signId}
+        <if test="username != null and username != ''">
+            AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
+        </if>
+        UNION
+        SELECT u.id AS user_id, u.username, u.nickname, null AS sign_id, null AS ip, null AS create_time, 0 AS `status`
+        FROM lin_user AS u
+        WHERE
+        u.id NOT IN (
+            SELECT ssi.user_id FROM student_sign AS ssi
+            WHERE ssi.sign_id = #{signId}
+        )
+        AND u.id IN (
+            SELECT sc.user_id from student_class AS sc
+            WHERE sc.class_id = (
+                SELECT sl.class_id from sign_list AS sl
+                WHERE sl.id = #{signId}
+            )
         )
         <if test="username != null and username != ''">
             AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
         </if>
-        ORDER BY ss.ip
+        ORDER BY `ip`
         <if test="orderByIP">
             DESC
         </if>
+    </select>
+    <select id="countClassUserSignDetailBySignId" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM (
+            SELECT u.id
+            FROM lin_user u
+            WHERE u.id IN (
+                SELECT sc.user_id
+                FROM student_class AS sc
+                WHERE sc.class_id = (
+                    SELECT sl.class_id from sign_list AS sl
+                    WHERE sl.id = #{signId}
+                )
+            <if test="username != null and username != ''">
+                AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
+            </if>
+            )
+        ) TOTAL
     </select>
 </mapper>
