@@ -4,8 +4,12 @@ import io.github.talelin.autoconfigure.interceptor.AuthorizeInterceptor;
 import io.github.talelin.autoconfigure.interceptor.LogInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -91,6 +95,12 @@ public class WebConfiguration implements WebMvcConfigurer {
         // classpath: or file:
         registry.addResourceHandler(getDirServePath())
                 .addResourceLocations("file:" + getAbsDir() + "/");
+    }
+
+    @Bean
+    @Qualifier(DispatcherServletAutoConfiguration.DEFAULT_DISPATCHER_SERVLET_BEAN_NAME)
+    public DispatcherServlet dispatcherServlet() {
+        return new GadflyDispatcherServlet();
     }
 
     private String getDirServePath() {

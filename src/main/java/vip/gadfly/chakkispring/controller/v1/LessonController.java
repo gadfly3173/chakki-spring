@@ -25,6 +25,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
+import static vip.gadfly.chakkispring.common.constant.ClassVerifyConstant.*;
+
 /**
  * @author Gadfly
  */
@@ -55,14 +57,14 @@ public class LessonController {
 
     @GetMapping("/class/{id}")
     @GroupMeta(permission = "查询一个班级", module = "教师", mount = true)
-    @TeacherClassCheck(valueType = "classId", paramType = "PathVariable")
+    @TeacherClassCheck(valueType = classIdType, paramType = pathVariableType)
     public ClassDO getClass(@PathVariable @Positive(message = "{id}") Long id) {
         return classService.getClass(id);
     }
 
     @GetMapping("/students")
     @GroupMeta(permission = "查询所有此班级学生", module = "教师", mount = true)
-    @TeacherClassCheck(valueType = "classId", paramType = "RequestParam", valueName = "class_id")
+    @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getStudents(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId,
@@ -73,21 +75,21 @@ public class LessonController {
         IPage<UserDO> iPage = classService.getUserPageByClassId(classId, count, page);
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
-
-    // TODO 教师验证换为注解
+    
     @PostMapping("/sign/create")
     @GroupMeta(permission = "发起签到", module = "教师", mount = true)
+    @TeacherClassCheck(valueType = classIdType, paramType = requestBodyType, valueName = "class_id")
     public UnifyResponseVO createStudentSign(@RequestBody @Validated NewSignDTO validator) {
-        if (!ClassPermissionCheckUtil.isTeacherInClassByClassId(validator.getClassId())) {
-            return null;
-        }
+        // if (!ClassPermissionCheckUtil.isTeacherInClassByClassId(validator.getClassId())) {
+        //     return null;
+        // }
         classService.createSign(validator);
         return ResponseUtil.generateUnifyResponse(19);
     }
 
     @GetMapping("/sign/list")
     @GroupMeta(permission = "查看所有签到项目", module = "教师", mount = true)
-    @TeacherClassCheck(valueType = "classId", paramType = "RequestParam", valueName = "class_id")
+    @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getSignList(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId,
@@ -101,7 +103,7 @@ public class LessonController {
 
     @GetMapping("/sign/students/query/{signId}")
     @GroupMeta(permission = "查询所有签到项目下的学生", module = "教师", mount = true)
-    @TeacherClassCheck(valueType = "signId", paramType = "PathVariable")
+    @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public PageResponseVO getStudentsBySignId(
             @RequestParam(name = "sign_status", required = false, defaultValue = "0")
             @Min(value = 0, message = "{sign-status}") Integer signStatus,
@@ -122,14 +124,14 @@ public class LessonController {
 
     @GetMapping("/sign/{id}")
     @GroupMeta(permission = "查询一个签到信息", module = "教师", mount = true)
-    @TeacherClassCheck(valueType = "signId", paramType = "PathVariable")
+    @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public SignCountVO getSign(@PathVariable @Positive(message = "{id}") Long id) {
         return classService.getSign(id);
     }
 
     @PostMapping("/sign/record/update/{signId}")
     @GroupMeta(permission = "修改签到记录", module = "教师", mount = true)
-    @TeacherClassCheck(valueType = "signId", paramType = "PathVariable")
+    @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public UnifyResponseVO updateStudentSignRecord(@RequestBody @Validated UpdateSignRecordDTO validator,
                                                    @PathVariable Long signId) {
         if (classService.updateSignRecord(validator, signId)) {

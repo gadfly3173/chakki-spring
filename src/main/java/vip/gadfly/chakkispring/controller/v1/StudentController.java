@@ -7,7 +7,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.annotation.StudentClassCheck;
-import vip.gadfly.chakkispring.common.util.ClassPermissionCheckUtil;
 import vip.gadfly.chakkispring.common.util.IPUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.model.ClassDO;
@@ -23,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
+
+import static vip.gadfly.chakkispring.common.constant.ClassVerifyConstant.*;
 
 /**
  * @author Gadfly
@@ -59,7 +60,7 @@ public class StudentController {
 
     @GroupMeta(permission = "查看班级内签到项目", module = "学生", mount = true)
     @GetMapping("/sign/list")
-    @StudentClassCheck(valueType = "classId", paramType = "RequestParam", valueName = "class_id")
+    @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getSignList(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId,
@@ -73,7 +74,7 @@ public class StudentController {
 
     @GroupMeta(permission = "查看班级最新签到项目", module = "学生", mount = true)
     @GetMapping("/sign/latest")
-    @StudentClassCheck(valueType = "classId", paramType = "RequestParam", valueName = "class_id")
+    @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public SignListVO getLatestSign(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId) {
@@ -82,7 +83,7 @@ public class StudentController {
 
     @GroupMeta(permission = "学生进行签到", module = "学生", mount = true)
     @PostMapping("/sign/confirm/{signId}")
-    @StudentClassCheck(valueType = "signId", paramType = "PathVariable")
+    @StudentClassCheck(valueType = signIdType, paramType = pathVariableType)
     public UnifyResponseVO confirmStudentSign(
             @Min(value = 1, message = "{lesson.sign.id.positive}")
             @PathVariable Long signId,

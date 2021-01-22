@@ -5,6 +5,7 @@ import vip.gadfly.chakkispring.common.annotation.TeacherClassCheck;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author Gadfly
@@ -32,7 +33,7 @@ public interface ClassVerifyResolver {
      * @param teacherClassCheck  注解
      * @return 是否成功
      */
-    boolean handleTeacherClassCheck(HttpServletRequest request, HttpServletResponse response, TeacherClassCheck teacherClassCheck);
+    boolean handleTeacherClassCheck(HttpServletRequest request, HttpServletResponse response, TeacherClassCheck teacherClassCheck) throws IOException;
 
     /**
      * 验证学生是否属于班级
@@ -42,5 +43,5 @@ public interface ClassVerifyResolver {
      * @param studentClassCheck  注解
      * @return 是否成功
      */
-    boolean handleStudentClassCheck(HttpServletRequest request, HttpServletResponse response, StudentClassCheck studentClassCheck);
+    boolean handleStudentClassCheck(HttpServletRequest request, HttpServletResponse response, StudentClassCheck studentClassCheck) throws IOException;
 }
