@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.common.LocalUser;
+import vip.gadfly.chakkispring.common.annotation.StudentClassCheck;
 import vip.gadfly.chakkispring.common.util.ClassPermissionCheckUtil;
 import vip.gadfly.chakkispring.common.util.IPUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
@@ -51,15 +52,14 @@ public class StudentController {
 
     @GetMapping("/{id}")
     @GroupMeta(permission = "查询特定班级", module = "学生", mount = true)
+    @StudentClassCheck(valueType = "classId", paramType = "PathVariable")
     public ClassDO getClass(@PathVariable @Positive(message = "{id}") Long id) {
-        if (!ClassPermissionCheckUtil.isStudentInClassByClassId(id)) {
-            return null;
-        }
         return classService.getClass(id);
     }
 
     @GroupMeta(permission = "查看班级内签到项目", module = "学生", mount = true)
     @GetMapping("/sign/list")
+    @StudentClassCheck(valueType = "classId", paramType = "RequestParam", valueName = "class_id")
     public PageResponseVO getSignList(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId,
@@ -73,24 +73,20 @@ public class StudentController {
 
     @GroupMeta(permission = "查看班级最新签到项目", module = "学生", mount = true)
     @GetMapping("/sign/latest")
+    @StudentClassCheck(valueType = "classId", paramType = "RequestParam", valueName = "class_id")
     public SignListVO getLatestSign(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId) {
-        if (!ClassPermissionCheckUtil.isStudentInClassByClassId(classId)) {
-            return null;
-        }
         return studentService.getLatestSignByClassId(classId);
     }
 
     @GroupMeta(permission = "学生进行签到", module = "学生", mount = true)
     @PostMapping("/sign/confirm/{signId}")
+    @StudentClassCheck(valueType = "signId", paramType = "PathVariable")
     public UnifyResponseVO confirmStudentSign(
             @Min(value = 1, message = "{lesson.sign.id.positive}")
             @PathVariable Long signId,
             HttpServletRequest request) {
-        if (!ClassPermissionCheckUtil.isStudentInClassBySignId(signId)) {
-            return ResponseUtil.generateUnifyResponse(10205);
-        }
         if (!studentService.signAvailable(signId)) {
             return ResponseUtil.generateUnifyResponse(10211);
         }

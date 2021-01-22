@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import vip.gadfly.chakkispring.common.interceptor.ClassVerifyInterceptor;
 import vip.gadfly.chakkispring.common.interceptor.RequestLogInterceptor;
 import vip.gadfly.chakkispring.extension.file.FileUtil;
 import vip.gadfly.chakkispring.extension.limit.LimitInterceptor;
@@ -33,6 +34,9 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Autowired
     private AuthorizeInterceptor authorizeInterceptor;
+
+    @Autowired
+    private ClassVerifyInterceptor classVerifyInterceptor;
 
     @Autowired
     private LogInterceptor logInterceptor;
@@ -72,6 +76,8 @@ public class WebConfiguration implements WebMvcConfigurer {
         if (authEnabled) {
             //开发环境忽略签名认证
             registry.addInterceptor(authorizeInterceptor)
+                    .excludePathPatterns(getDirServePath());
+            registry.addInterceptor(classVerifyInterceptor)
                     .excludePathPatterns(getDirServePath());
         }
         if (requestLogEnabled) {
