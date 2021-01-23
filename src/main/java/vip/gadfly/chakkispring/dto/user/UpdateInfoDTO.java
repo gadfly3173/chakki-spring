@@ -1,6 +1,6 @@
 package vip.gadfly.chakkispring.dto.user;
 
-import io.github.talelin.autoconfigure.validator.Length;
+import org.hibernate.validator.constraints.Length;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
