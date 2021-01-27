@@ -7,7 +7,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.annotation.TeacherClassCheck;
-import vip.gadfly.chakkispring.common.util.ClassPermissionCheckUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
