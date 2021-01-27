@@ -29,14 +29,9 @@
     </select>
 
     <select id="selectPageByGroupId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT u.username,
-               u.nickname,
-               u.id,
-               u.avatar,
-               u.email,
-               u.create_time,
-               u.update_time,
-               u.delete_time
+        SELECT u.id, u.username, u.nickname,
+        u.avatar, u.email, u.create_time,
+        u.update_time, u.delete_time
         FROM lin_user AS u
         WHERE u.id IN
               (
