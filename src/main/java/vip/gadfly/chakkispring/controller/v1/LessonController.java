@@ -1,7 +1,9 @@
 package vip.gadfly.chakkispring.controller.v1;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.github.talelin.core.annotation.GroupMeta;
+import io.github.talelin.core.annotation.GroupRequired;
+import io.github.talelin.core.annotation.PermissionMeta;
+import io.github.talelin.core.annotation.PermissionModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,7 @@ import static vip.gadfly.chakkispring.common.constant.ClassVerifyConstant.*;
 
 @RestController
 @RequestMapping("/v1/lesson")
+@PermissionModule(value = "教师")
 @Validated
 public class LessonController {
 
@@ -42,27 +45,31 @@ public class LessonController {
 
     // 本接口暂时作废
     @GetMapping("/class/all")
-    @GroupMeta(permission = "查询所有班级", module = "教师", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询所有班级", mount = true)
     private List<ClassDO> getAllClasses() {
         return classService.getAllClasses();
     }
 
     @GetMapping("/class/list")
-    @GroupMeta(permission = "查询教师本学期所属班级", module = "教师", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询教师本学期所属班级", mount = true)
     public List<ClassDO> getClassesBySemesterAndTeacher(@RequestParam("semester_id") Long semesterId) {
         Long teacherId = LocalUser.getLocalUser().getId();
         return classService.getClassesBySemesterAndTeacher(semesterId, teacherId);
     }
 
     @GetMapping("/class/{id}")
-    @GroupMeta(permission = "查询一个班级", module = "教师", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询一个班级", mount = true)
     @TeacherClassCheck(valueType = classIdType, paramType = pathVariableType)
     public ClassDO getClass(@PathVariable @Positive(message = "{id}") Long id) {
         return classService.getClass(id);
     }
 
     @GetMapping("/students")
-    @GroupMeta(permission = "查询所有此班级学生", module = "教师", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询所有此班级学生", mount = true)
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getStudents(
             @RequestParam(name = "class_id")
@@ -76,7 +83,8 @@ public class LessonController {
     }
 
     @PostMapping("/sign/create")
-    @GroupMeta(permission = "发起签到", module = "教师", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "发起签到", mount = true)
     @TeacherClassCheck(valueType = classIdType, paramType = requestBodyType, valueName = "class_id")
     public UnifyResponseVO createStudentSign(@RequestBody @Validated NewSignDTO validator) {
         classService.createSign(validator);
@@ -84,7 +92,8 @@ public class LessonController {
     }
 
     @GetMapping("/sign/list")
-    @GroupMeta(permission = "查看所有签到项目", module = "教师", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查看所有签到项目", mount = true)
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getSignList(
             @RequestParam(name = "class_id")
@@ -98,7 +107,8 @@ public class LessonController {
     }
 
     @GetMapping("/sign/students/query/{signId}")
-    @GroupMeta(permission = "查询单个签到项目下的所有学生", module = "教师", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询单个签到项目下的所有学生", mount = true)
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public PageResponseVO getStudentsBySignId(
             @RequestParam(name = "sign_status", required = false, defaultValue = "0")
@@ -119,14 +129,16 @@ public class LessonController {
     }
 
     @GetMapping("/sign/{id}")
-    @GroupMeta(permission = "查询一个签到信息", module = "教师", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询一个签到信息", mount = true)
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public SignCountVO getSign(@PathVariable @Positive(message = "{id}") Long id) {
         return classService.getSign(id);
     }
 
     @PostMapping("/sign/record/update/{signId}")
-    @GroupMeta(permission = "修改签到记录", module = "教师", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "修改签到记录", mount = true)
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public UnifyResponseVO updateStudentSignRecord(@RequestBody @Validated UpdateSignRecordDTO validator,
                                                    @PathVariable Long signId) {
@@ -137,7 +149,8 @@ public class LessonController {
     }
 
     @GetMapping("/semester/all")
-    @GroupMeta(permission = "教师查询所有学期", module = "教师", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "教师查询所有学期", mount = true)
     public List<SemesterDO> getAllSemesters() {
         return classService.getAllSemesters();
     }

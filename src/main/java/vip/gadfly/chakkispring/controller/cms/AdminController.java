@@ -1,11 +1,14 @@
 package vip.gadfly.chakkispring.controller.cms;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.github.talelin.core.annotation.AdminMeta;
+import io.github.talelin.core.annotation.AdminRequired;
+import io.github.talelin.core.annotation.PermissionMeta;
+import io.github.talelin.core.annotation.PermissionModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.bo.GroupPermissionBO;
+import vip.gadfly.chakkispring.common.util.PageUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.dto.admin.*;
 import vip.gadfly.chakkispring.model.GroupDO;
@@ -17,6 +20,7 @@ import vip.gadfly.chakkispring.vo.PageResponseVO;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 import vip.gadfly.chakkispring.vo.UserInfoVO;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -30,6 +34,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/cms/admin")
+@PermissionModule(value = "管理员")
 @Validated
 public class AdminController {
 
@@ -40,114 +45,130 @@ public class AdminController {
     private GroupService groupService;
 
     @GetMapping("/permission")
-    @AdminMeta(permission = "查询所有可分配的权限", module = "管理员")
+    @AdminRequired
+    @PermissionMeta(value = "查询所有可分配的权限", mount = false)
     public Map<String, List<PermissionDO>> getAllPermissions() {
         return adminService.getAllStructuralPermissions();
     }
 
     @GetMapping("/users")
-    @AdminMeta(permission = "查询所有用户", module = "管理员", mount = true)
+    @AdminRequired
+    @PermissionMeta(value = "查询所有用户", mount = false)
     public PageResponseVO getUsers(
             @RequestParam(name = "group_id", required = false)
-            @Min(value = 1, message = "{group-id}") Long groupId,
+            @Min(value = 1, message = "{group.id.positive}") Long groupId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
+            @Min(value = 1, message = "{page.count.min}")
+            @Max(value = 30, message = "{page.count.max}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
+            @Min(value = 0, message = "{page.number.min}") Integer page) {
         IPage<UserDO> iPage = adminService.getUserPageByGroupId(groupId, count, page);
         List<UserInfoVO> userInfos = iPage.getRecords().stream().map(user -> {
             List<GroupDO> groups = groupService.getUserGroupsByUserId(user.getId());
             return new UserInfoVO(user, groups);
         }).collect(Collectors.toList());
-        return ResponseUtil.generatePageResult(iPage.getTotal(), userInfos, page, count);
+        return PageUtil.build(iPage, userInfos);
     }
 
     @PutMapping("/user/{id}/password")
-    @AdminMeta(permission = "修改用户密码", module = "管理员", mount = true)
-    public UnifyResponseVO changeUserPassword(@PathVariable @Positive(message = "{id}") Long id,
+    @AdminRequired
+    @PermissionMeta(value = "修改用户密码", mount = false)
+    public UnifyResponseVO changeUserPassword(@PathVariable @Positive(message = "{id.positive}") Long id,
                                               @RequestBody @Validated ResetPasswordDTO validator) {
         adminService.changeUserPassword(id, validator);
         return ResponseUtil.generateUnifyResponse(2);
     }
 
     @DeleteMapping("/user/{id}")
-    @AdminMeta(permission = "删除用户", module = "管理员")
-    public UnifyResponseVO deleteUser(@PathVariable @Positive(message = "{id}") Long id) {
+    @AdminRequired
+    @PermissionMeta(value = "删除用户", mount = false)
+    public UnifyResponseVO deleteUser(@PathVariable @Positive(message = "{id.positive}") Long id) {
         adminService.deleteUser(id);
         return ResponseUtil.generateUnifyResponse(3);
     }
 
     @PutMapping("/user/{id}")
-    @AdminMeta(permission = "管理员更新用户信息", module = "管理员", mount = true)
-    public UnifyResponseVO updateUser(@PathVariable @Positive(message = "{id}") Long id,
+    @AdminRequired
+    @PermissionMeta(value = "管理员更新用户信息", mount = false)
+    public UnifyResponseVO updateUser(@PathVariable @Positive(message = "{id.positive}") Long id,
                                       @RequestBody @Validated UpdateUserInfoDTO validator) {
         adminService.updateUserInfo(id, validator);
         return ResponseUtil.generateUnifyResponse(4);
     }
 
     @GetMapping("/group")
-    @AdminMeta(permission = "查询所有权限组及其权限", module = "管理员")
+    @AdminRequired
+    @PermissionMeta(value = "查询所有权限组及其权限", mount = false)
     public PageResponseVO getGroups(
             @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
+            @Min(value = 1, message = "{page.count.min}")
+            @Max(value = 30, message = "{page.count.max}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
+            @Min(value = 0, message = "{page.number.min}") Integer page) {
         IPage<GroupDO> iPage = adminService.getGroupPage(page, count);
-        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+        return PageUtil.build(iPage);
     }
 
     @GetMapping("/group/all")
-    @AdminMeta(permission = "查询所有权限组", module = "管理员")
+    @AdminRequired
+    @PermissionMeta(value = "查询所有权限组", mount = false)
     public List<GroupDO> getAllGroup() {
         List<GroupDO> groups = adminService.getAllGroups();
         return groups;
     }
 
     @GetMapping("/group/{id}")
-    @AdminMeta(permission = "查询一个权限组及其权限", module = "管理员")
-    public GroupPermissionBO getGroup(@PathVariable @Positive(message = "{id}") Long id) {
+    @AdminRequired
+    @PermissionMeta(value = "查询一个权限组及其权限", mount = false)
+    public GroupPermissionBO getGroup(@PathVariable @Positive(message = "{id.positive}") Long id) {
         GroupPermissionBO groupPermissions = adminService.getGroup(id);
         return groupPermissions;
     }
 
     @PostMapping("/group")
-    @AdminMeta(permission = "新建权限组", module = "管理员")
+    @AdminRequired
+    @PermissionMeta(value = "新建权限组", mount = false)
     public UnifyResponseVO createGroup(@RequestBody @Validated NewGroupDTO validator) {
         adminService.createGroup(validator);
         return ResponseUtil.generateUnifyResponse(13);
     }
 
     @PutMapping("/group/{id}")
-    @AdminMeta(permission = "更新一个权限组", module = "管理员")
-    public UnifyResponseVO updateGroup(@PathVariable @Positive(message = "{id}") Long id,
+    @AdminRequired
+    @PermissionMeta(value = "更新一个权限组", mount = false)
+    public UnifyResponseVO updateGroup(@PathVariable @Positive(message = "{id.positive}") Long id,
                                        @RequestBody @Validated UpdateGroupDTO validator) {
         adminService.updateGroup(id, validator);
         return ResponseUtil.generateUnifyResponse(5);
     }
 
     @DeleteMapping("/group/{id}")
-    @AdminMeta(permission = "删除一个权限组", module = "管理员")
-    public UnifyResponseVO deleteGroup(@PathVariable @Positive(message = "{id}") Long id) {
+    @AdminRequired
+    @PermissionMeta(value = "删除一个权限组", mount = false)
+    public UnifyResponseVO deleteGroup(@PathVariable @Positive(message = "{id.positive}") Long id) {
         adminService.deleteGroup(id);
         return ResponseUtil.generateUnifyResponse(6);
     }
 
     @PostMapping("/permission/dispatch")
-    @AdminMeta(permission = "分配单个权限", module = "管理员")
+    @AdminRequired
+    @PermissionMeta(value = "分配单个权限", mount = false)
     public UnifyResponseVO dispatchPermission(@RequestBody @Validated DispatchPermissionDTO validator) {
         adminService.dispatchPermission(validator);
         return ResponseUtil.generateUnifyResponse(7);
     }
 
     @PostMapping("/permission/dispatch/batch")
-    @AdminMeta(permission = "分配多个权限", module = "管理员")
+    @AdminRequired
+    @PermissionMeta(value = "分配多个权限", mount = false)
     public UnifyResponseVO dispatchPermissions(@RequestBody @Validated DispatchPermissionListDTO validator) {
         adminService.dispatchPermissions(validator);
         return ResponseUtil.generateUnifyResponse(7);
     }
 
     @PostMapping("/permission/remove")
-    @AdminMeta(permission = "删除多个权限", module = "管理员")
+    @AdminRequired
+    @PermissionMeta(value = "删除多个权限", mount = false)
     public UnifyResponseVO removePermissions(@RequestBody @Validated RemovePermissionListDTO validator) {
         adminService.removePermissions(validator);
         return ResponseUtil.generateUnifyResponse(8);

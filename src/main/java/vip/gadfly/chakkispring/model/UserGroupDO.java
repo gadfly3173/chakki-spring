@@ -11,8 +11,8 @@ import java.io.Serializable;
  * @author pedro
  * @since 2019-11-30
  */
-@TableName("lin_user_group")
 @Data
+@TableName("lin_user_group")
 public class UserGroupDO implements Serializable {
 
     private static final long serialVersionUID = 1L;

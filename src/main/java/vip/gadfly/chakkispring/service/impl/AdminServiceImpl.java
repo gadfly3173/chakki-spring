@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.autoconfigure.exception.ForbiddenException;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vip.gadfly.chakkispring.bo.GroupPermissionBO;
+import vip.gadfly.chakkispring.common.enumeration.GroupLevelEnum;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.dto.admin.*;
 import vip.gadfly.chakkispring.mapper.GroupPermissionMapper;
@@ -39,15 +39,6 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private GroupPermissionMapper groupPermissionMapper;
 
-    @Value("${group.root.id}")
-    private Long rootGroupId;
-
-    @Value("${group.guest.id}")
-    private Long guestGroupId;
-
-    @Value("${user.root.id}")
-    private Long rootUserId;
-
     @Override
     public IPage<UserDO> getUserPageByGroupId(Long groupId, Integer count, Integer page) {
         Page<UserDO> pager = new Page<>(page, count);
@@ -55,6 +46,7 @@ public class AdminServiceImpl implements AdminService {
         // 如果group_id为空，则以分页的形式返回所有用户
         if (groupId == null) {
             QueryWrapper<UserDO> wrapper = new QueryWrapper<>();
+            Long rootUserId = userService.getRootUserId();
             wrapper.lambda().ne(UserDO::getId, rootUserId);
             iPage = userService.page(pager, wrapper);
         } else {
@@ -90,6 +82,7 @@ public class AdminServiceImpl implements AdminService {
         if (newGroupIds == null || newGroupIds.isEmpty()) {
             return false;
         }
+        Long rootGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
         boolean anyMatch = newGroupIds.stream().anyMatch(it -> it.equals(rootGroupId));
         if (anyMatch) {
             throw new ForbiddenException("you can't add user to root group", 10073);
@@ -140,12 +133,15 @@ public class AdminServiceImpl implements AdminService {
         if (!exist.getName().equals(dto.getName())) {
             throwGroupNameExist(dto.getName());
         }
-        GroupDO group = GroupDO.builder().id(id).name(dto.getName()).info(dto.getInfo()).build();
+        GroupDO group = GroupDO.builder().name(dto.getName()).info(dto.getInfo()).build();
+        group.setId(id);
         return groupService.updateById(group);
     }
 
     @Override
     public boolean deleteGroup(Long id) {
+        Long rootGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
+        Long guestGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.GUEST);
         if (id.equals(rootGroupId)) {
             throw new ForbiddenException("root group can't delete", 10074);
         }
@@ -178,6 +174,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<GroupDO> getAllGroups() {
         QueryWrapper<GroupDO> wrapper = new QueryWrapper<>();
+        Long rootGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
         wrapper.lambda().ne(GroupDO::getId, rootGroupId);
         List<GroupDO> groups = groupService.list(wrapper);
         return groups;
@@ -193,7 +190,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<PermissionDO> getAllPermissions() {
-        return permissionService.list();
+        QueryWrapper<PermissionDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(PermissionDO::getMount, true);
+        return permissionService.list(wrapper);
     }
 
     @Override

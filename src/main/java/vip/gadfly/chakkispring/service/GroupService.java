@@ -3,6 +3,7 @@ package vip.gadfly.chakkispring.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import vip.gadfly.chakkispring.bo.GroupPermissionBO;
+import vip.gadfly.chakkispring.common.enumeration.GroupLevelEnum;
 import vip.gadfly.chakkispring.model.GroupDO;
 
 import java.util.List;
@@ -93,4 +94,21 @@ public interface GroupService extends IService<GroupDO> {
      * @return 用户id
      */
     List<Long> getGroupUserIds(Long id);
+
+
+    /**
+     * 通过分组级别获取超级管理员分组或游客分组
+     *
+     * @param level GroupLevelEnum 枚举类
+     * @return 用户组
+     */
+    GroupDO getParticularGroupByLevel(GroupLevelEnum level);
+
+    /**
+     * 通过分组级别获取超级管理员分组或游客分组的id
+     *
+     * @param level GroupLevelEnum 枚举类
+     * @return 用户组id
+     */
+    Long getParticularGroupIdByLevel(GroupLevelEnum level);
 }

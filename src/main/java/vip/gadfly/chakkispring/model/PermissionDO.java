@@ -1,15 +1,9 @@
 package vip.gadfly.chakkispring.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author pedro
@@ -18,12 +12,12 @@ import java.util.Date;
 @Data
 @Builder
 @TableName("lin_permission")
-public class PermissionDO implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class PermissionDO extends BaseModel implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private static final long serialVersionUID = -2400022443732120128L;
 
     /**
      * 权限名称，例如：访问首页
@@ -35,13 +29,8 @@ public class PermissionDO implements Serializable {
      */
     private String module;
 
-    @JsonIgnore
-    private Date createTime;
-
-    @JsonIgnore
-    private Date updateTime;
-
-    @JsonIgnore
-    @TableLogic
-    private Date deleteTime;
+    /**
+     * 0：关闭 1：开启
+     */
+    private Boolean mount;
 }

@@ -17,7 +17,7 @@ public class UploaderConfiguration {
     @Bean
     @Order
     @ConditionalOnMissingBean
-    public Uploader uploader(){
+    public Uploader uploader() {
         return new LocalUploader();
     }
 }

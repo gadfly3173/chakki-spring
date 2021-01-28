@@ -2,11 +2,12 @@ package vip.gadfly.chakkispring.common.interceptor;
 
 import io.github.talelin.autoconfigure.interfaces.LoggerResolver;
 import io.github.talelin.core.annotation.Logger;
-import io.github.talelin.core.annotation.RouteMeta;
+import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.core.util.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.LogService;
@@ -28,12 +29,15 @@ public class LoggerImpl implements LoggerResolver {
     private LogService logService;
 
     @Override
-    public void handle(RouteMeta meta, Logger logger, HttpServletRequest request, HttpServletResponse response) {
+    public void handle(PermissionMeta meta, Logger logger, HttpServletRequest request, HttpServletResponse response) {
         // parse template and extract properties from request,response and modelAndView
         String template = logger.template();
         UserDO user = LocalUser.getLocalUser();
         template = this.parseTemplate(template, user, request, response);
-        String permission = meta.permission();
+        String permission = "";
+        if (meta != null) {
+            permission = StringUtils.isEmpty(meta.value()) ? meta.value() : meta.value();
+        }
         Long userId = user.getId();
         String username = user.getUsername();
         String method = request.getMethod();

@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.github.talelin.autoconfigure.exception.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import vip.gadfly.chakkispring.bo.GroupPermissionBO;
+import vip.gadfly.chakkispring.common.enumeration.GroupLevelEnum;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.mapper.GroupMapper;
 import vip.gadfly.chakkispring.mapper.UserGroupMapper;
@@ -26,12 +26,6 @@ import java.util.stream.Collectors;
  */
 @Service
 public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implements GroupService {
-
-    @Value("${group.root.name}")
-    private String rootGroupName;
-
-    @Value("${group.root.id}")
-    private Long rootGroupId;
 
     @Autowired
     private PermissionService permissionService;
@@ -77,6 +71,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
     @Override
     public boolean checkIsRootByUserId(Long userId) {
         QueryWrapper<UserGroupDO> wrapper = new QueryWrapper<>();
+        Long rootGroupId = this.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
         wrapper.lambda().eq(UserGroupDO::getUserId, userId)
                 .eq(UserGroupDO::getGroupId, rootGroupId);
         UserGroupDO relation = userGroupMapper.selectOne(wrapper);
@@ -118,6 +113,24 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
         wrapper.lambda().eq(UserGroupDO::getGroupId, id);
         List<UserGroupDO> list = userGroupMapper.selectList(wrapper);
         return list.stream().map(UserGroupDO::getUserId).collect(Collectors.toList());
+    }
+
+    @Override
+    public GroupDO getParticularGroupByLevel(GroupLevelEnum level) {
+        if (GroupLevelEnum.USER.getValue().equals(level.getValue())) {
+            return null;
+        } else {
+            QueryWrapper<GroupDO> wrapper = new QueryWrapper<>();
+            wrapper.lambda().eq(GroupDO::getLevel, level);
+            GroupDO groupDO = this.baseMapper.selectOne(wrapper);
+            return groupDO;
+        }
+    }
+
+    @Override
+    public Long getParticularGroupIdByLevel(GroupLevelEnum level) {
+        GroupDO group = this.getParticularGroupByLevel(level);
+        return group == null ? 0L : group.getId();
     }
 
     private boolean checkGroupExistByIds(List<Long> ids) {

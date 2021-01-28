@@ -2,6 +2,9 @@ package vip.gadfly.chakkispring.controller.cms;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.core.annotation.GroupMeta;
+import io.github.talelin.core.annotation.GroupRequired;
+import io.github.talelin.core.annotation.PermissionMeta;
+import io.github.talelin.core.annotation.PermissionModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +29,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cms/admin")
+@PermissionModule(value = "管理员")
 @Validated
 public class ClassController {
 
@@ -35,19 +39,22 @@ public class ClassController {
     // 班级接口
 
     @GetMapping("/class/all")
-    @GroupMeta(permission = "查询所有班级", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询所有班级", mount = true)
     public List<ClassDO> getAllClasses() {
         return classService.getAllClasses();
     }
 
     @GetMapping("/class/{id}")
-    @GroupMeta(permission = "查询一个班级", module = "管理员", mount = true)
+    @GroupRequired
+    @GroupMeta(permission = "查询一个班级", mount = true)
     public ClassDO getClass(@PathVariable @Positive(message = "{id}") Long id) {
         return classService.getClass(id);
     }
 
     @PostMapping("/class")
-    @GroupMeta(permission = "新建班级", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "新建班级", mount = true)
     public UnifyResponseVO createClass(@RequestBody @Validated NewClassDTO validator) {
         if (classService.createClass(validator)) {
             return ResponseUtil.generateUnifyResponse(16);
@@ -56,7 +63,8 @@ public class ClassController {
     }
 
     @PutMapping("/class/{id}")
-    @GroupMeta(permission = "更新一个班级", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "更新一个班级", mount = true)
     public UnifyResponseVO updateClass(@PathVariable @Positive(message = "{id}") Long id,
                                        @RequestBody @Validated UpdateClassDTO validator) {
         if (classService.updateClass(id, validator)) {
@@ -66,7 +74,8 @@ public class ClassController {
     }
 
     @DeleteMapping("/class/{id}")
-    @GroupMeta(permission = "删除一个班级", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "删除一个班级", mount = true)
     public UnifyResponseVO deleteClass(@PathVariable @Positive(message = "{id}") Long id) {
         if (classService.deleteClass(id)) {
             return ResponseUtil.generateUnifyResponse(15);
@@ -75,7 +84,8 @@ public class ClassController {
     }
 
     @GetMapping("/students")
-    @GroupMeta(permission = "查询所有此班级学生", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询所有此班级学生", mount = true)
     public PageResponseVO getStudents(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId,
@@ -88,7 +98,8 @@ public class ClassController {
     }
 
     @GetMapping("/students/fresh")
-    @GroupMeta(permission = "查询所有不在此班级的学生", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询所有不在此班级的学生", mount = true)
     public PageResponseVO getFreshStudents(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId,
@@ -101,7 +112,8 @@ public class ClassController {
     }
 
     @GetMapping("/students/fresh_by_name")
-    @GroupMeta(permission = "查询名字符合的不在此班级的学生", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询名字符合的不在此班级的学生", mount = true)
     public PageResponseVO getFreshStudentsByName(
             @RequestParam(name = "name")
             @NotBlank(message = "{search-text.blank}") String name,
@@ -116,7 +128,8 @@ public class ClassController {
     }
 
     @PostMapping("/students/del")
-    @GroupMeta(permission = "移除班级内学生", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "移除班级内学生", mount = true)
     public UnifyResponseVO removeStudentClass(@RequestBody @Validated DispatchStudentClassDTO validator) {
         if (classService.deleteStudentClassRelations(validator.getUserId(), validator.getClassIds())) {
             return ResponseUtil.generateUnifyResponse(17);
@@ -125,7 +138,8 @@ public class ClassController {
     }
 
     @PostMapping("/students/add")
-    @GroupMeta(permission = "添加班级内学生", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "添加班级内学生", mount = true)
     public UnifyResponseVO addStudentClass(@RequestBody @Validated AddStudentClassDTO validator) {
         if (classService.addStudentClassRelations(validator.getClassId(), validator.getUserIds())) {
             return ResponseUtil.generateUnifyResponse(18);
@@ -134,7 +148,8 @@ public class ClassController {
     }
 
     @GetMapping("/teacher/list")
-    @GroupMeta(permission = "查询班级内教师", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询班级内教师", mount = true)
     public PageResponseVO getClassTeachers(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Long classId) {
@@ -143,7 +158,8 @@ public class ClassController {
     }
 
     @GetMapping("/teacher/fresh_by_name")
-    @GroupMeta(permission = "查询不在班级内的教师", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询不在班级内的教师", mount = true)
     public PageResponseVO getFreshTeachersByName(
             @RequestParam(name = "name")
             @NotBlank(message = "{search-text.blank}") String name,
@@ -158,7 +174,8 @@ public class ClassController {
     }
 
     @PostMapping("/teacher/del")
-    @GroupMeta(permission = "移除班级内教师", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "移除班级内教师", mount = true)
     public UnifyResponseVO removeTeacherClass(@RequestBody @Validated DispatchTeacherClassDTO validator) {
         if (classService.deleteTeacherClassRelations(validator.getUserId(), validator.getClassIds())) {
             return ResponseUtil.generateUnifyResponse(22);
@@ -167,7 +184,8 @@ public class ClassController {
     }
 
     @PostMapping("/teacher/add")
-    @GroupMeta(permission = "添加班级内教师", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "添加班级内教师", mount = true)
     public UnifyResponseVO addTeacherClass(@RequestBody @Validated AddTeacherClassDTO validator) {
         if (classService.addTeacherClassRelations(validator.getClassId(), validator.getUserIds(),
                 validator.getLevel())) {
@@ -177,7 +195,8 @@ public class ClassController {
     }
 
     @PostMapping("/semester")
-    @GroupMeta(permission = "新建学期", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "新建学期", mount = true)
     public UnifyResponseVO createSemester(@RequestBody @Validated NewSemesterDTO validator) {
         if (classService.createSemester(validator)) {
             return ResponseUtil.generateUnifyResponse(26);
@@ -186,13 +205,15 @@ public class ClassController {
     }
 
     @GetMapping("/semester/all")
-    @GroupMeta(permission = "查询所有学期", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询所有学期", mount = true)
     public List<SemesterDO> getAllSemesters() {
         return classService.getAllSemesters();
     }
 
     @PutMapping("/semester/{id}")
-    @GroupMeta(permission = "更新一个学期", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "更新一个学期", mount = true)
     public UnifyResponseVO updateSemester(@PathVariable @Positive(message = "{id}") Long id,
                                           @RequestBody @Validated UpdateSemesterDTO validator) {
         if (classService.updateSemester(id, validator)) {
@@ -202,7 +223,8 @@ public class ClassController {
     }
 
     @DeleteMapping("/semester/{id}")
-    @GroupMeta(permission = "删除一个学期", module = "管理员", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "删除一个学期", mount = true)
     public UnifyResponseVO deleteSemester(@PathVariable @Positive(message = "{id}") Long id) {
         if (classService.deleteSemester(id)) {
             return ResponseUtil.generateUnifyResponse(25);

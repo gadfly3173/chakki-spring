@@ -9,11 +9,11 @@ import io.github.talelin.autoconfigure.exception.NotFoundException;
 import io.github.talelin.autoconfigure.exception.ParameterException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import vip.gadfly.chakkispring.common.LocalUser;
+import vip.gadfly.chakkispring.common.enumeration.GroupLevelEnum;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.dto.user.BatchRegisterDTO;
 import vip.gadfly.chakkispring.dto.user.ChangePasswordDTO;
@@ -54,12 +54,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Autowired
     private UserGroupMapper userGroupMapper;
 
-    @Value("${group.root.id}")
-    private Long rootGroupId;
-
-    @Value("${group.guest.id}")
-    private Long guestGroupId;
-
     @Transactional
     @Override
     public UserDO createUser(RegisterDTO dto) {
@@ -90,6 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             userGroupMapper.insertBatch(relations);
         } else {
             // id为3的分组为学生分组
+            Long guestGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.GUEST);
             UserGroupDO relation = new UserGroupDO(user.getId(), guestGroupId);
             userGroupMapper.insert(relation);
         }
@@ -209,6 +204,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     @Override
     public IPage<UserDO> getUserPageByGroupId(Page<UserDO> pager, Long groupId) {
+        Long rootGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
         return this.baseMapper.selectPageByGroupId(pager, groupId, rootGroupId);
     }
 
@@ -234,6 +230,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     @Override
     public Long getRootUserId() {
+        Long rootGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
         QueryWrapper<UserGroupDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(UserGroupDO::getGroupId, rootGroupId);
         UserGroupDO userGroupDO = userGroupMapper.selectOne(wrapper);
@@ -249,6 +246,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     }
 
     private void checkGroupsValid(List<Long> ids) {
+        Long rootGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
         boolean anyMatch = ids.stream().anyMatch(it -> it.equals(rootGroupId));
         if (anyMatch) {
             throw new ForbiddenException("you can't add user to root group", 10073);

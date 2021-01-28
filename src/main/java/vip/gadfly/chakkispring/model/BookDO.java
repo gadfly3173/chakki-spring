@@ -1,20 +1,17 @@
 package vip.gadfly.chakkispring.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.util.Date;
+import java.io.Serializable;
 
 @TableName("book")
 @Data
-public class BookDO {
+@EqualsAndHashCode(callSuper = true)
+public class BookDO extends BaseModel implements Serializable {
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private static final long serialVersionUID = 3531805912578317266L;
 
     private String title;
 
@@ -23,14 +20,4 @@ public class BookDO {
     private String summary;
 
     private String image;
-
-    @JsonIgnore
-    private Date createTime;
-
-    @JsonIgnore
-    private Date updateTime;
-
-    @JsonIgnore
-    @TableLogic
-    private Date deleteTime;
 }

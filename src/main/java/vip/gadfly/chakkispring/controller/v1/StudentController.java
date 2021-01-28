@@ -1,7 +1,9 @@
 package vip.gadfly.chakkispring.controller.v1;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.github.talelin.core.annotation.GroupMeta;
+import io.github.talelin.core.annotation.GroupRequired;
+import io.github.talelin.core.annotation.PermissionMeta;
+import io.github.talelin.core.annotation.PermissionModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,7 @@ import static vip.gadfly.chakkispring.common.constant.ClassVerifyConstant.*;
  */
 @RestController
 @RequestMapping("/v1/class")
+@PermissionModule(value = "学生")
 @Validated
 public class StudentController {
 
@@ -38,27 +41,31 @@ public class StudentController {
     @Autowired
     private ClassService classService;
 
-    @GroupMeta(permission = "查看自己所属班级", module = "学生", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查看自己所属班级", mount = true)
     @GetMapping("/list")
     public List<ClassDO> getClassList() {
         return studentService.getStudentClassList();
     }
 
     @GetMapping("/class/list")
-    @GroupMeta(permission = "查询学生本学期所属班级", module = "学生", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询学生本学期所属班级", mount = true)
     public List<ClassDO> getClassesBySemesterAndStudent(@RequestParam("semester_id") Long semesterId) {
         Long userId = LocalUser.getLocalUser().getId();
         return classService.getClassesBySemesterAndStudent(semesterId, userId);
     }
 
     @GetMapping("/{id}")
-    @GroupMeta(permission = "查询特定班级", module = "学生", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查询特定班级", mount = true)
     @StudentClassCheck(valueType = "classId", paramType = "PathVariable")
     public ClassDO getClass(@PathVariable @Positive(message = "{id}") Long id) {
         return classService.getClass(id);
     }
 
-    @GroupMeta(permission = "查看班级内签到项目", module = "学生", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查看班级内签到项目", mount = true)
     @GetMapping("/sign/list")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getSignList(
@@ -72,7 +79,8 @@ public class StudentController {
         return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
     }
 
-    @GroupMeta(permission = "查看班级最新签到项目", module = "学生", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "查看班级最新签到项目", mount = true)
     @GetMapping("/sign/latest")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public SignListVO getLatestSign(
@@ -81,7 +89,8 @@ public class StudentController {
         return studentService.getLatestSignByClassId(classId);
     }
 
-    @GroupMeta(permission = "学生进行签到", module = "学生", mount = true)
+    @GroupRequired
+    @PermissionMeta(value = "学生进行签到", mount = true)
     @PostMapping("/sign/confirm/{signId}")
     @StudentClassCheck(valueType = signIdType, paramType = pathVariableType)
     public UnifyResponseVO confirmStudentSign(
@@ -98,8 +107,9 @@ public class StudentController {
         return ResponseUtil.generateUnifyResponse(20);
     }
 
+    @GroupRequired
     @GetMapping("/semester/all")
-    @GroupMeta(permission = "学生查询所有学期", module = "学生", mount = true)
+    @PermissionMeta(value = "学生查询所有学期", mount = true)
     public List<SemesterDO> getAllSemesters() {
         return classService.getAllSemesters();
     }

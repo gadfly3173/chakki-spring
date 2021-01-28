@@ -28,9 +28,9 @@ public interface ClassVerifyResolver {
     /**
      * 验证教师是否属于班级
      *
-     * @param request  请求
-     * @param response 响应
-     * @param teacherClassCheck  注解
+     * @param request           请求
+     * @param response          响应
+     * @param teacherClassCheck 注解
      * @return 是否成功
      */
     boolean handleTeacherClassCheck(HttpServletRequest request, HttpServletResponse response, TeacherClassCheck teacherClassCheck) throws IOException;
@@ -38,9 +38,9 @@ public interface ClassVerifyResolver {
     /**
      * 验证学生是否属于班级
      *
-     * @param request  请求
-     * @param response 响应
-     * @param studentClassCheck  注解
+     * @param request           请求
+     * @param response          响应
+     * @param studentClassCheck 注解
      * @return 是否成功
      */
     boolean handleStudentClassCheck(HttpServletRequest request, HttpServletResponse response, StudentClassCheck studentClassCheck) throws IOException;

@@ -1,17 +1,10 @@
 package vip.gadfly.chakkispring.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author pedro
@@ -19,16 +12,13 @@ import java.util.Date;
  */
 @Data
 @Builder
-@TableName("lin_group")
 @NoArgsConstructor
 @AllArgsConstructor
-public class GroupDO implements Serializable {
+@TableName("lin_group")
+@EqualsAndHashCode(callSuper = true)
+public class GroupDO extends BaseModel implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
-
+    private static final long serialVersionUID = -8994898895671436007L;
     /**
      * 分组名称，例如：搬砖者
      */
@@ -39,13 +29,10 @@ public class GroupDO implements Serializable {
      */
     private String info;
 
-    @JsonIgnore
-    private Date createTime;
+    /**
+     * 分组级别 1：root 2：user 3：guest  root（root、guest分组只能存在一个)
+     */
+    @TableField(value = "`level`")
+    private String level;
 
-    @JsonIgnore
-    private Date updateTime;
-
-    @JsonIgnore
-    @TableLogic
-    private Date deleteTime;
 }

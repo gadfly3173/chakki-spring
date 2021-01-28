@@ -11,11 +11,11 @@ import java.io.Serializable;
  * @author pedro
  * @since 2019-11-30
  */
-@TableName("lin_group_permission")
 @Data
+@TableName("lin_group_permission")
 public class GroupPermissionDO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -358487811336536495L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

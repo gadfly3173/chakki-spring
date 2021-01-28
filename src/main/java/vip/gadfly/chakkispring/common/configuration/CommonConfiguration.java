@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
 import com.baomidou.mybatisplus.core.injector.ISqlInjector;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import io.github.talelin.autoconfigure.bean.RouteMetaCollector;
+import io.github.talelin.autoconfigure.bean.PermissionMetaCollector;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -38,8 +38,8 @@ public class CommonConfiguration {
      * @return RouteMetaCollector
      */
     @Bean
-    public RouteMetaCollector postProcessBeans() {
-        return new RouteMetaCollector();
+    public PermissionMetaCollector postProcessBeans() {
+        return new PermissionMetaCollector();
     }
 
 

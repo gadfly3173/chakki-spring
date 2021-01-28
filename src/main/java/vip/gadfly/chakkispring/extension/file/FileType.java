@@ -162,7 +162,7 @@ public enum FileType {
      *
      * @param type
      */
-    private FileType(String value) {
+    FileType(String value) {
         this.value = value;
     }
 

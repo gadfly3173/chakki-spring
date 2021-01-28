@@ -124,11 +124,11 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         }
         throwSemesterNotExistById(dto.getSemesterId());
         ClassDO lesson = ClassDO.builder()
-                .id(id)
                 .name(dto.getName())
                 .info(dto.getInfo())
                 .semesterId(dto.getSemesterId())
                 .build();
+        lesson.setId(id);
         return classManageService.updateById(lesson);
     }
 
@@ -292,7 +292,8 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         if (!exist.getName().equals(dto.getName())) {
             throwSemesterNameExist(dto.getName());
         }
-        SemesterDO semester = SemesterDO.builder().id(id).name(dto.getName()).info(dto.getInfo()).build();
+        SemesterDO semester = SemesterDO.builder().name(dto.getName()).info(dto.getInfo()).build();
+        semester.setId(id);
         return semesterMapper.updateById(semester) > 0;
     }
 

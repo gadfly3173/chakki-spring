@@ -1,7 +1,7 @@
 package vip.gadfly.chakkispring.dto.admin;
 
-import org.hibernate.validator.constraints.Length;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Min;
 
