@@ -34,12 +34,12 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
     private UserGroupMapper userGroupMapper;
 
     @Override
-    public List<GroupDO> getUserGroupsByUserId(Long userId) {
+    public List<GroupDO> getUserGroupsByUserId(Integer userId) {
         return this.baseMapper.selectGroupsByUserId(userId);
     }
 
     @Override
-    public List<Long> getUserGroupIdsByUserId(Long userId) {
+    public List<Integer> getUserGroupIdsByUserId(Integer userId) {
         return this.baseMapper.selectUserGroupIds(userId);
     }
 
@@ -50,12 +50,12 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
     }
 
     @Override
-    public boolean checkGroupExistById(Long id) {
+    public boolean checkGroupExistById(Integer id) {
         return this.baseMapper.selectCountById(id) > 0;
     }
 
     @Override
-    public GroupPermissionBO getGroupAndPermissions(Long id) {
+    public GroupPermissionBO getGroupAndPermissions(Integer id) {
         GroupDO group = this.baseMapper.selectById(id);
         List<PermissionDO> permissions = permissionService.getPermissionByGroupId(id);
         return new GroupPermissionBO(group, permissions);
@@ -69,9 +69,9 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
     }
 
     @Override
-    public boolean checkIsRootByUserId(Long userId) {
+    public boolean checkIsRootByUserId(Integer userId) {
         QueryWrapper<UserGroupDO> wrapper = new QueryWrapper<>();
-        Long rootGroupId = this.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
+        Integer rootGroupId = this.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
         wrapper.lambda().eq(UserGroupDO::getUserId, userId)
                 .eq(UserGroupDO::getGroupId, rootGroupId);
         UserGroupDO relation = userGroupMapper.selectOne(wrapper);
@@ -79,7 +79,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
     }
 
     @Override
-    public boolean deleteUserGroupRelations(Long userId, List<Long> deleteIds) {
+    public boolean deleteUserGroupRelations(Integer userId, List<Integer> deleteIds) {
         if (deleteIds == null || deleteIds.isEmpty()) {
             return true;
         }
@@ -94,7 +94,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
     }
 
     @Override
-    public boolean addUserGroupRelations(Long userId, List<Long> addIds) {
+    public boolean addUserGroupRelations(Integer userId, List<Integer> addIds) {
         if (addIds == null || addIds.isEmpty()) {
             return true;
         }
@@ -108,7 +108,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
     }
 
     @Override
-    public List<Long> getGroupUserIds(Long id) {
+    public List<Integer> getGroupUserIds(Integer id) {
         QueryWrapper<UserGroupDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(UserGroupDO::getGroupId, id);
         List<UserGroupDO> list = userGroupMapper.selectList(wrapper);
@@ -128,12 +128,12 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
     }
 
     @Override
-    public Long getParticularGroupIdByLevel(GroupLevelEnum level) {
+    public Integer getParticularGroupIdByLevel(GroupLevelEnum level) {
         GroupDO group = this.getParticularGroupByLevel(level);
-        return group == null ? 0L : group.getId();
+        return group == null ? 0 : group.getId();
     }
 
-    private boolean checkGroupExistByIds(List<Long> ids) {
+    private boolean checkGroupExistByIds(List<Integer> ids) {
         return ids.stream().allMatch(this::checkGroupExistById);
     }
 }

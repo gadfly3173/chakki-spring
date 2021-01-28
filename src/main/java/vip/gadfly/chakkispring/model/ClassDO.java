@@ -31,5 +31,5 @@ public class ClassDO extends BaseModel implements Serializable {
     /**
      * 学期id
      */
-    private Long semesterId;
+    private Integer semesterId;
 }

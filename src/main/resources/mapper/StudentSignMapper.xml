@@ -21,7 +21,7 @@
         <result column="status" property="status"/>
     </resultMap>
 
-    <select id="selectUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
+    <select id="selectUserSignDetailBySignId" parameterType="java.lang.Integer" resultMap="SignResultMap">
         SELECT u.id AS user_id, u.username, u.nickname, ss.sign_id, ss.ip, ss.create_time, ss.id, ss.status
         from lin_user AS u, student_sign AS ss
         WHERE
@@ -35,7 +35,7 @@
         </if>
     </select>
 
-    <select id="selectLateUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
+    <select id="selectLateUserSignDetailBySignId" parameterType="java.lang.Integer" resultMap="SignResultMap">
         SELECT u.id AS user_id, u.username, u.nickname, ss.sign_id, ss.ip, ss.create_time, ss.id, ss.status
         from lin_user AS u, student_sign AS ss
         WHERE
@@ -49,7 +49,7 @@
         </if>
     </select>
 
-    <select id="selectCancelUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
+    <select id="selectCancelUserSignDetailBySignId" parameterType="java.lang.Integer" resultMap="SignResultMap">
         SELECT u.id AS user_id, u.username, u.nickname, ss.sign_id, ss.ip, ss.create_time, ss.id, ss.status
         from lin_user AS u, student_sign AS ss
         WHERE
@@ -63,7 +63,7 @@
         </if>
     </select>
 
-    <select id="selectUnsignedUserDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
+    <select id="selectUnsignedUserDetailBySignId" parameterType="java.lang.Integer" resultMap="SignResultMap">
         SELECT u.id AS user_id, u.username, u.nickname, 0 AS sign_status
         from lin_user AS u
         WHERE
@@ -83,7 +83,7 @@
         </if>
     </select>
 
-    <select id="selectClassUserSignDetailBySignId" parameterType="java.lang.Long" resultMap="SignResultMap">
+    <select id="selectClassUserSignDetailBySignId" parameterType="java.lang.Integer" resultMap="SignResultMap">
         SELECT u.id AS user_id, u.username, u.nickname, ss.sign_id, ss.ip, ss.create_time, ss.`status`
         FROM lin_user AS u LEFT JOIN student_sign AS ss
         ON u.id = ss.user_id
@@ -122,7 +122,7 @@
             DESC
         </if>
     </select>
-    <select id="countClassUserSignDetailBySignId" resultType="java.lang.Long">
+    <select id="countClassUserSignDetailBySignId" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM (
             SELECT u.id
             FROM lin_user u

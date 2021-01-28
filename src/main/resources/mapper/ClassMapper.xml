@@ -14,7 +14,7 @@
     </resultMap>
 
 
-    <select id="selectUserClasses" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectUserClasses" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT g.id,
                g.name,
                g.info,
@@ -35,7 +35,7 @@
         ORDER BY g.id DESC
     </select>
 
-    <select id="selectUserClassIds" parameterType="java.lang.Long" resultType="java.lang.Long">
+    <select id="selectUserClassIds" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         SELECT g.id
         from class AS g
         WHERE g.delete_time IS NULL
@@ -50,7 +50,7 @@
               )
     </select>
 
-    <select id="selectCountById" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    <select id="selectCountById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         SELECT COUNT(*) AS count
         FROM class
         WHERE delete_time IS NULL

@@ -1,6 +1,5 @@
 package vip.gadfly.chakkispring.dto.admin;
 
-import io.github.talelin.autoconfigure.validator.LongList;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -16,9 +15,9 @@ import java.util.List;
 public class AddStudentClassDTO {
     @Positive(message = "{class.id.positive}")
     @NotNull(message = "{class.id.not-null}")
-    private Long classId;
+    private Integer classId;
 
     @Size(min = 1, message = "{class.user-ids.long-list}")
-    @LongList(message = "{class.user-ids.long-list}")
-    private List<Long> userIds;
+    // @LongList(message = "{class.user-ids.long-list}")
+    private List<Integer> userIds;
 }

@@ -13,7 +13,7 @@ import java.util.Map;
 @Data
 public class UserPermissionVO {
 
-    private Long id;
+    private Integer id;
 
     private String nickname;
 

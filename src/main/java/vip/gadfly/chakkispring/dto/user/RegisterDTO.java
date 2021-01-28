@@ -1,7 +1,6 @@
 package vip.gadfly.chakkispring.dto.user;
 
 import io.github.talelin.autoconfigure.validator.EqualField;
-import io.github.talelin.autoconfigure.validator.LongList;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,8 +21,8 @@ public class RegisterDTO {
     @Size(min = 2, max = 10, message = "{username.size}")
     private String username;
 
-    @LongList(allowBlank = true, message = "{group.ids.long-list}")
-    private List<Long> groupIds;
+    // @LongList(allowBlank = true, message = "{group.ids.long-list}")
+    private List<Integer> groupIds;
 
     @Email(message = "{email}")
     private String email;

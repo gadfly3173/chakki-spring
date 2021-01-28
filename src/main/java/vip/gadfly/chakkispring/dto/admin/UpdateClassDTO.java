@@ -18,5 +18,5 @@ public class UpdateClassDTO {
     private String info;
 
     @Min(value = 1, message = "{semester.id.positive}")
-    private Long semesterId;
+    private Integer semesterId;
 }

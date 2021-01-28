@@ -29,12 +29,12 @@ public class ClassManageServiceImpl extends ServiceImpl<ClassMapper, ClassDO> im
     private TeacherClassMapper teacherClassMapper;
 
     @Override
-    public List<ClassDO> getUserClassesByUserId(Long userId) {
+    public List<ClassDO> getUserClassesByUserId(Integer userId) {
         return this.baseMapper.selectUserClasses(userId);
     }
 
     @Override
-    public List<Long> getUserClassIdsByUserId(Long userId) {
+    public List<Integer> getUserClassIdsByUserId(Integer userId) {
         return this.baseMapper.selectUserClassIds(userId);
     }
 
@@ -45,12 +45,12 @@ public class ClassManageServiceImpl extends ServiceImpl<ClassMapper, ClassDO> im
     }
 
     @Override
-    public ClassDO getClassById(Long id) {
+    public ClassDO getClassById(Integer id) {
         return this.baseMapper.selectById(id);
     }
 
     @Override
-    public boolean checkClassExistById(Long id) {
+    public boolean checkClassExistById(Integer id) {
         return this.baseMapper.selectCountById(id) > 0;
     }
 
@@ -62,7 +62,7 @@ public class ClassManageServiceImpl extends ServiceImpl<ClassMapper, ClassDO> im
     }
 
     @Override
-    public boolean deleteUserClassRelations(Long userId, List<Long> deleteIds) {
+    public boolean deleteUserClassRelations(Integer userId, List<Integer> deleteIds) {
         if (deleteIds == null || deleteIds.isEmpty()) {
             return true;
         }
@@ -74,7 +74,7 @@ public class ClassManageServiceImpl extends ServiceImpl<ClassMapper, ClassDO> im
     }
 
     @Override
-    public List<Long> getClassUserIds(Long id) {
+    public List<Integer> getClassUserIds(Integer id) {
         QueryWrapper<StudentClassDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(StudentClassDO::getClassId, id);
         List<StudentClassDO> list = studentClassMapper.selectList(wrapper);
@@ -82,7 +82,7 @@ public class ClassManageServiceImpl extends ServiceImpl<ClassMapper, ClassDO> im
     }
 
     @Override
-    public boolean deleteTeacherClassRelations(Long userId, List<Long> classIds) {
+    public boolean deleteTeacherClassRelations(Integer userId, List<Integer> classIds) {
         if (classIds == null || classIds.isEmpty()) {
             return false;
         }
@@ -94,16 +94,16 @@ public class ClassManageServiceImpl extends ServiceImpl<ClassMapper, ClassDO> im
     }
 
     @Override
-    public List<ClassDO> getClassesBySemesterAndTeacher(Long semesterId, Long teacherId) {
+    public List<ClassDO> getClassesBySemesterAndTeacher(Integer semesterId, Integer teacherId) {
         return this.baseMapper.selectClassesBySemesterAndTeacher(semesterId, teacherId);
     }
 
     @Override
-    public List<ClassDO> getClassesBySemesterAndStudent(Long semesterId, Long userId) {
+    public List<ClassDO> getClassesBySemesterAndStudent(Integer semesterId, Integer userId) {
         return this.baseMapper.selectClassesBySemesterAndStudent(semesterId, userId);
     }
 
-    private boolean checkClassExistByIds(List<Long> ids) {
+    private boolean checkClassExistByIds(List<Integer> ids) {
         return ids.stream().allMatch(this::checkClassExistById);
     }
 }

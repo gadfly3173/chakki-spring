@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.annotation.StudentClassCheck;
 import vip.gadfly.chakkispring.common.util.IPUtil;
+import vip.gadfly.chakkispring.common.util.PageUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
@@ -51,8 +52,8 @@ public class StudentController {
     @GetMapping("/class/list")
     @GroupRequired
     @PermissionMeta(value = "查询学生本学期所属班级", mount = true)
-    public List<ClassDO> getClassesBySemesterAndStudent(@RequestParam("semester_id") Long semesterId) {
-        Long userId = LocalUser.getLocalUser().getId();
+    public List<ClassDO> getClassesBySemesterAndStudent(@RequestParam("semester_id") Integer semesterId) {
+        Integer userId = LocalUser.getLocalUser().getId();
         return classService.getClassesBySemesterAndStudent(semesterId, userId);
     }
 
@@ -60,7 +61,7 @@ public class StudentController {
     @GroupRequired
     @PermissionMeta(value = "查询特定班级", mount = true)
     @StudentClassCheck(valueType = "classId", paramType = "PathVariable")
-    public ClassDO getClass(@PathVariable @Positive(message = "{id}") Long id) {
+    public ClassDO getClass(@PathVariable @Positive(message = "{id}") Integer id) {
         return classService.getClass(id);
     }
 
@@ -70,13 +71,13 @@ public class StudentController {
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getSignList(
             @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Long classId,
+            @Min(value = 1, message = "{class-id}") Integer classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<SignListDO> iPage = classService.getSignPageByClassId(classId, count, page);
-        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+        return PageUtil.build(iPage);
     }
 
     @GroupRequired
@@ -85,7 +86,7 @@ public class StudentController {
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public SignListVO getLatestSign(
             @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Long classId) {
+            @Min(value = 1, message = "{class-id}") Integer classId) {
         return studentService.getLatestSignByClassId(classId);
     }
 
@@ -95,7 +96,7 @@ public class StudentController {
     @StudentClassCheck(valueType = signIdType, paramType = pathVariableType)
     public UnifyResponseVO confirmStudentSign(
             @Min(value = 1, message = "{lesson.sign.id.positive}")
-            @PathVariable Long signId,
+            @PathVariable Integer signId,
             HttpServletRequest request) {
         if (!studentService.signAvailable(signId)) {
             return ResponseUtil.generateUnifyResponse(10211);

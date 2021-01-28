@@ -68,7 +68,7 @@ public class AuthorizeVerifyResolverImpl implements AuthorizeVerifyResolver {
         UserDO user = LocalUser.getLocalUser();
         if (verifyAdmin(user))
             return true;
-        long userId = user.getId();
+        Integer userId = user.getId();
         String permission = meta.getPermission();
         String module = meta.getModule();
         List<PermissionDO> permissions = userService.getUserPermissions(userId);

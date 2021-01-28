@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.annotation.TeacherClassCheck;
+import vip.gadfly.chakkispring.common.util.PageUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
@@ -54,8 +55,8 @@ public class LessonController {
     @GetMapping("/class/list")
     @GroupRequired
     @PermissionMeta(value = "查询教师本学期所属班级", mount = true)
-    public List<ClassDO> getClassesBySemesterAndTeacher(@RequestParam("semester_id") Long semesterId) {
-        Long teacherId = LocalUser.getLocalUser().getId();
+    public List<ClassDO> getClassesBySemesterAndTeacher(@RequestParam("semester_id") Integer semesterId) {
+        Integer teacherId = LocalUser.getLocalUser().getId();
         return classService.getClassesBySemesterAndTeacher(semesterId, teacherId);
     }
 
@@ -63,7 +64,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查询一个班级", mount = true)
     @TeacherClassCheck(valueType = classIdType, paramType = pathVariableType)
-    public ClassDO getClass(@PathVariable @Positive(message = "{id}") Long id) {
+    public ClassDO getClass(@PathVariable @Positive(message = "{id}") Integer id) {
         return classService.getClass(id);
     }
 
@@ -73,13 +74,13 @@ public class LessonController {
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getStudents(
             @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Long classId,
+            @Min(value = 1, message = "{class-id}") Integer classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<UserDO> iPage = classService.getUserPageByClassId(classId, count, page);
-        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+        return PageUtil.build(iPage);
     }
 
     @PostMapping("/sign/create")
@@ -97,13 +98,13 @@ public class LessonController {
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getSignList(
             @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Long classId,
+            @Min(value = 1, message = "{class-id}") Integer classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<SignListDO> iPage = classService.getSignPageByClassId(classId, count, page);
-        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+        return PageUtil.build(iPage);
     }
 
     @GetMapping("/sign/students/query/{signId}")
@@ -122,17 +123,17 @@ public class LessonController {
             @RequestParam(name = "username", required = false, defaultValue = "")
                     String username,
             @Min(value = 1, message = "{lesson.sign.id.positive}")
-            @PathVariable Long signId) {
+            @PathVariable Integer signId) {
         IPage<StudentSignVO> iPage = classService.getUserPageBySignId(signId, signStatus, username, count, page,
                 orderByIP);
-        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+        return PageUtil.build(iPage);
     }
 
     @GetMapping("/sign/{id}")
     @GroupRequired
     @PermissionMeta(value = "查询一个签到信息", mount = true)
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
-    public SignCountVO getSign(@PathVariable @Positive(message = "{id}") Long id) {
+    public SignCountVO getSign(@PathVariable @Positive(message = "{id}") Integer id) {
         return classService.getSign(id);
     }
 
@@ -141,7 +142,7 @@ public class LessonController {
     @PermissionMeta(value = "修改签到记录", mount = true)
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public UnifyResponseVO updateStudentSignRecord(@RequestBody @Validated UpdateSignRecordDTO validator,
-                                                   @PathVariable Long signId) {
+                                                   @PathVariable Integer signId) {
         if (classService.updateSignRecord(validator, signId)) {
             return ResponseUtil.generateUnifyResponse(21);
         }

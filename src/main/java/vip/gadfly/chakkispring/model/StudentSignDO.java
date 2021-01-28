@@ -22,17 +22,17 @@ public class StudentSignDO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 用户id
      */
-    private Long userId;
+    private Integer userId;
 
     /**
      * 签到id
      */
-    private Long signId;
+    private Integer signId;
 
     /**
      * 签到ip
@@ -46,7 +46,7 @@ public class StudentSignDO implements Serializable {
 
     private Date createTime;
 
-    public StudentSignDO(Long signId, Long userId, String ip, int status) {
+    public StudentSignDO(Integer signId, Integer userId, String ip, int status) {
         this.userId = userId;
         this.signId = signId;
         this.ip = ip;

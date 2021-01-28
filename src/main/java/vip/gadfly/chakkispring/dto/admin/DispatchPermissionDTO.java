@@ -10,9 +10,9 @@ public class DispatchPermissionDTO {
 
     @Positive(message = "{group.id.positive}")
     @NotNull(message = "{group.id.not-null}")
-    private Long groupId;
+    private Integer groupId;
 
     @Positive(message = "{permission.id.positive}")
     @NotNull(message = "{permission.id.not-null}")
-    private Long permissionId;
+    private Integer permissionId;
 }

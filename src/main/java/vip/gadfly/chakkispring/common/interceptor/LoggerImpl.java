@@ -38,7 +38,7 @@ public class LoggerImpl implements LoggerResolver {
         if (meta != null) {
             permission = StringUtils.isEmpty(meta.value()) ? meta.value() : meta.value();
         }
-        Long userId = user.getId();
+        Integer userId = user.getId();
         String username = user.getUsername();
         String method = request.getMethod();
         String path = request.getServletPath();

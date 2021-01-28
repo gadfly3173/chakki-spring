@@ -13,9 +13,9 @@ public interface BookService {
 
     boolean updateBook(BookDO book, CreateOrUpdateBookDTO validator);
 
-    BookDO getById(Long id);
+    BookDO getById(Integer id);
 
     List<BookDO> findAll();
 
-    boolean deleteById(Long id);
+    boolean deleteById(Integer id);
 }

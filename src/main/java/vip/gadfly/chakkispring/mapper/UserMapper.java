@@ -29,7 +29,7 @@ public interface UserMapper extends BaseMapper<UserDO> {
      * @param id 用户id
      * @return 人数
      */
-    int selectCountById(Long id);
+    int selectCountById(Integer id);
 
     /**
      * 通过分组id分页获取用户数据
@@ -39,7 +39,7 @@ public interface UserMapper extends BaseMapper<UserDO> {
      * @param rootGroupId 超级用户组id(不返回超级用户组的用户)
      * @return 分页数据
      */
-    IPage<UserDO> selectPageByGroupId(Page pager, Long groupId, Long rootGroupId);
+    IPage<UserDO> selectPageByGroupId(Page pager, Integer groupId, Integer rootGroupId);
 
     /**
      * 通过班级id分页获取用户数据
@@ -48,7 +48,7 @@ public interface UserMapper extends BaseMapper<UserDO> {
      * @param classId 班级id
      * @return 分页数据
      */
-    IPage<UserDO> selectPageByClassId(Page pager, Long classId);
+    IPage<UserDO> selectPageByClassId(Page pager, Integer classId);
 
     /**
      * 通过班级id分页获取非此班级学生数据
@@ -57,7 +57,7 @@ public interface UserMapper extends BaseMapper<UserDO> {
      * @param classId 班级id
      * @return 分页数据
      */
-    IPage<UserDO> selectFreshUserPageByClassId(Page pager, Long classId);
+    IPage<UserDO> selectFreshUserPageByClassId(Page pager, Integer classId);
 
     /**
      * 通过班级id分页和姓名获取非此班级学生数据
@@ -67,7 +67,7 @@ public interface UserMapper extends BaseMapper<UserDO> {
      * @param name    名字
      * @return 分页数据
      */
-    IPage<UserDO> selectFreshUserPageByClassIdAndName(Page pager, @Param("classId") Long classId,
+    IPage<UserDO> selectFreshUserPageByClassIdAndName(Page pager, @Param("classId") Integer classId,
                                                       @Param("name") String name);
 
     /**
@@ -78,6 +78,6 @@ public interface UserMapper extends BaseMapper<UserDO> {
      * @param name    名字
      * @return 分页数据
      */
-    IPage<UserDO> selectFreshTeacherPageByClassIdAndName(Page pager, @Param("classId") Long classId,
+    IPage<UserDO> selectFreshTeacherPageByClassIdAndName(Page pager, @Param("classId") Integer classId,
                                                          @Param("name") String name);
 }

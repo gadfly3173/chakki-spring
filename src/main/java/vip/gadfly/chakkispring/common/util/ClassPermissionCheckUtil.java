@@ -31,27 +31,27 @@ public class ClassPermissionCheckUtil {
     @Autowired
     private SignListMapper signListMapper;
 
-    public static boolean isStudentInClassByClassId(Long classId) {
+    public static boolean isStudentInClassByClassId(Integer classId) {
         return isStudentInClass(classId);
     }
 
-    public static boolean isStudentInClassBySignId(Long signId) {
-        Long classId = classPermissionCheckUtil.signListMapper.selectById(signId).getClassId();
+    public static boolean isStudentInClassBySignId(Integer signId) {
+        Integer classId = classPermissionCheckUtil.signListMapper.selectById(signId).getClassId();
         return isStudentInClass(classId);
     }
 
-    public static boolean isTeacherInClassByClassId(Long classId) {
+    public static boolean isTeacherInClassByClassId(Integer classId) {
         return isTeacherInClass(classId);
     }
 
-    public static boolean isTeacherInClassBySignId(Long signId) {
-        Long classId = classPermissionCheckUtil.signListMapper.selectById(signId).getClassId();
+    public static boolean isTeacherInClassBySignId(Integer signId) {
+        Integer classId = classPermissionCheckUtil.signListMapper.selectById(signId).getClassId();
         return isTeacherInClass(classId);
     }
 
-    private static boolean isStudentInClass(Long classId) {
+    private static boolean isStudentInClass(Integer classId) {
         UserDO user = LocalUser.getLocalUser();
-        Long userId = user.getId();
+        Integer userId = user.getId();
         QueryWrapper<StudentClassDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(StudentClassDO::getUserId, userId).eq(StudentClassDO::getClassId, classId);
         boolean result = classPermissionCheckUtil.studentClassMapper.selectCount(wrapper) > 0;
@@ -61,9 +61,9 @@ public class ClassPermissionCheckUtil {
         return result;
     }
 
-    private static boolean isTeacherInClass(Long classId) {
+    private static boolean isTeacherInClass(Integer classId) {
         UserDO user = LocalUser.getLocalUser();
-        Long userId = user.getId();
+        Integer userId = user.getId();
         QueryWrapper<TeacherClassDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(TeacherClassDO::getUserId, userId).eq(TeacherClassDO::getClassId, classId);
         boolean result = classPermissionCheckUtil.teacherClassMapper.selectCount(wrapper) > 0;

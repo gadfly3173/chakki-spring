@@ -30,7 +30,7 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
 
     @Override
     public boolean handleTeacherClassCheck(HttpServletRequest request, HttpServletResponse response, TeacherClassCheck teacherClassCheck) throws IOException {
-        Long id;
+        Integer id;
         switch (teacherClassCheck.paramType()) {
             case pathVariableType:
                 id = getIdByPathVariable(request);
@@ -63,7 +63,7 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
 
     @Override
     public boolean handleStudentClassCheck(HttpServletRequest request, HttpServletResponse response, StudentClassCheck studentClassCheck) throws IOException {
-        Long id;
+        Integer id;
         switch (studentClassCheck.paramType()) {
             case pathVariableType:
                 id = getIdByPathVariable(request);
@@ -94,17 +94,17 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
         return true;
     }
 
-    private Long getIdByRequestParam(HttpServletRequest request, String valueName) {
-        return Long.valueOf(request.getParameter(valueName));
+    private Integer getIdByRequestParam(HttpServletRequest request, String valueName) {
+        return Integer.valueOf(request.getParameter(valueName));
     }
 
-    private Long getIdByPathVariable(HttpServletRequest request) {
+    private Integer getIdByPathVariable(HttpServletRequest request) {
         String path = request.getRequestURI();
         String idStr = path.substring(path.lastIndexOf("/") + 1);
-        return Long.valueOf(idStr);
+        return Integer.valueOf(idStr);
     }
 
-    private Long getIdByRequestBody(HttpServletRequest request, String valueName) throws IOException {
+    private Integer getIdByRequestBody(HttpServletRequest request, String valueName) throws IOException {
         BufferedReader streamReader = new BufferedReader(new InputStreamReader(request.getInputStream(), StandardCharsets.UTF_8));
         StringBuilder responseStrBuilder = new StringBuilder();
         String inputStr;
@@ -119,6 +119,6 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
                 tmpJson = jsonObject.getJSONObject(keyList[x]);
             }
         }
-        return tmpJson.getLong(keyList[keyList.length - 1]);
+        return tmpJson.getInteger(keyList[keyList.length - 1]);
     }
 }

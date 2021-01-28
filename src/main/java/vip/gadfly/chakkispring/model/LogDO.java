@@ -21,7 +21,7 @@ public class LogDO extends BaseModel implements Serializable {
 
     private String message;
 
-    private Long userId;
+    private Integer userId;
 
     private String username;
 

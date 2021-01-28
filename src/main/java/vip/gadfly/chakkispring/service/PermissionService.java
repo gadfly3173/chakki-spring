@@ -18,7 +18,7 @@ public interface PermissionService extends IService<PermissionDO> {
      * @param groupId 分组id
      * @return 权限
      */
-    List<PermissionDO> getPermissionByGroupId(Long groupId);
+    List<PermissionDO> getPermissionByGroupId(Integer groupId);
 
     /**
      * 通过分组id得到分组的权限
@@ -26,7 +26,7 @@ public interface PermissionService extends IService<PermissionDO> {
      * @param groupIds 分组id
      * @return 权限
      */
-    List<PermissionDO> getPermissionByGroupIds(List<Long> groupIds);
+    List<PermissionDO> getPermissionByGroupIds(List<Integer> groupIds);
 
     /**
      * 通过分组id得到分组的权限与分组id的映射
@@ -34,7 +34,7 @@ public interface PermissionService extends IService<PermissionDO> {
      * @param groupIds 分组id
      * @return 权限map
      */
-    Map<Long, List<PermissionDO>> getPermissionMapByGroupIds(List<Long> groupIds);
+    Map<Integer, List<PermissionDO>> getPermissionMapByGroupIds(List<Integer> groupIds);
 
     /**
      * 将权限结构化
@@ -59,5 +59,5 @@ public interface PermissionService extends IService<PermissionDO> {
      * @param module   权限模块
      * @return 权限map
      */
-    List<PermissionDO> getPermissionByGroupIdsAndModule(List<Long> groupIds, String module);
+    List<PermissionDO> getPermissionByGroupIdsAndModule(List<Integer> groupIds, String module);
 }

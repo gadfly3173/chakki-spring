@@ -23,14 +23,14 @@ public interface StudentService {
      *
      * @param signId 签到id
      */
-    boolean confirmSign(Long signId, String ip);
+    boolean confirmSign(Integer signId, String ip);
 
     /**
      * 获得最新签到项目
      *
      * @return 签到项目数据
      */
-    SignListVO getLatestSignByClassId(Long classId);
+    SignListVO getLatestSignByClassId(Integer classId);
 
-    boolean signAvailable(Long signId);
+    boolean signAvailable(Integer signId);
 }

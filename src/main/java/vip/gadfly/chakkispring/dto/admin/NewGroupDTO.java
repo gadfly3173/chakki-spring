@@ -1,6 +1,5 @@
 package vip.gadfly.chakkispring.dto.admin;
 
-import io.github.talelin.autoconfigure.validator.LongList;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -16,6 +15,6 @@ public class NewGroupDTO {
     @Length(min = 1, max = 255, message = "{group.info.length}")
     private String info;
 
-    @LongList(allowBlank = true, message = "{permission.ids.long-list}")
-    private List<Long> permissionIds;
+    // @LongList(allowBlank = true, message = "{permission.ids.long-list}")
+    private List<Integer> permissionIds;
 }

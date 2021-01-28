@@ -8,7 +8,7 @@ public class FileBO {
     /**
      * 文件 id
      */
-    private Long id;
+    private Integer id;
 
     /**
      * 文件 key，上传时指定的

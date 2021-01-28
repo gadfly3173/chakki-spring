@@ -24,7 +24,7 @@ public interface AdminService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<UserDO> getUserPageByGroupId(Long groupId, Integer count, Integer page);
+    IPage<UserDO> getUserPageByGroupId(Integer groupId, Integer count, Integer page);
 
     /**
      * 通过班级id分页获取用户数据
@@ -34,7 +34,7 @@ public interface AdminService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<UserDO> getUserPageByClassId(Long classId, Integer count, Integer page);
+    IPage<UserDO> getUserPageByClassId(Integer classId, Integer count, Integer page);
 
     /**
      * 修改用户密码（重置用户密码）
@@ -43,7 +43,7 @@ public interface AdminService {
      * @param dto 密码信息
      * @return 是否修改成功
      */
-    boolean changeUserPassword(Long id, ResetPasswordDTO dto);
+    boolean changeUserPassword(Integer id, ResetPasswordDTO dto);
 
     /**
      * 删除用户
@@ -51,7 +51,7 @@ public interface AdminService {
      * @param id 用户id
      * @return 是否删除成功
      */
-    boolean deleteUser(Long id);
+    boolean deleteUser(Integer id);
 
     /**
      * 更新用户信息
@@ -60,7 +60,7 @@ public interface AdminService {
      * @param dto 数据信息
      * @return 是否成功
      */
-    boolean updateUserInfo(Long id, UpdateUserInfoDTO dto);
+    boolean updateUserInfo(Integer id, UpdateUserInfoDTO dto);
 
     /**
      * 分页获取分组数据
@@ -77,7 +77,7 @@ public interface AdminService {
      * @param id 分组id
      * @return 分组数据
      */
-    GroupPermissionBO getGroup(Long id);
+    GroupPermissionBO getGroup(Integer id);
 
     /**
      * 新建分组
@@ -94,7 +94,7 @@ public interface AdminService {
      * @param dto 分组信息
      * @return 是否成功
      */
-    boolean updateGroup(Long id, UpdateGroupDTO dto);
+    boolean updateGroup(Integer id, UpdateGroupDTO dto);
 
     /**
      * 删除分组
@@ -102,7 +102,7 @@ public interface AdminService {
      * @param id 分组id
      * @return 是否成功
      */
-    boolean deleteGroup(Long id);
+    boolean deleteGroup(Integer id);
 
     /**
      * 分配权限

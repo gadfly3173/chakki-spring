@@ -84,7 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             userGroupMapper.insertBatch(relations);
         } else {
             // id为3的分组为学生分组
-            Long guestGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.GUEST);
+            Integer guestGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.GUEST);
             UserGroupDO relation = new UserGroupDO(user.getId(), guestGroupId);
             userGroupMapper.insert(relation);
         }
@@ -122,7 +122,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean adminUpdateUserInfo(Long id, String username, String nickname) {
+    public boolean adminUpdateUserInfo(Integer id, String username, String nickname) {
         UserDO user = new UserDO();
         user.setId(id);
         user.setUsername(username);
@@ -146,20 +146,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     }
 
     @Override
-    public List<GroupDO> getUserGroups(Long userId) {
+    public List<GroupDO> getUserGroups(Integer userId) {
         return groupService.getUserGroupsByUserId(userId);
     }
 
     @Override
-    public List<Map<String, List<Map<String, String>>>> getStructualUserPermissions(Long userId) {
+    public List<Map<String, List<Map<String, String>>>> getStructualUserPermissions(Integer userId) {
         List<PermissionDO> permissions = getUserPermissions(userId);
         return permissionService.structuringPermissions(permissions);
     }
 
     @Override
-    public List<PermissionDO> getUserPermissions(Long userId) {
+    public List<PermissionDO> getUserPermissions(Integer userId) {
         // 查找用户搜索分组，查找分组下的所有权限
-        List<Long> groupIds = groupService.getUserGroupIdsByUserId(userId);
+        List<Integer> groupIds = groupService.getUserGroupIdsByUserId(userId);
         if (groupIds == null || groupIds.size() == 0) {
             return new ArrayList<>();
         }
@@ -167,8 +167,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     }
 
     @Override
-    public List<PermissionDO> getUserPermissionsByModule(Long userId, String module) {
-        List<Long> groupIds = groupService.getUserGroupIdsByUserId(userId);
+    public List<PermissionDO> getUserPermissionsByModule(Integer userId, String module) {
+        List<Integer> groupIds = groupService.getUserGroupIdsByUserId(userId);
         if (groupIds == null || groupIds.size() == 0) {
             return new ArrayList<>();
         }
@@ -197,56 +197,56 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     }
 
     @Override
-    public boolean checkUserExistById(Long id) {
+    public boolean checkUserExistById(Integer id) {
         int rows = this.baseMapper.selectCountById(id);
         return rows > 0;
     }
 
     @Override
-    public IPage<UserDO> getUserPageByGroupId(Page<UserDO> pager, Long groupId) {
-        Long rootGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
+    public IPage<UserDO> getUserPageByGroupId(Page<UserDO> pager, Integer groupId) {
+        Integer rootGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
         return this.baseMapper.selectPageByGroupId(pager, groupId, rootGroupId);
     }
 
     @Override
-    public IPage<UserDO> getUserPageByClassId(Page<UserDO> pager, Long classId) {
+    public IPage<UserDO> getUserPageByClassId(Page<UserDO> pager, Integer classId) {
         return this.baseMapper.selectPageByClassId(pager, classId);
     }
 
     @Override
-    public IPage<UserDO> getFreshUserPageByClassId(Page<UserDO> pager, Long classId) {
+    public IPage<UserDO> getFreshUserPageByClassId(Page<UserDO> pager, Integer classId) {
         return this.baseMapper.selectFreshUserPageByClassId(pager, classId);
     }
 
     @Override
-    public IPage<UserDO> getFreshUserPageByClassIdAndName(Page<UserDO> pager, Long classId, String name) {
+    public IPage<UserDO> getFreshUserPageByClassIdAndName(Page<UserDO> pager, Integer classId, String name) {
         return this.baseMapper.selectFreshUserPageByClassIdAndName(pager, classId, name);
     }
 
     @Override
-    public IPage<UserDO> getFreshTeacherPageByClassIdAndName(Page<UserDO> pager, Long classId, String name) {
+    public IPage<UserDO> getFreshTeacherPageByClassIdAndName(Page<UserDO> pager, Integer classId, String name) {
         return this.baseMapper.selectFreshTeacherPageByClassIdAndName(pager, classId, name);
     }
 
     @Override
-    public Long getRootUserId() {
-        Long rootGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
+    public Integer getRootUserId() {
+        Integer rootGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
         QueryWrapper<UserGroupDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(UserGroupDO::getGroupId, rootGroupId);
         UserGroupDO userGroupDO = userGroupMapper.selectOne(wrapper);
         return userGroupDO == null ? 0 : userGroupDO.getUserId();
     }
 
-    private void checkGroupsExist(List<Long> ids) {
-        for (long id : ids) {
+    private void checkGroupsExist(List<Integer> ids) {
+        for (Integer id : ids) {
             if (!groupService.checkGroupExistById(id)) {
                 throw new NotFoundException(10023);
             }
         }
     }
 
-    private void checkGroupsValid(List<Long> ids) {
-        Long rootGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
+    private void checkGroupsValid(List<Integer> ids) {
+        Integer rootGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
         boolean anyMatch = ids.stream().anyMatch(it -> it.equals(rootGroupId));
         if (anyMatch) {
             throw new ForbiddenException(10073);

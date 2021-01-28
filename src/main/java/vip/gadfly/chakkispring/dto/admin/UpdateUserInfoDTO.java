@@ -1,6 +1,5 @@
 package vip.gadfly.chakkispring.dto.admin;
 
-import io.github.talelin.autoconfigure.validator.LongList;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -10,8 +9,8 @@ import java.util.List;
 @Data
 public class UpdateUserInfoDTO {
 
-    @LongList(min = 1, message = "{group.ids.long-list}")
-    private List<Long> groupIds;
+    // @LongList(min = 1, message = "{group.ids.long-list}")
+    private List<Integer> groupIds;
 
     @NotBlank(message = "{user.username.not-blank}")
     @Size(max = 10, min = 2, message = "{user.username.size}")

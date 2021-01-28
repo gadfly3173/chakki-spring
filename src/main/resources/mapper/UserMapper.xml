@@ -21,14 +21,14 @@
           AND u.delete_time IS NULL
     </select>
 
-    <select id="selectCountById" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    <select id="selectCountById" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM lin_user as u
         WHERE u.id = #{id}
           AND u.delete_time IS NULL
     </select>
 
-    <select id="selectPageByGroupId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectPageByGroupId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT u.id, u.username, u.nickname,
         u.avatar, u.email, u.create_time,
         u.update_time, u.delete_time
@@ -43,7 +43,7 @@
           AND u.delete_time IS NULL
     </select>
 
-    <select id="selectPageByClassId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectPageByClassId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT u.username,
                u.nickname,
                u.id,
@@ -62,7 +62,7 @@
           AND u.delete_time IS NULL
     </select>
 
-    <select id="selectFreshUserPageByClassId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectFreshUserPageByClassId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT u.username,
                u.nickname,
                u.id,

@@ -20,7 +20,7 @@ public interface GroupService extends IService<GroupDO> {
      * @param userId 用户id
      * @return 所有分组
      */
-    List<GroupDO> getUserGroupsByUserId(Long userId);
+    List<GroupDO> getUserGroupsByUserId(Integer userId);
 
     /**
      * 获得用户的所有分组id
@@ -28,7 +28,7 @@ public interface GroupService extends IService<GroupDO> {
      * @param userId 用户id
      * @return 所有分组id
      */
-    List<Long> getUserGroupIdsByUserId(Long userId);
+    List<Integer> getUserGroupIdsByUserId(Integer userId);
 
     /**
      * 分页获取分组数据
@@ -45,7 +45,7 @@ public interface GroupService extends IService<GroupDO> {
      * @param id 分组id
      * @return 是否存在
      */
-    boolean checkGroupExistById(Long id);
+    boolean checkGroupExistById(Integer id);
 
     /**
      * 获得分组及其权限
@@ -53,7 +53,7 @@ public interface GroupService extends IService<GroupDO> {
      * @param id 分组id
      * @return 分组及权限
      */
-    GroupPermissionBO getGroupAndPermissions(Long id);
+    GroupPermissionBO getGroupAndPermissions(Integer id);
 
     /**
      * 通过名称检查分组是否存在
@@ -69,7 +69,7 @@ public interface GroupService extends IService<GroupDO> {
      * @param userId 用户id
      * @return true表示在
      */
-    boolean checkIsRootByUserId(Long userId);
+    boolean checkIsRootByUserId(Integer userId);
 
     /**
      * 删除用户与分组直接的关联
@@ -77,7 +77,7 @@ public interface GroupService extends IService<GroupDO> {
      * @param userId    用户id
      * @param deleteIds 分组id
      */
-    boolean deleteUserGroupRelations(Long userId, List<Long> deleteIds);
+    boolean deleteUserGroupRelations(Integer userId, List<Integer> deleteIds);
 
     /**
      * 添加用户与分组直接的关联
@@ -85,7 +85,7 @@ public interface GroupService extends IService<GroupDO> {
      * @param userId 用户id
      * @param addIds 分组id
      */
-    boolean addUserGroupRelations(Long userId, List<Long> addIds);
+    boolean addUserGroupRelations(Integer userId, List<Integer> addIds);
 
     /**
      * 获得分组下所有用户的id
@@ -93,7 +93,7 @@ public interface GroupService extends IService<GroupDO> {
      * @param id 分组id
      * @return 用户id
      */
-    List<Long> getGroupUserIds(Long id);
+    List<Integer> getGroupUserIds(Integer id);
 
 
     /**
@@ -110,5 +110,5 @@ public interface GroupService extends IService<GroupDO> {
      * @param level GroupLevelEnum 枚举类
      * @return 用户组id
      */
-    Long getParticularGroupIdByLevel(GroupLevelEnum level);
+    Integer getParticularGroupIdByLevel(GroupLevelEnum level);
 }

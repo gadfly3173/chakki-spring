@@ -18,7 +18,7 @@ public class TeacherClassVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private Integer id;
 
     /**
      * 用户名，唯一

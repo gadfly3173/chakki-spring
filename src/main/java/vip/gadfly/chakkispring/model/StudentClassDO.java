@@ -17,19 +17,19 @@ public class StudentClassDO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 用户id
      */
-    private Long userId;
+    private Integer userId;
 
     /**
      * 班级id
      */
-    private Long classId;
+    private Integer classId;
 
-    public StudentClassDO(Long classId, Long userId) {
+    public StudentClassDO(Integer classId, Integer userId) {
         this.userId = userId;
         this.classId = classId;
     }

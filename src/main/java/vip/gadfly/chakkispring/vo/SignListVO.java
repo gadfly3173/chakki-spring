@@ -14,16 +14,16 @@ public class SignListVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private Integer id;
 
     /**
      * 班级id
      */
-    private Long classId;
+    private Integer classId;
 
     private String name;
 
-    private Long signed;
+    private Integer signed;
 
     private Date createTime;
 

@@ -30,7 +30,7 @@ public interface ClassService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<UserDO> getUserPageByClassId(Long classId, Integer count, Integer page);
+    IPage<UserDO> getUserPageByClassId(Integer classId, Integer count, Integer page);
 
     /**
      * 通过班级id分页获取非此班级学生数据
@@ -40,7 +40,7 @@ public interface ClassService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<UserDO> getFreshUserPageByClassId(Long classId, Integer count, Integer page);
+    IPage<UserDO> getFreshUserPageByClassId(Integer classId, Integer count, Integer page);
 
     /**
      * 通过班级id分页和名字获取非此班级学生数据
@@ -51,7 +51,7 @@ public interface ClassService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<UserDO> getFreshUserPageByClassIdAndName(Long classId, String name, Integer count, Integer page);
+    IPage<UserDO> getFreshUserPageByClassIdAndName(Integer classId, String name, Integer count, Integer page);
 
     /**
      * 获得用户的所有班级
@@ -59,7 +59,7 @@ public interface ClassService {
      * @param userId 用户id
      * @return 所有班级
      */
-    List<ClassDO> getUserClassByUserId(Long userId);
+    List<ClassDO> getUserClassByUserId(Integer userId);
 
     /**
      * 分页获取班级数据
@@ -76,7 +76,7 @@ public interface ClassService {
      * @param id 班级id
      * @return 班级数据
      */
-    ClassDO getClass(Long id);
+    ClassDO getClass(Integer id);
 
     /**
      * 新建班级
@@ -93,7 +93,7 @@ public interface ClassService {
      * @param dto 班级信息
      * @return 是否成功
      */
-    boolean updateClass(Long id, UpdateClassDTO dto);
+    boolean updateClass(Integer id, UpdateClassDTO dto);
 
     /**
      * 删除班级
@@ -101,7 +101,7 @@ public interface ClassService {
      * @param id 班级id
      * @return 是否成功
      */
-    boolean deleteClass(Long id);
+    boolean deleteClass(Integer id);
 
     /**
      * 获得所有班级信息
@@ -114,7 +114,7 @@ public interface ClassService {
      * @param userId    用户id
      * @param deleteIds 班级id
      */
-    boolean deleteStudentClassRelations(Long userId, List<Long> deleteIds);
+    boolean deleteStudentClassRelations(Integer userId, List<Integer> deleteIds);
 
     /**
      * 添加用户与班级之间的关联
@@ -122,7 +122,7 @@ public interface ClassService {
      * @param classId 班级id
      * @param addIds  用户id
      */
-    boolean addStudentClassRelations(Long classId, List<Long> addIds);
+    boolean addStudentClassRelations(Integer classId, List<Integer> addIds);
 
     /**
      * 添加用户与班级直接的关联
@@ -139,7 +139,7 @@ public interface ClassService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<SignListDO> getSignPageByClassId(Long classId, Integer count, Integer page);
+    IPage<SignListDO> getSignPageByClassId(Integer classId, Integer count, Integer page);
 
     /**
      * 通过id分页获取签到项目详情
@@ -150,7 +150,7 @@ public interface ClassService {
      * @param page       当前分页
      * @return 用户数据
      */
-    IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Integer count, Integer page,
+    IPage<StudentSignVO> getUserPageBySignId(Integer signId, Integer signStatus, String username, Integer count, Integer page,
                                              boolean orderByIP);
 
     /**
@@ -159,14 +159,14 @@ public interface ClassService {
      * @param id 签到id
      * @return 签到数据
      */
-    SignCountVO getSign(Long id);
+    SignCountVO getSign(Integer id);
 
     /**
      * 修改签到记录信息
      *
      * @param validator 签到内容
      */
-    boolean updateSignRecord(UpdateSignRecordDTO validator, Long signId);
+    boolean updateSignRecord(UpdateSignRecordDTO validator, Integer signId);
 
     /**
      * 通过班级id分页获取班级内的教师
@@ -174,7 +174,7 @@ public interface ClassService {
      * @param classId 班级id
      * @return 用户数据
      */
-    IPage<TeacherClassVO> getTeacherPageByClassId(Long classId);
+    IPage<TeacherClassVO> getTeacherPageByClassId(Integer classId);
 
     /**
      * 通过姓名、班级id分页获取不在班级的教师
@@ -185,7 +185,7 @@ public interface ClassService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<UserDO> getFreshTeacherPageByClassIdAndName(Long classId, String name, Integer count, Integer page);
+    IPage<UserDO> getFreshTeacherPageByClassIdAndName(Integer classId, String name, Integer count, Integer page);
 
     /**
      * 添加教师与班级之间的关联
@@ -193,7 +193,7 @@ public interface ClassService {
      * @param classIds 班级id
      * @param userId   用户id
      */
-    boolean deleteTeacherClassRelations(Long userId, List<Long> classIds);
+    boolean deleteTeacherClassRelations(Integer userId, List<Integer> classIds);
 
     /**
      * 添加教师与班级之间的关联
@@ -201,7 +201,7 @@ public interface ClassService {
      * @param classId 班级id
      * @param userIds 用户id
      */
-    boolean addTeacherClassRelations(Long classId, List<Long> userIds, Integer level);
+    boolean addTeacherClassRelations(Integer classId, List<Integer> userIds, Integer level);
 
     /**
      * 新建学期
@@ -224,7 +224,7 @@ public interface ClassService {
      * @param validator 学期信息
      * @return 是否成功
      */
-    boolean updateSemester(Long id, UpdateSemesterDTO validator);
+    boolean updateSemester(Integer id, UpdateSemesterDTO validator);
 
     /**
      * 删除学期
@@ -232,7 +232,7 @@ public interface ClassService {
      * @param id 学期id
      * @return 是否成功
      */
-    boolean deleteSemester(Long id);
+    boolean deleteSemester(Integer id);
 
     /**
      * 根据学期id和教师id查询班级列表
@@ -241,7 +241,7 @@ public interface ClassService {
      * @param teacherId  教师id
      * @return 班级列表
      */
-    List<ClassDO> getClassesBySemesterAndTeacher(Long semesterId, Long teacherId);
+    List<ClassDO> getClassesBySemesterAndTeacher(Integer semesterId, Integer teacherId);
 
     /**
      * 根据学期id和学生id查询班级列表
@@ -250,5 +250,5 @@ public interface ClassService {
      * @param userId     学生id
      * @return 班级列表
      */
-    List<ClassDO> getClassesBySemesterAndStudent(Long semesterId, Long userId);
+    List<ClassDO> getClassesBySemesterAndStudent(Integer semesterId, Integer userId);
 }

@@ -18,11 +18,11 @@ import java.util.Date;
 @NoArgsConstructor
 public class StudentSignVO {
 
-    private Long id;
+    private Integer id;
 
-    private Long signId;
+    private Integer signId;
 
-    private Long userId;
+    private Integer userId;
 
     /**
      * 用户名，唯一

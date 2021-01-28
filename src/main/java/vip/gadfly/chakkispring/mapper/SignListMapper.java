@@ -21,7 +21,7 @@ public interface SignListMapper extends BaseMapper<SignListDO> {
      * @param classId 班级id
      * @return 分页数据
      */
-    IPage<SignListDO> selectSignPageByClassId(Page pager, Long classId);
+    IPage<SignListDO> selectSignPageByClassId(Page pager, Integer classId);
 
     /**
      * 通过班级id获取最新签到项目
@@ -29,7 +29,7 @@ public interface SignListMapper extends BaseMapper<SignListDO> {
      * @param classId 班级id
      * @return 数据
      */
-    SignListVO getLatestSignByClassId(Long classId);
+    SignListVO getLatestSignByClassId(Integer classId);
 
     /**
      * 学生通过班级id获取最新签到项目
@@ -37,7 +37,7 @@ public interface SignListMapper extends BaseMapper<SignListDO> {
      * @param classId 班级id
      * @return 数据
      */
-    SignListVO getStudentLatestSignByClassId(Long classId, Long userId);
+    SignListVO getStudentLatestSignByClassId(Integer classId, Integer userId);
 
-    SignCountVO selectSignCountInfoById(@Param("signId") Long signId);
+    SignCountVO selectSignCountInfoById(@Param("signId") Integer signId);
 }

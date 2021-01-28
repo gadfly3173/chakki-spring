@@ -17,7 +17,7 @@ public interface ClassManageService extends IService<ClassDO> {
      * @param userId 用户id
      * @return 所有班级
      */
-    List<ClassDO> getUserClassesByUserId(Long userId);
+    List<ClassDO> getUserClassesByUserId(Integer userId);
 
     /**
      * 获得用户的所有班级id
@@ -25,7 +25,7 @@ public interface ClassManageService extends IService<ClassDO> {
      * @param userId 用户id
      * @return 所有班级id
      */
-    List<Long> getUserClassIdsByUserId(Long userId);
+    List<Integer> getUserClassIdsByUserId(Integer userId);
 
     /**
      * 分页获取班级数据
@@ -42,7 +42,7 @@ public interface ClassManageService extends IService<ClassDO> {
      * @param id 班级id
      * @return 内容
      */
-    ClassDO getClassById(Long id);
+    ClassDO getClassById(Integer id);
 
     /**
      * 通过id检查班级是否存在
@@ -50,7 +50,7 @@ public interface ClassManageService extends IService<ClassDO> {
      * @param id 班级id
      * @return 是否存在
      */
-    boolean checkClassExistById(Long id);
+    boolean checkClassExistById(Integer id);
 
     /**
      * 通过名称检查班级是否存在
@@ -66,7 +66,7 @@ public interface ClassManageService extends IService<ClassDO> {
      * @param userId    用户id
      * @param deleteIds 班级id
      */
-    boolean deleteUserClassRelations(Long userId, List<Long> deleteIds);
+    boolean deleteUserClassRelations(Integer userId, List<Integer> deleteIds);
 
     /**
      * 获得班级下所有用户的id
@@ -74,7 +74,7 @@ public interface ClassManageService extends IService<ClassDO> {
      * @param id 班级id
      * @return 用户id
      */
-    List<Long> getClassUserIds(Long id);
+    List<Integer> getClassUserIds(Integer id);
 
     /**
      * 删除用户与班级直接的关联
@@ -82,7 +82,7 @@ public interface ClassManageService extends IService<ClassDO> {
      * @param userId   用户id
      * @param classIds 班级id
      */
-    boolean deleteTeacherClassRelations(Long userId, List<Long> classIds);
+    boolean deleteTeacherClassRelations(Integer userId, List<Integer> classIds);
 
     /**
      * 根据学期id和教师id查询班级列表
@@ -91,7 +91,7 @@ public interface ClassManageService extends IService<ClassDO> {
      * @param teacherId  教师id
      * @return 班级列表
      */
-    List<ClassDO> getClassesBySemesterAndTeacher(Long semesterId, Long teacherId);
+    List<ClassDO> getClassesBySemesterAndTeacher(Integer semesterId, Integer teacherId);
 
     /**
      * 根据学期id和学生id查询班级列表
@@ -100,5 +100,5 @@ public interface ClassManageService extends IService<ClassDO> {
      * @param userId     学生id
      * @return 班级列表
      */
-    List<ClassDO> getClassesBySemesterAndStudent(Long semesterId, Long userId);
+    List<ClassDO> getClassesBySemesterAndStudent(Integer semesterId, Integer userId);
 }

@@ -56,7 +56,7 @@ public class AdminController {
     @PermissionMeta(value = "查询所有用户", mount = false)
     public PageResponseVO getUsers(
             @RequestParam(name = "group_id", required = false)
-            @Min(value = 1, message = "{group.id.positive}") Long groupId,
+            @Min(value = 1, message = "{group.id.positive}") Integer groupId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{page.count.min}")
             @Max(value = 30, message = "{page.count.max}") Integer count,
@@ -73,7 +73,7 @@ public class AdminController {
     @PutMapping("/user/{id}/password")
     @AdminRequired
     @PermissionMeta(value = "修改用户密码", mount = false)
-    public UnifyResponseVO changeUserPassword(@PathVariable @Positive(message = "{id.positive}") Long id,
+    public UnifyResponseVO changeUserPassword(@PathVariable @Positive(message = "{id.positive}") Integer id,
                                               @RequestBody @Validated ResetPasswordDTO validator) {
         adminService.changeUserPassword(id, validator);
         return ResponseUtil.generateUnifyResponse(2);
@@ -82,7 +82,7 @@ public class AdminController {
     @DeleteMapping("/user/{id}")
     @AdminRequired
     @PermissionMeta(value = "删除用户", mount = false)
-    public UnifyResponseVO deleteUser(@PathVariable @Positive(message = "{id.positive}") Long id) {
+    public UnifyResponseVO deleteUser(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         adminService.deleteUser(id);
         return ResponseUtil.generateUnifyResponse(3);
     }
@@ -90,7 +90,7 @@ public class AdminController {
     @PutMapping("/user/{id}")
     @AdminRequired
     @PermissionMeta(value = "管理员更新用户信息", mount = false)
-    public UnifyResponseVO updateUser(@PathVariable @Positive(message = "{id.positive}") Long id,
+    public UnifyResponseVO updateUser(@PathVariable @Positive(message = "{id.positive}") Integer id,
                                       @RequestBody @Validated UpdateUserInfoDTO validator) {
         adminService.updateUserInfo(id, validator);
         return ResponseUtil.generateUnifyResponse(4);
@@ -120,7 +120,7 @@ public class AdminController {
     @GetMapping("/group/{id}")
     @AdminRequired
     @PermissionMeta(value = "查询一个权限组及其权限", mount = false)
-    public GroupPermissionBO getGroup(@PathVariable @Positive(message = "{id.positive}") Long id) {
+    public GroupPermissionBO getGroup(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         GroupPermissionBO groupPermissions = adminService.getGroup(id);
         return groupPermissions;
     }
@@ -136,7 +136,7 @@ public class AdminController {
     @PutMapping("/group/{id}")
     @AdminRequired
     @PermissionMeta(value = "更新一个权限组", mount = false)
-    public UnifyResponseVO updateGroup(@PathVariable @Positive(message = "{id.positive}") Long id,
+    public UnifyResponseVO updateGroup(@PathVariable @Positive(message = "{id.positive}") Integer id,
                                        @RequestBody @Validated UpdateGroupDTO validator) {
         adminService.updateGroup(id, validator);
         return ResponseUtil.generateUnifyResponse(5);
@@ -145,7 +145,7 @@ public class AdminController {
     @DeleteMapping("/group/{id}")
     @AdminRequired
     @PermissionMeta(value = "删除一个权限组", mount = false)
-    public UnifyResponseVO deleteGroup(@PathVariable @Positive(message = "{id.positive}") Long id) {
+    public UnifyResponseVO deleteGroup(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         adminService.deleteGroup(id);
         return ResponseUtil.generateUnifyResponse(6);
     }

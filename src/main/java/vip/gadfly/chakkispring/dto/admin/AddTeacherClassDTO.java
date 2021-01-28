@@ -1,6 +1,5 @@
 package vip.gadfly.chakkispring.dto.admin;
 
-import io.github.talelin.autoconfigure.validator.LongList;
 import lombok.Data;
 import vip.gadfly.chakkispring.common.constant.TeacherLevelConstant;
 
@@ -15,7 +14,7 @@ import java.util.List;
 public class AddTeacherClassDTO {
     @Positive(message = "{class.id.positive}")
     @NotNull(message = "{class.id.not-null}")
-    private Long classId;
+    private Integer classId;
 
     @Min(value = TeacherLevelConstant.MAIN_LEVEL, message = "{teacher.level.id.positive}")
     @Max(value = TeacherLevelConstant.SUB_LEVEL, message = "{teacher.level.id.positive}")
@@ -23,6 +22,6 @@ public class AddTeacherClassDTO {
     private Integer level;
 
     @Size(min = 1, message = "{class.user-ids.long-list}")
-    @LongList(message = "{class.user-ids.long-list}")
-    private List<Long> userIds;
+    // @LongList(message = "{class.user-ids.long-list}")
+    private List<Integer> userIds;
 }

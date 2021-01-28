@@ -60,7 +60,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     private SemesterMapper semesterMapper;
 
     @Override
-    public IPage<UserDO> getUserPageByClassId(Long classId, Integer count, Integer page) {
+    public IPage<UserDO> getUserPageByClassId(Integer classId, Integer count, Integer page) {
         Page pager = new Page(page, count);
         IPage<UserDO> iPage;
         iPage = userService.getUserPageByClassId(pager, classId);
@@ -68,7 +68,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<UserDO> getFreshUserPageByClassId(Long classId, Integer count, Integer page) {
+    public IPage<UserDO> getFreshUserPageByClassId(Integer classId, Integer count, Integer page) {
         Page pager = new Page(page, count);
         IPage<UserDO> iPage;
         iPage = userService.getFreshUserPageByClassId(pager, classId);
@@ -76,7 +76,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<UserDO> getFreshUserPageByClassIdAndName(Long classId, String name, Integer count, Integer page) {
+    public IPage<UserDO> getFreshUserPageByClassIdAndName(Integer classId, String name, Integer count, Integer page) {
         Page pager = new Page(page, count);
         IPage<UserDO> iPage;
         iPage = userService.getFreshUserPageByClassIdAndName(pager, classId, name);
@@ -84,7 +84,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public List<ClassDO> getUserClassByUserId(Long userId) {
+    public List<ClassDO> getUserClassByUserId(Integer userId) {
         return this.baseMapper.selectUserClasses(userId);
     }
 
@@ -94,7 +94,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public ClassDO getClass(Long id) {
+    public ClassDO getClass(Integer id) {
         throwClassNotExistById(id);
         return classManageService.getClassById(id);
     }
@@ -114,10 +114,10 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public boolean updateClass(Long id, UpdateClassDTO dto) {
+    public boolean updateClass(Integer id, UpdateClassDTO dto) {
         ClassDO exist = classManageService.getById(id);
         if (exist == null) {
-            throw new NotFoundException("class not found", 10202);
+            throw new NotFoundException(10202);
         }
         if (!exist.getName().equals(dto.getName())) {
             throwClassNameExist(dto.getName());
@@ -134,19 +134,19 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean deleteClass(Long id) {
+    public boolean deleteClass(Integer id) {
         throwClassNotExistById(id);
         studentClassMapper.removeByClassId(id);
         return classManageService.removeById(id);
     }
 
     @Override
-    public boolean deleteStudentClassRelations(Long userId, List<Long> deleteIds) {
+    public boolean deleteStudentClassRelations(Integer userId, List<Integer> deleteIds) {
         return classManageService.deleteUserClassRelations(userId, deleteIds);
     }
 
     @Override
-    public boolean addStudentClassRelations(Long classId, List<Long> addIds) {
+    public boolean addStudentClassRelations(Integer classId, List<Integer> addIds) {
         if (addIds == null || addIds.isEmpty()) {
             return false;
         }
@@ -178,7 +178,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<SignListDO> getSignPageByClassId(Long classId, Integer count, Integer page) {
+    public IPage<SignListDO> getSignPageByClassId(Integer classId, Integer count, Integer page) {
         Page pager = new Page(page, count);
         IPage<SignListDO> iPage;
         iPage = signListMapper.selectSignPageByClassId(pager, classId);
@@ -186,7 +186,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<StudentSignVO> getUserPageBySignId(Long signId, Integer signStatus, String username, Integer count,
+    public IPage<StudentSignVO> getUserPageBySignId(Integer signId, Integer signStatus, String username, Integer count,
                                                     Integer page, boolean orderByIP) {
         Page pager = new Page(page, count);
         IPage<StudentSignVO> iPage;
@@ -210,12 +210,12 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public SignCountVO getSign(Long id) {
+    public SignCountVO getSign(Integer id) {
         return signListMapper.selectSignCountInfoById(id);
     }
 
     @Override
-    public boolean updateSignRecord(UpdateSignRecordDTO validator, Long signId) {
+    public boolean updateSignRecord(UpdateSignRecordDTO validator, Integer signId) {
         QueryWrapper<StudentSignDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(StudentSignDO::getUserId, validator.getUserId()).eq(StudentSignDO::getSignId, signId);
         StudentSignDO studentSignDO = studentSignMapper.selectOne(wrapper);
@@ -228,7 +228,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<TeacherClassVO> getTeacherPageByClassId(Long classId) {
+    public IPage<TeacherClassVO> getTeacherPageByClassId(Integer classId) {
         Page pager = new Page(0, 10);
         IPage<TeacherClassVO> iPage;
         iPage = teacherClassMapper.selectTeacherDetailByClassId(pager, classId);
@@ -236,7 +236,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<UserDO> getFreshTeacherPageByClassIdAndName(Long classId, String name, Integer count, Integer page) {
+    public IPage<UserDO> getFreshTeacherPageByClassIdAndName(Integer classId, String name, Integer count, Integer page) {
         Page pager = new Page(page, count);
         IPage<UserDO> iPage;
         iPage = userService.getFreshTeacherPageByClassIdAndName(pager, classId, name);
@@ -244,12 +244,12 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public boolean deleteTeacherClassRelations(Long userId, List<Long> classIds) {
+    public boolean deleteTeacherClassRelations(Integer userId, List<Integer> classIds) {
         return classManageService.deleteTeacherClassRelations(userId, classIds);
     }
 
     @Override
-    public boolean addTeacherClassRelations(Long classId, List<Long> userIds, Integer level) {
+    public boolean addTeacherClassRelations(Integer classId, List<Integer> userIds, Integer level) {
         if (userIds == null || userIds.isEmpty()) {
             return false;
         }
@@ -284,10 +284,10 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public boolean updateSemester(Long id, UpdateSemesterDTO dto) {
+    public boolean updateSemester(Integer id, UpdateSemesterDTO dto) {
         SemesterDO exist = semesterMapper.selectById(id);
         if (exist == null) {
-            throw new NotFoundException("semester not found", 10220);
+            throw new NotFoundException(10220);
         }
         if (!exist.getName().equals(dto.getName())) {
             throwSemesterNameExist(dto.getName());
@@ -298,17 +298,17 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public boolean deleteSemester(Long id) {
+    public boolean deleteSemester(Integer id) {
         return semesterMapper.deleteById(id) > 0;
     }
 
     @Override
-    public List<ClassDO> getClassesBySemesterAndTeacher(Long semesterId, Long teacherId) {
+    public List<ClassDO> getClassesBySemesterAndTeacher(Integer semesterId, Integer teacherId) {
         return classManageService.getClassesBySemesterAndTeacher(semesterId, teacherId);
     }
 
     @Override
-    public List<ClassDO> getClassesBySemesterAndStudent(Long semesterId, Long userId) {
+    public List<ClassDO> getClassesBySemesterAndStudent(Integer semesterId, Integer userId) {
         return classManageService.getClassesBySemesterAndStudent(semesterId, userId);
     }
 
@@ -321,14 +321,14 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         }
     }
 
-    private void throwClassNotExistById(Long id) {
+    private void throwClassNotExistById(Integer id) {
         boolean exist = classManageService.checkClassExistById(id);
         if (!exist) {
             throw new NotFoundException("class not found", 10202);
         }
     }
 
-    private void throwSemesterNotExistById(Long id) {
+    private void throwSemesterNotExistById(Integer id) {
         SemesterDO exist = semesterMapper.selectById(id);
         if (exist == null) {
             throw new NotFoundException("semester not found", 10220);

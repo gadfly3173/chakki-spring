@@ -21,7 +21,7 @@ public interface StudentSignMapper extends BaseMapper<StudentSignDO> {
      * @param pager  分页
      * @return 签到用户列表
      */
-    IPage<StudentSignVO> selectUserSignDetailBySignId(Page pager, @Param("signId") Long signId,
+    IPage<StudentSignVO> selectUserSignDetailBySignId(Page pager, @Param("signId") Integer signId,
                                                       @Param("username") String username,
                                                       @Param("orderByIP") boolean orderByIP);
 
@@ -32,7 +32,7 @@ public interface StudentSignMapper extends BaseMapper<StudentSignDO> {
      * @param pager  分页
      * @return 签到用户列表
      */
-    IPage<StudentSignVO> selectLateUserSignDetailBySignId(Page pager, @Param("signId") Long signId,
+    IPage<StudentSignVO> selectLateUserSignDetailBySignId(Page pager, @Param("signId") Integer signId,
                                                           @Param("username") String username,
                                                           @Param("orderByIP") boolean orderByIP);
 
@@ -43,7 +43,7 @@ public interface StudentSignMapper extends BaseMapper<StudentSignDO> {
      * @param pager  分页
      * @return 签到用户列表
      */
-    IPage<StudentSignVO> selectCancelUserSignDetailBySignId(Page pager, @Param("signId") Long signId,
+    IPage<StudentSignVO> selectCancelUserSignDetailBySignId(Page pager, @Param("signId") Integer signId,
                                                             @Param("username") String username,
                                                             @Param("orderByIP") boolean orderByIP);
 
@@ -54,7 +54,7 @@ public interface StudentSignMapper extends BaseMapper<StudentSignDO> {
      * @param pager  分页
      * @return 签到用户列表
      */
-    IPage<StudentSignVO> selectUnsignedUserDetailBySignId(Page pager, @Param("signId") Long signId,
+    IPage<StudentSignVO> selectUnsignedUserDetailBySignId(Page pager, @Param("signId") Integer signId,
                                                           @Param("username") String username);
 
     /**
@@ -64,9 +64,9 @@ public interface StudentSignMapper extends BaseMapper<StudentSignDO> {
      * @param pager  分页
      * @return 签到用户列表
      */
-    IPage<StudentSignVO> selectClassUserSignDetailBySignId(Page pager, @Param("signId") Long signId,
+    IPage<StudentSignVO> selectClassUserSignDetailBySignId(Page pager, @Param("signId") Integer signId,
                                                            @Param("username") String username,
                                                            @Param("orderByIP") boolean orderByIP);
 
-    long countClassUserSignDetailBySignId(@Param("signId") Long signId, @Param("username") String username);
+    long countClassUserSignDetailBySignId(@Param("signId") Integer signId, @Param("username") String username);
 }

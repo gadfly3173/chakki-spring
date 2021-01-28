@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @PropertySource(value = "classpath:vip/gadfly/chakkispring/extension/limit/config.properties", encoding = "UTF-8")
 public class LimitProperties {
 
-    private Integer value = 5;
+    private Integer value = 20;
 
     public Integer getValue() {
         return value;

@@ -20,7 +20,7 @@ public class UpdateSignRecordDTO {
 
     @NotNull(message = "{id}")
     @Min(value = 1, message = "{id}")
-    private Long userId;
+    private Integer userId;
 
     @NotNull(message = "{lesson.sign.end-time.not-null}")
     @Min(value = SignStatusConstant.STATUS_SIGNED, message = "{lesson.sign.status}")

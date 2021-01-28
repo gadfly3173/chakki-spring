@@ -17,7 +17,7 @@
         </foreach>
     </insert>
 
-    <delete id="removeByClassId" parameterType="java.lang.Long">
+    <delete id="removeByClassId" parameterType="java.lang.Integer">
         DELETE FROM student_class WHERE class_id = #{class_id}
     </delete>
 </mapper>

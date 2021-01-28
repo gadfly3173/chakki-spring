@@ -17,24 +17,24 @@ public class TeacherClassDO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 用户id
      */
-    private Long userId;
+    private Integer userId;
 
     /**
      * 班级id
      */
-    private Long classId;
+    private Integer classId;
 
     /**
      * 教师级别：1-主教师， 2-助教、辅导员等
      */
     private Integer level;
 
-    public TeacherClassDO(Long classId, Long userId, Integer level) {
+    public TeacherClassDO(Integer classId, Integer userId, Integer level) {
         this.userId = userId;
         this.classId = classId;
         this.level = level;

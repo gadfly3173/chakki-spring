@@ -8,6 +8,7 @@ import io.github.talelin.core.annotation.PermissionModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import vip.gadfly.chakkispring.common.util.PageUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.dto.admin.*;
 import vip.gadfly.chakkispring.model.ClassDO;
@@ -48,7 +49,7 @@ public class ClassController {
     @GetMapping("/class/{id}")
     @GroupRequired
     @GroupMeta(permission = "查询一个班级", mount = true)
-    public ClassDO getClass(@PathVariable @Positive(message = "{id}") Long id) {
+    public ClassDO getClass(@PathVariable @Positive(message = "{id}") Integer id) {
         return classService.getClass(id);
     }
 
@@ -65,7 +66,7 @@ public class ClassController {
     @PutMapping("/class/{id}")
     @GroupRequired
     @PermissionMeta(value = "更新一个班级", mount = true)
-    public UnifyResponseVO updateClass(@PathVariable @Positive(message = "{id}") Long id,
+    public UnifyResponseVO updateClass(@PathVariable @Positive(message = "{id}") Integer id,
                                        @RequestBody @Validated UpdateClassDTO validator) {
         if (classService.updateClass(id, validator)) {
             return ResponseUtil.generateUnifyResponse(14);
@@ -76,7 +77,7 @@ public class ClassController {
     @DeleteMapping("/class/{id}")
     @GroupRequired
     @PermissionMeta(value = "删除一个班级", mount = true)
-    public UnifyResponseVO deleteClass(@PathVariable @Positive(message = "{id}") Long id) {
+    public UnifyResponseVO deleteClass(@PathVariable @Positive(message = "{id}") Integer id) {
         if (classService.deleteClass(id)) {
             return ResponseUtil.generateUnifyResponse(15);
         }
@@ -88,13 +89,13 @@ public class ClassController {
     @PermissionMeta(value = "查询所有此班级学生", mount = true)
     public PageResponseVO getStudents(
             @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Long classId,
+            @Min(value = 1, message = "{class-id}") Integer classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<UserDO> iPage = classService.getUserPageByClassId(classId, count, page);
-        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+        return PageUtil.build(iPage);
     }
 
     @GetMapping("/students/fresh")
@@ -102,13 +103,13 @@ public class ClassController {
     @PermissionMeta(value = "查询所有不在此班级的学生", mount = true)
     public PageResponseVO getFreshStudents(
             @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Long classId,
+            @Min(value = 1, message = "{class-id}") Integer classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<UserDO> iPage = classService.getFreshUserPageByClassId(classId, count, page);
-        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+        return PageUtil.build(iPage);
     }
 
     @GetMapping("/students/fresh_by_name")
@@ -118,13 +119,13 @@ public class ClassController {
             @RequestParam(name = "name")
             @NotBlank(message = "{search-text.blank}") String name,
             @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Long classId,
+            @Min(value = 1, message = "{class-id}") Integer classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<UserDO> iPage = classService.getFreshUserPageByClassIdAndName(classId, name, count, page);
-        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+        return PageUtil.build(iPage);
     }
 
     @PostMapping("/students/del")
@@ -152,9 +153,9 @@ public class ClassController {
     @PermissionMeta(value = "查询班级内教师", mount = true)
     public PageResponseVO getClassTeachers(
             @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Long classId) {
+            @Min(value = 1, message = "{class-id}") Integer classId) {
         IPage<TeacherClassVO> iPage = classService.getTeacherPageByClassId(classId);
-        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), 0, 10);
+        return PageUtil.build(iPage);
     }
 
     @GetMapping("/teacher/fresh_by_name")
@@ -164,13 +165,13 @@ public class ClassController {
             @RequestParam(name = "name")
             @NotBlank(message = "{search-text.blank}") String name,
             @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Long classId,
+            @Min(value = 1, message = "{class-id}") Integer classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<UserDO> iPage = classService.getFreshTeacherPageByClassIdAndName(classId, name, count, page);
-        return ResponseUtil.generatePageResult(iPage.getTotal(), iPage.getRecords(), page, count);
+        return PageUtil.build(iPage);
     }
 
     @PostMapping("/teacher/del")
@@ -214,7 +215,7 @@ public class ClassController {
     @PutMapping("/semester/{id}")
     @GroupRequired
     @PermissionMeta(value = "更新一个学期", mount = true)
-    public UnifyResponseVO updateSemester(@PathVariable @Positive(message = "{id}") Long id,
+    public UnifyResponseVO updateSemester(@PathVariable @Positive(message = "{id}") Integer id,
                                           @RequestBody @Validated UpdateSemesterDTO validator) {
         if (classService.updateSemester(id, validator)) {
             return ResponseUtil.generateUnifyResponse(24);
@@ -225,7 +226,7 @@ public class ClassController {
     @DeleteMapping("/semester/{id}")
     @GroupRequired
     @PermissionMeta(value = "删除一个学期", mount = true)
-    public UnifyResponseVO deleteSemester(@PathVariable @Positive(message = "{id}") Long id) {
+    public UnifyResponseVO deleteSemester(@PathVariable @Positive(message = "{id}") Integer id) {
         if (classService.deleteSemester(id)) {
             return ResponseUtil.generateUnifyResponse(25);
         }

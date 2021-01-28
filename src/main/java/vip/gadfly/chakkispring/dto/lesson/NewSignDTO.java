@@ -19,7 +19,7 @@ public class NewSignDTO {
 
     @NotNull(message = "{class.id.not-null}")
     @Min(value = 1, message = "{class.id.not-null}")
-    private Long classId;
+    private Integer classId;
 
     @NotBlank(message = "{lesson.sign.title.not-null}")
     private String title;

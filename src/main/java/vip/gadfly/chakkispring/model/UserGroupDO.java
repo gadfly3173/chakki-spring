@@ -18,19 +18,19 @@ public class UserGroupDO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 用户id
      */
-    private Long userId;
+    private Integer userId;
 
     /**
      * 分组id
      */
-    private Long groupId;
+    private Integer groupId;
 
-    public UserGroupDO(Long userId, Long groupId) {
+    public UserGroupDO(Integer userId, Integer groupId) {
         this.userId = userId;
         this.groupId = groupId;
     }

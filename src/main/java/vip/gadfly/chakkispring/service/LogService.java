@@ -58,7 +58,7 @@ public interface LogService extends IService<LogDO> {
      * @param status     相应状态（http status）
      * @return 是否成功
      */
-    boolean createLog(String message, String permission, Long userId,
+    boolean createLog(String message, String permission, Integer userId,
                       String username, String method, String path,
                       Integer status);
 }

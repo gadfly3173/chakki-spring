@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 public class PageResponseVO<T> {
 
-    private long total;
+    private Integer total;
 
     private List<T> items;
 

@@ -1,6 +1,5 @@
 package vip.gadfly.chakkispring.dto.admin;
 
-import io.github.talelin.autoconfigure.validator.LongList;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -12,8 +11,8 @@ public class RemovePermissionListDTO {
 
     @Positive(message = "{group.id.positive}")
     @NotNull(message = "{group.id.not-null}")
-    private Long groupId;
+    private Integer groupId;
 
-    @LongList(message = "{permission.ids.long-list}")
-    private List<Long> permissionIds;
+    // @LongList(message = "{permission.ids.long-list}")
+    private List<Integer> permissionIds;
 }

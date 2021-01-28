@@ -40,7 +40,7 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, LogDO> implements Log
     }
 
     @Override
-    public boolean createLog(String message, String permission, Long userId, String username, String method,
+    public boolean createLog(String message, String permission, Integer userId, String username, String method,
                              String path, Integer status) {
         LogDO record = LogDO.builder()
                 .message(message)

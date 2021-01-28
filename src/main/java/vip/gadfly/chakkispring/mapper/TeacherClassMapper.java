@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Repository
 public interface TeacherClassMapper extends BaseMapper<TeacherClassDO> {
-    IPage<TeacherClassVO> selectTeacherDetailByClassId(Page pager, Long classId);
+    IPage<TeacherClassVO> selectTeacherDetailByClassId(Page pager, Integer classId);
 
     int insertBatch(@Param("relations") List<TeacherClassDO> relations);
 }

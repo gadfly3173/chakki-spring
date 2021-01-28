@@ -40,7 +40,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public boolean confirmSign(Long signId, String ip) {
+    public boolean confirmSign(Integer signId, String ip) {
         UserDO user = LocalUser.getLocalUser();
         QueryWrapper<StudentSignDO> wrapper = new QueryWrapper<>();
         if (IPUtil.isInternalIp(ip)) {
@@ -60,13 +60,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public boolean signAvailable(Long signId) {
+    public boolean signAvailable(Integer signId) {
         return signListMapper.selectById(signId).getEndTime().getTime() > System.currentTimeMillis();
     }
 
     @Override
-    public SignListVO getLatestSignByClassId(Long classId) {
-        Long userId = LocalUser.getLocalUser().getId();
+    public SignListVO getLatestSignByClassId(Integer classId) {
+        Integer userId = LocalUser.getLocalUser().getId();
         return signListMapper.getStudentLatestSignByClassId(classId, userId);
     }
 }

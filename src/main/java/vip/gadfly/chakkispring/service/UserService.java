@@ -46,7 +46,7 @@ public interface UserService extends IService<UserDO> {
      */
     UserDO updateUserInfo(UpdateInfoDTO validator);
 
-    boolean adminUpdateUserInfo(Long id, String username, String nickname);
+    boolean adminUpdateUserInfo(Integer id, String username, String nickname);
 
     /**
      * 修改用户密码
@@ -62,7 +62,7 @@ public interface UserService extends IService<UserDO> {
      * @param userId 用户id
      * @return 所有分组
      */
-    List<GroupDO> getUserGroups(Long userId);
+    List<GroupDO> getUserGroups(Integer userId);
 
     /**
      * 获得用户所有权限
@@ -70,7 +70,7 @@ public interface UserService extends IService<UserDO> {
      * @param userId 用户id
      * @return 权限
      */
-    List<Map<String, List<Map<String, String>>>> getStructualUserPermissions(Long userId);
+    List<Map<String, List<Map<String, String>>>> getStructualUserPermissions(Integer userId);
 
     /**
      * 获得用户所有权限
@@ -78,7 +78,7 @@ public interface UserService extends IService<UserDO> {
      * @param userId 用户id
      * @return 权限
      */
-    List<PermissionDO> getUserPermissions(Long userId);
+    List<PermissionDO> getUserPermissions(Integer userId);
 
     /**
      * 获得用户在模块下的所有权限
@@ -87,7 +87,7 @@ public interface UserService extends IService<UserDO> {
      * @param module 权限模块
      * @return 权限
      */
-    List<PermissionDO> getUserPermissionsByModule(Long userId, String module);
+    List<PermissionDO> getUserPermissionsByModule(Integer userId, String module);
 
     /**
      * 通过用户名查找用户
@@ -119,7 +119,7 @@ public interface UserService extends IService<UserDO> {
      * @param id 用户名
      * @return true代表存在
      */
-    boolean checkUserExistById(Long id);
+    boolean checkUserExistById(Integer id);
 
     /**
      * 根据分组id分页获取用户数据
@@ -128,7 +128,7 @@ public interface UserService extends IService<UserDO> {
      * @param groupId 分组id
      * @return 数据页
      */
-    IPage<UserDO> getUserPageByGroupId(Page<UserDO> pager, Long groupId);
+    IPage<UserDO> getUserPageByGroupId(Page<UserDO> pager, Integer groupId);
 
     /**
      * 根据班级id分页获取用户数据
@@ -137,7 +137,7 @@ public interface UserService extends IService<UserDO> {
      * @param classId 班级id
      * @return 数据页
      */
-    IPage<UserDO> getUserPageByClassId(Page<UserDO> pager, Long classId);
+    IPage<UserDO> getUserPageByClassId(Page<UserDO> pager, Integer classId);
 
     /**
      * 根据班级id分页获取非此班级学生数据
@@ -146,7 +146,7 @@ public interface UserService extends IService<UserDO> {
      * @param classId 班级id
      * @return 数据页
      */
-    IPage<UserDO> getFreshUserPageByClassId(Page<UserDO> pager, Long classId);
+    IPage<UserDO> getFreshUserPageByClassId(Page<UserDO> pager, Integer classId);
 
     /**
      * 根据班级id分页和名字获取非此班级学生数据
@@ -156,7 +156,7 @@ public interface UserService extends IService<UserDO> {
      * @param name    名字
      * @return 数据页
      */
-    IPage<UserDO> getFreshUserPageByClassIdAndName(Page<UserDO> pager, Long classId, String name);
+    IPage<UserDO> getFreshUserPageByClassIdAndName(Page<UserDO> pager, Integer classId, String name);
 
     /**
      * 根据班级id分页和名字获取非此班级教师数据
@@ -166,12 +166,12 @@ public interface UserService extends IService<UserDO> {
      * @param name    名字
      * @return 数据页
      */
-    IPage<UserDO> getFreshTeacherPageByClassIdAndName(Page<UserDO> pager, Long classId, String name);
+    IPage<UserDO> getFreshTeacherPageByClassIdAndName(Page<UserDO> pager, Integer classId, String name);
 
     /**
      * 获取超级管理员的id
      *
      * @return 超级管理员的id
      */
-    Long getRootUserId();
+    Integer getRootUserId();
 }
