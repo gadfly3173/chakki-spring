@@ -26,6 +26,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,19 +47,20 @@ public class RestExceptionHandler {
      * HttpException
      */
     @ExceptionHandler({HttpException.class})
-    public UnifyResponseVO processException(HttpException exception, HttpServletRequest request,
-                                            HttpServletResponse response) {
-        log.error("", exception);
+    public UnifyResponseVO processException(HttpException exception, HttpServletRequest request, HttpServletResponse response) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         UnifyResponseVO unifyResponse = new UnifyResponseVO();
         unifyResponse.setRequest(getSimpleRequest(request));
         int code = exception.getCode();
+        boolean defaultMessage = exception.ifDefaultMessage();
         unifyResponse.setCode(code);
         response.setStatus(exception.getHttpCode());
         String errorMessage = CodeMessageConfiguration.getMessage(code);
-        if (!StringUtils.hasText(errorMessage)) {
+        if (StringUtils.hasText(errorMessage) || !defaultMessage) {
             unifyResponse.setMessage(exception.getMessage());
+            log.error("", exception);
         } else {
             unifyResponse.setMessage(errorMessage);
+            log.error("", exception.getClass().getConstructor(int.class, String.class).newInstance(code, errorMessage));
         }
         return unifyResponse;
     }
