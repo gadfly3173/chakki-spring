@@ -22,7 +22,7 @@ public class FileController {
 
     @PostMapping("")
     @GroupRequired
-    public List<FileBO> upload(MultipartHttpServletRequest multipartHttpServletRequest) {
+    private List<FileBO> upload(MultipartHttpServletRequest multipartHttpServletRequest) {
         MultiValueMap<String, MultipartFile> fileMap =
                 multipartHttpServletRequest.getMultiFileMap();
         return fileService.upload(fileMap);
