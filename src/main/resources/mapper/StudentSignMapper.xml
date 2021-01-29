@@ -122,7 +122,7 @@
             DESC
         </if>
     </select>
-    <select id="countClassUserSignDetailBySignId" resultType="java.lang.Integer">
+    <select id="countClassUserSignDetailBySignId" resultType="java.lang.Long">
         SELECT COUNT(*) FROM (
             SELECT u.id
             FROM lin_user u

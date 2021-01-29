@@ -68,5 +68,13 @@ public interface StudentSignMapper extends BaseMapper<StudentSignDO> {
                                                            @Param("username") String username,
                                                            @Param("orderByIP") boolean orderByIP);
 
+    /**
+     * 根据signId查询该签到项目的学生数量
+     *
+     * 由于setTotal只接受long，因此这里是long
+     *
+     * @param signId 签到项目id
+     * @return 数量
+     */
     long countClassUserSignDetailBySignId(@Param("signId") Integer signId, @Param("username") String username);
 }

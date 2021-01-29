@@ -3,6 +3,7 @@ package vip.gadfly.chakkispring.model;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
+import vip.gadfly.chakkispring.common.enumeration.GroupLevelEnum;
 
 import java.io.Serializable;
 
@@ -33,6 +34,6 @@ public class GroupDO extends BaseModel implements Serializable {
      * 分组级别 1：root 2：user 3：guest  root（root、guest分组只能存在一个)
      */
     @TableField(value = "`level`")
-    private String level;
+    private GroupLevelEnum level;
 
 }
