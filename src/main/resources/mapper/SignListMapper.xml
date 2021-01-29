@@ -54,18 +54,20 @@
                (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = #{signId} AND ss.status = 2) AS late,
                (SELECT COUNT(*)
                 from lin_user AS u
-                WHERE
-                    u.id NOT IN (
-                        SELECT ssi.user_id FROM student_sign AS ssi
-                        WHERE ssi.sign_id = #{signId}
-                    )
-                AND u.id IN (
-                    SELECT sc.user_id from student_class AS sc
+                WHERE u.id NOT IN (
+                    SELECT ssi.user_id
+                    FROM student_sign AS ssi
+                    WHERE ssi.sign_id = #{signId}
+                )
+                  AND u.id IN (
+                    SELECT sc.user_id
+                    from student_class AS sc
                     WHERE sc.class_id = (
-                        SELECT sl.class_id from sign_list AS sl
+                        SELECT sl.class_id
+                        from sign_list AS sl
                         WHERE sl.id = #{signId}
                     )
-                ))                                                                                  AS 'unSigned',
+                ))                                                                                      AS 'unSigned',
                (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = #{signId} AND ss.status = 3) AS cancel
         FROM sign_list AS sl
         WHERE sl.id = #{signId}
