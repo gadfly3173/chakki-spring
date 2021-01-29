@@ -14,6 +14,7 @@ import vip.gadfly.chakkispring.dto.user.*;
 import vip.gadfly.chakkispring.model.GroupDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.GroupService;
+import vip.gadfly.chakkispring.service.LogService;
 import vip.gadfly.chakkispring.service.UserIdentityService;
 import vip.gadfly.chakkispring.service.UserService;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
@@ -45,6 +46,9 @@ public class UserController {
 
     @Autowired
     private DoubleJWT jwt;
+
+    @Autowired
+    private LogService logService;
 
     /**
      * 用户注册
@@ -79,8 +83,16 @@ public class UserController {
                 user.getId(),
                 user.getUsername(),
                 validator.getPassword());
-        if (!valid)
+        if (!valid) {
             throw new ParameterException(10031);
+        }
+        logService.createLog(
+                user.getUsername() + "登陆成功获取了令牌",
+                "", user.getId(), user.getUsername(),
+                "post",
+                "/cms/user/login",
+                200
+        );
         return jwt.generateTokens(user.getId());
     }
 

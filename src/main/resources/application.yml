@@ -30,20 +30,9 @@ mybatis-plus:
 
 
 logging:
-    # 日志配置文件（logback配置文件）
-    config: classpath:logback-spring.xml
-#
-#group:
-#    guest:
-#        # 默认游客分组id 为 3
-#        id: 3
-#        # 默认游客分组名称为 guest
-#        name: guest
-#    root:
-#        # 默认root分组id为 1
-#        id: 1
-#        # 默认root分组名称为 root
-#        name: root
+    file:
+        max-history:
+    config:
 
 lin:
     cms:
