@@ -1,33 +1,40 @@
 package vip.gadfly.chakkispring.common.enumeration;
 
+import com.baomidou.mybatisplus.core.enums.IEnum;
+
 /**
  * @author colorful@TaleLin
+ * @author Juzi@TaleLin
  */
-public enum GroupLevelEnum {
+public enum GroupLevelEnum implements IEnum<Integer> {
     /**
      * 超级管理员
      */
-    ROOT("root"),
+    ROOT(1),
     /**
      * 游客
      */
-    GUEST("guest"),
+    GUEST(2),
     /**
      * 普通用户
      */
-    USER("user");
+    USER(3);
 
-    private String value;
+    private final Integer value;
 
-    GroupLevelEnum(String value) {
+    GroupLevelEnum(Integer value) {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
+    /**
+     * MybatisEnumTypeHandler 转换时调用此方法
+     *
+     * @return 枚举对应的 code 值
+     * @see com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
+     */
+    @Override
+    public Integer getValue() {
+        return this.value;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
 }

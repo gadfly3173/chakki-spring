@@ -18,6 +18,8 @@ mybatis-plus:
     configuration:
         # 开启下划线转驼峰
         map-underscore-to-camel-case: true
+        # 指定默认枚举类型的类型转换器
+        default-enum-type-handler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
     global-config:
         # 关闭banner打印
         banner: false
@@ -44,12 +46,3 @@ lin:
         token-refresh-expire: 2592000
             # 令牌 secret
         token-secret: "a48iL3Z5dRDwpfT27XHQLnFEHSGgpObxJWqRyT70u74WOQGSjjERih5RpihRLstiw2gcXn5ac--P0pwnO18ZmQ"
-
-#user:
-#    root:
-#        # 默认 root 用户id为 1
-#        id: 1
-#        # 默认 root 用户 昵称 为 root
-#        nickname: root
-#        # 默认 root 用户 用户名 为 root
-#        username: root
