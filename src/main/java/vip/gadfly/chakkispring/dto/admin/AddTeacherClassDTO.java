@@ -21,7 +21,6 @@ public class AddTeacherClassDTO {
     @NotNull(message = "{teacher.level.not-null}")
     private Integer level;
 
-    @Size(min = 1, message = "{class.user-ids.long-list}")
-    // @LongList(message = "{class.user-ids.long-list}")
-    private List<Integer> userIds;
+    @NotEmpty(message = "{class.user-ids.long-list}")
+    private List<@Min(1) Integer> userIds;
 }

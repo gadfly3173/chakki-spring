@@ -2,9 +2,7 @@ package vip.gadfly.chakkispring.dto.admin;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.List;
 
 /**
@@ -17,7 +15,6 @@ public class AddStudentClassDTO {
     @NotNull(message = "{class.id.not-null}")
     private Integer classId;
 
-    @Size(min = 1, message = "{class.user-ids.long-list}")
-    // @LongList(message = "{class.user-ids.long-list}")
-    private List<Integer> userIds;
+    @NotEmpty(message = "{class.user-ids.long-list}")
+    private List<@Min(1) Integer> userIds;
 }
