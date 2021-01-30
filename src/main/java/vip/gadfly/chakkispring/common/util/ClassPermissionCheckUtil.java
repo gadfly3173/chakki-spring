@@ -18,7 +18,6 @@ import javax.annotation.PostConstruct;
 /**
  * 班级用户关联查询工具
  */
-@SuppressWarnings("unchecked")
 @Component
 @Slf4j
 public class ClassPermissionCheckUtil {

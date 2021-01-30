@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 班级用户关联查询工具
  */
-@SuppressWarnings("unchecked")
 @Slf4j
 public class IPUtil {
 
