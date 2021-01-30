@@ -20,6 +20,12 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
+    /**
+     * 文件上传
+     *
+     * @param multipartHttpServletRequest 携带文件的 request
+     * @return 文件信息
+     */
     @PostMapping("")
     @GroupRequired
     private List<FileBO> upload(MultipartHttpServletRequest multipartHttpServletRequest) {

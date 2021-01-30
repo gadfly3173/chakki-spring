@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import vip.gadfly.chakkispring.common.interceptor.ClassVerifyInterceptor;
 import vip.gadfly.chakkispring.common.interceptor.RequestLogInterceptor;
-import vip.gadfly.chakkispring.extension.file.FileUtil;
+import vip.gadfly.chakkispring.module.file.FileUtil;
 import vip.gadfly.chakkispring.extension.limit.LimitInterceptor;
 
 import java.nio.file.FileSystems;

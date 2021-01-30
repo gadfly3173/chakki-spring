@@ -11,7 +11,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import vip.gadfly.chakkispring.common.interceptor.RequestLogInterceptor;
-import vip.gadfly.chakkispring.extension.file.FileProperties;
+import vip.gadfly.chakkispring.module.file.FileProperties;
 import vip.gadfly.chakkispring.module.log.MDCAccessServletFilter;
 
 

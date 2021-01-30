@@ -1,4 +1,4 @@
-package vip.gadfly.chakkispring.extension.file;
+package vip.gadfly.chakkispring.module.file;
 
 import io.github.talelin.autoconfigure.exception.*;
 import org.springframework.util.MultiValueMap;
@@ -136,7 +136,7 @@ public abstract class AbstractUploader implements Uploader {
         try {
             bytes = file.getBytes();
         } catch (Exception e) {
-            throw new FailedException(10190);
+            throw new FailedException(10190, "read file date failed");
         }
         return bytes;
     }

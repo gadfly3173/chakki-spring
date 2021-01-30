@@ -1,4 +1,4 @@
-package vip.gadfly.chakkispring.extension.file;
+package vip.gadfly.chakkispring.module.file;
 
 /**
  * 文件相关常量值

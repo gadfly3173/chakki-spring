@@ -1,4 +1,4 @@
-package vip.gadfly.chakkispring.extension.file;
+package vip.gadfly.chakkispring.module.file;
 
 /**
  * @author Gadfly

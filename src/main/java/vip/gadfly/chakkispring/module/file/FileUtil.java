@@ -1,4 +1,4 @@
-package vip.gadfly.chakkispring.extension.file;
+package vip.gadfly.chakkispring.module.file;
 
 import io.github.talelin.autoconfigure.exception.FailedException;
 import org.mozilla.universalchardet.UniversalDetector;
@@ -71,71 +71,4 @@ public class FileUtil {
         DataSize singleLimitData = DataSize.parse(size);
         return singleLimitData.toBytes();
     }
-
-    /**
-     * 将文件头转换成16进制字符串
-     *
-     * @param
-     * @return 16进制字符串
-     */
-    private static String bytesToHexString(byte[] src) {
-
-        StringBuilder stringBuilder = new StringBuilder();
-        if (src == null || src.length <= 0) {
-            return null;
-        }
-        for (byte b : src) {
-            int v = b & 0xFF;
-            String hv = Integer.toHexString(v);
-            if (hv.length() < 2) {
-                stringBuilder.append(0);
-            }
-            stringBuilder.append(hv);
-        }
-        return stringBuilder.toString();
-    }
-
-    private static String getFileHead(MultipartFile file) throws IOException {
-
-        byte[] b = new byte[28];
-
-        try (InputStream inputStream = new ByteArrayInputStream(file.getBytes())) {
-            String charset = UniversalDetector.detectCharset(inputStream);
-            if (!StringUtils.isEmpty(charset)) {
-                return charset;
-            }
-            if (inputStream.read(b, 0, b.length) == -1) {
-                throw new FailedException("read file date failed", 10190);
-            }
-        }
-        return bytesToHexString(b);
-    }
-
-    /**
-     * 判断文件类型
-     *
-     * @param file 上传的文件
-     * @return 文件类型
-     */
-    public static FileType getType(MultipartFile file) throws IOException {
-
-        String fileHead = getFileHead(file);
-
-        if (!StringUtils.isEmpty(fileHead)) {
-            return null;
-        }
-
-        fileHead = fileHead.toUpperCase();
-
-        FileType[] fileTypes = FileType.values();
-
-        for (FileType type : fileTypes) {
-            if (fileHead.startsWith(type.getValue())) {
-                return type;
-            }
-        }
-
-        return null;
-    }
-
 }

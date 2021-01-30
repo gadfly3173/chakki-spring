@@ -9,6 +9,9 @@ import com.qiniu.util.Auth;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import vip.gadfly.chakkispring.module.file.AbstractUploader;
+import vip.gadfly.chakkispring.module.file.FileConstant;
+import vip.gadfly.chakkispring.module.file.FileProperties;
 
 import java.io.ByteArrayInputStream;
 
@@ -18,13 +21,13 @@ public class QiniuUploader extends AbstractUploader {
     @Autowired
     private FileProperties fileProperties;
 
-    @Value("${lin.cms.file.qiniuyun.access-key}")
+    @Value("${lin.file.qiniuyun.access-key}")
     private String accessKey;
 
-    @Value("${lin.cms.file.qiniuyun.secret-key}")
+    @Value("${lin.file.qiniuyun.secret-key}")
     private String secretKey;
 
-    @Value("${lin.cms.file.qiniuyun.bucket}")
+    @Value("${lin.file.qiniuyun.bucket}")
     private String bucket;
 
     private UploadManager uploadManager;

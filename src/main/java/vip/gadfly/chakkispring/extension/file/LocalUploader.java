@@ -2,6 +2,10 @@ package vip.gadfly.chakkispring.extension.file;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import vip.gadfly.chakkispring.module.file.AbstractUploader;
+import vip.gadfly.chakkispring.module.file.FileConstant;
+import vip.gadfly.chakkispring.module.file.FileProperties;
+import vip.gadfly.chakkispring.module.file.FileUtil;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedOutputStream;
@@ -21,6 +25,7 @@ public class LocalUploader extends AbstractUploader {
     @Autowired
     private FileProperties fileProperties;
 
+
     @PostConstruct
     public void initStoreDir() {
         // 本地存储需先初始化存储文件夹
@@ -33,7 +38,7 @@ public class LocalUploader extends AbstractUploader {
                 FileUtil.getFileAbsolutePath(fileProperties.getStoreDir(), getStorePath(newFilename));
         try {
             BufferedOutputStream stream =
-                    new BufferedOutputStream(new FileOutputStream(new File(absolutePath)));
+                    new BufferedOutputStream(new FileOutputStream(new java.io.File(absolutePath)));
             stream.write(bytes);
             stream.close();
         } catch (Exception e) {
