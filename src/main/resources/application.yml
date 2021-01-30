@@ -9,9 +9,10 @@ spring:
   mvc:
     # 404 交给异常处理器处理
     throw-exception-if-no-handler-found: true
-  resources:
-    # 关闭静态资源的映射
-    add-mappings: false
+  web:
+    resources:
+      # 关闭默认静态资源的映射规则
+      add-mappings: false
 
 
 mybatis-plus:
@@ -19,7 +20,7 @@ mybatis-plus:
     # 开启下划线转驼峰
     map-underscore-to-camel-case: true
     # 指定默认枚举类型的类型转换器
-    default-enum-type-handler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
+    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
   global-config:
     # 关闭banner打印
     banner: false

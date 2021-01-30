@@ -21,12 +21,13 @@ import java.util.regex.Pattern;
 @Component
 public class LoggerImpl implements LoggerResolver {
 
+    @Autowired
+    private LogService logService;
+
     /**
      * 日志格式匹配正则
      */
     private static final Pattern LOG_PATTERN = Pattern.compile("(?<=\\{)[^}]*(?=})");
-    @Autowired
-    private LogService logService;
 
     @Override
     public void handle(PermissionMeta meta, Logger logger, HttpServletRequest request, HttpServletResponse response) {
@@ -36,7 +37,7 @@ public class LoggerImpl implements LoggerResolver {
         template = this.parseTemplate(template, user, request, response);
         String permission = "";
         if (meta != null) {
-            permission = StringUtils.isEmpty(meta.value()) ? meta.value() : meta.value();
+            permission = !StringUtils.hasLength(meta.value()) ? meta.value() : meta.value();
         }
         Integer userId = user.getId();
         String username = user.getUsername();

@@ -2,7 +2,7 @@ package vip.gadfly.chakkispring.common.configuration;
 
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
 import com.baomidou.mybatisplus.core.injector.ISqlInjector;
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import io.github.talelin.autoconfigure.bean.PermissionMetaCollector;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -25,8 +25,8 @@ public class CommonConfiguration {
     }
 
     @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
+    public PaginationInnerInterceptor paginationInterceptor() {
+        return new PaginationInnerInterceptor();
     }
 
     @Bean
