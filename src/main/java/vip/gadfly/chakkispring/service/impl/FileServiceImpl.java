@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import vip.gadfly.chakkispring.bo.FileBO;
+import vip.gadfly.chakkispring.mapper.FileMapper;
+import vip.gadfly.chakkispring.model.FileDO;
 import vip.gadfly.chakkispring.module.file.FileConstant;
 import vip.gadfly.chakkispring.module.file.FileProperties;
 import vip.gadfly.chakkispring.module.file.Uploader;
-import vip.gadfly.chakkispring.mapper.FileMapper;
-import vip.gadfly.chakkispring.model.FileDO;
 import vip.gadfly.chakkispring.service.FileService;
 
 import java.util.ArrayList;

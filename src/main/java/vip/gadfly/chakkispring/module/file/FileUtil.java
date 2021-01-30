@@ -1,16 +1,9 @@
 package vip.gadfly.chakkispring.module.file;
 
-import io.github.talelin.autoconfigure.exception.FailedException;
-import org.mozilla.universalchardet.UniversalDetector;
 import org.springframework.util.DigestUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.util.unit.DataSize;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;

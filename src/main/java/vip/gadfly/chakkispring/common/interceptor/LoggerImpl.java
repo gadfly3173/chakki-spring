@@ -21,13 +21,12 @@ import java.util.regex.Pattern;
 @Component
 public class LoggerImpl implements LoggerResolver {
 
-    @Autowired
-    private LogService logService;
-
     /**
      * 日志格式匹配正则
      */
     private static final Pattern LOG_PATTERN = Pattern.compile("(?<=\\{)[^}]*(?=})");
+    @Autowired
+    private LogService logService;
 
     @Override
     public void handle(PermissionMeta meta, Logger logger, HttpServletRequest request, HttpServletResponse response) {

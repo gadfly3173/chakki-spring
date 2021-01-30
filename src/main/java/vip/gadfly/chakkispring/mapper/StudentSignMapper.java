@@ -70,7 +70,7 @@ public interface StudentSignMapper extends BaseMapper<StudentSignDO> {
 
     /**
      * 根据signId查询该签到项目的学生数量
-     *
+     * <p>
      * 由于setTotal只接受long，因此这里是long
      *
      * @param signId 签到项目id
