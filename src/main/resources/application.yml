@@ -32,11 +32,6 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
 
 
-logging:
-  file:
-    max-history:
-  config:
-
 lin:
   cms:
     # 开启行为日志记录（logger）
@@ -47,3 +42,7 @@ lin:
     token-refresh-expire: 2592000
     # 令牌 secret
     token-secret: "a48iL3Z5dRDwpfT27XHQLnFEHSGgpObxJWqRyT70u74WOQGSjjERih5RpihRLstiw2gcXn5ac--P0pwnO18ZmQ"
+logging:
+  logback:
+    rollingpolicy:
+      max-history:
