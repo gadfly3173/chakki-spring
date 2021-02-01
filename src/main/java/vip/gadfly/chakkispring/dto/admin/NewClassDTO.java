@@ -15,7 +15,7 @@ public class NewClassDTO {
     @Length(min = 1, max = 60, message = "{class.name.length}")
     private String name;
 
-    @Length(min = 1, max = 255, message = "{class.info.length}")
+    @Length(max = 255, message = "{class.info.length}")
     private String info;
 
     @Min(value = 1, message = "{semester.id.positive}")
