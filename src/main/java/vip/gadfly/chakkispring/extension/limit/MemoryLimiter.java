@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Gadfly
  */
 
+@SuppressWarnings("UnstableApiUsage")
 @Component
 @Slf4j
 public class MemoryLimiter implements Limiter {

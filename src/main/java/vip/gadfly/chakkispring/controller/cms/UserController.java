@@ -87,7 +87,7 @@ public class UserController {
             throw new ParameterException(10031);
         }
         logService.createLog(
-                user.getUsername() + "登陆成功获取了令牌",
+                user.getUsername() + "登录成功获取了令牌",
                 "", user.getId(), user.getUsername(),
                 "post",
                 "/cms/user/login",
