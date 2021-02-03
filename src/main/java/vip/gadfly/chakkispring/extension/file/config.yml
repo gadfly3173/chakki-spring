@@ -3,14 +3,11 @@
 lin:
   file:
     # 文件服务域名
-    domain: https://chakki.gadfly.vip/api/
+    domain: https://chakki.gadfly.vip/
     # 排除文件类型
     exclude:
     # 包括文件类型
     include:
-      - .jpg
-      - .png
-      - .jpeg
     # 文件最大数量
     nums: 10
     # 服务器文件路径
