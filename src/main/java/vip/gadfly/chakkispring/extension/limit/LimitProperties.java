@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@ConfigurationProperties(prefix = "lin.cms.limit")
+@ConfigurationProperties(prefix = "lin.qps.limit")
 @PropertySource(value = "classpath:vip/gadfly/chakkispring/extension/limit/config.properties", encoding = "UTF-8")
 public class LimitProperties {
 

@@ -1,7 +1,9 @@
 package vip.gadfly.chakkispring.common.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.talelin.autoconfigure.exception.AuthorizationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import vip.gadfly.chakkispring.common.annotation.StudentClassCheck;
 import vip.gadfly.chakkispring.common.annotation.TeacherClassCheck;
@@ -23,6 +25,10 @@ import static vip.gadfly.chakkispring.common.constant.ClassVerifyConstant.*;
 @SuppressWarnings("Duplicates")
 @Component
 public class ClassVerifyResolverImpl implements ClassVerifyResolver {
+
+    @Autowired
+    private ObjectMapper mapper;
+
     @Override
     public boolean handleNotHandlerMethod(HttpServletRequest request, HttpServletResponse response, Object handler) {
         return true;
@@ -111,14 +117,14 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
         while ((inputStr = streamReader.readLine()) != null) {
             responseStrBuilder.append(inputStr);
         }
-        JSONObject jsonObject = JSONObject.parseObject(responseStrBuilder.toString());
-        JSONObject tmpJson = jsonObject;
+        JsonNode jsonObject = mapper.readTree(responseStrBuilder.toString());
+        JsonNode tmpJson = jsonObject;
         String[] keyList = valueName.split("\\.");
         if (keyList.length > 1) {
             for (int x = 0; x < keyList.length - 1; x++) {
-                tmpJson = jsonObject.getJSONObject(keyList[x]);
+                tmpJson = jsonObject.get(keyList[x]);
             }
         }
-        return tmpJson.getInteger(keyList[keyList.length - 1]);
+        return tmpJson.get(keyList[keyList.length - 1]).asInt();
     }
 }

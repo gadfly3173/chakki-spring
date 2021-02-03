@@ -6,17 +6,14 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import io.github.talelin.autoconfigure.bean.PermissionMetaCollector;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import vip.gadfly.chakkispring.common.interceptor.RequestLogInterceptor;
-import vip.gadfly.chakkispring.module.file.FileProperties;
 import vip.gadfly.chakkispring.module.log.MDCAccessServletFilter;
 
 
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties(FileProperties.class)
 public class CommonConfiguration {
 
     @Bean

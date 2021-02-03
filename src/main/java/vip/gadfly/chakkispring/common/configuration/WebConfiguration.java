@@ -75,7 +75,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // 高频访问拦截器
+        // QPS拦截器
         registry.addInterceptor(limitInterceptor);
         if (authEnabled) {
             //开发环境忽略签名认证

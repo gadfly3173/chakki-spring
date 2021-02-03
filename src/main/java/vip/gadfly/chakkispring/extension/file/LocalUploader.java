@@ -18,6 +18,8 @@ import java.util.Date;
 
 /**
  * 文件上传服务默认实现，上传到本地
+ *
+ * @author pedro@TaleLin
  */
 @Slf4j
 public class LocalUploader extends AbstractUploader {
@@ -38,7 +40,7 @@ public class LocalUploader extends AbstractUploader {
                 FileUtil.getFileAbsolutePath(fileProperties.getStoreDir(), getStorePath(newFilename));
         try {
             BufferedOutputStream stream =
-                    new BufferedOutputStream(new FileOutputStream(new java.io.File(absolutePath)));
+                    new BufferedOutputStream(new FileOutputStream(absolutePath));
             stream.write(bytes);
             stream.close();
         } catch (Exception e) {

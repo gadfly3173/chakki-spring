@@ -20,7 +20,7 @@ public class MemoryLimiter implements Limiter {
 
     private final Map<String, RateLimiter> record = new ConcurrentHashMap<>();
 
-    @Value("${lin.cms.limit.value}")
+    @Value("${lin.qps.limit.value}")
     private Integer value;
 
     @Override
