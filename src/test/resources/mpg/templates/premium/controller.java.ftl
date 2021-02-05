@@ -5,8 +5,8 @@ import io.github.talelin.autoconfigure.exception.NotFoundException;
 <#if package.Controller?split(".")?last == "cms">
 import io.github.talelin.core.annotation.LoginRequired;
 </#if>
-import io.github.talelin.latticy.common.mybatis.Page;
-import io.github.talelin.latticy.common.util.PageUtil;
+import vip.gadfly.chakkispring.common.mybatis.Page;
+import vip.gadfly.chakkispring.common.util.PageUtil;
 import ${package.Service}.${table.serviceName};
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 import ${package.Entity}.${entity};
-import io.github.talelin.latticy.vo.CreatedVO;
-import io.github.talelin.latticy.vo.DeletedVO;
-import io.github.talelin.latticy.vo.PageResponseVO;
-import io.github.talelin.latticy.vo.UpdatedVO;
+import vip.gadfly.chakkispring.vo.CreatedVO;
+import vip.gadfly.chakkispring.vo.DeletedVO;
+import vip.gadfly.chakkispring.vo.PageResponseVO;
+import vip.gadfly.chakkispring.vo.UpdatedVO;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Max;

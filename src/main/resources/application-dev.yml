@@ -35,4 +35,4 @@ logging:
     # web信息日志记录
     web: debug
     # SQL日志记录
-    io.github.talelin.latticy.mapper: debug
+    vip.gadfly.chakkispring.mapper: debug
