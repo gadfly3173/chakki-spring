@@ -98,10 +98,12 @@ public class UserController {
 
     /**
      * 更新用户信息
+     *
+     * 停用
      */
     @PutMapping
     @GroupRequired
-    public UnifyResponseVO update(@RequestBody @Validated UpdateInfoDTO validator) {
+    private UnifyResponseVO update(@RequestBody @Validated UpdateInfoDTO validator) {
         userService.updateUserInfo(validator);
         return ResponseUtil.generateUnifyResponse(4);
     }
