@@ -29,9 +29,9 @@ public class MemoryLimiter implements Limiter {
         log.info("uniqueId: {}", uniqueId);
         RateLimiter currentLimiter = record.get(uniqueId);
         if (currentLimiter != null) {
+            // 减去当前访问的一次
             return currentLimiter.tryAcquire(1);
         } else {
-            // 减去当前访问的一次
             RateLimiter limiter = RateLimiter.create(value);
             record.put(uniqueId, limiter);
             return true;

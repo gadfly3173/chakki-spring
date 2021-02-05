@@ -112,10 +112,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             if (exist) {
                 throw new ForbiddenException(10071);
             }
-            user.setUsername(dto.getUsername());
-            userIdentityService.changeUsername(user.getId(), dto.getUsername());
+
+            boolean changeSuccess = userIdentityService.changeUsername(user.getId(), dto.getUsername());
+            if (changeSuccess) {
+                user.setUsername(dto.getUsername());
+            }
         }
-        BeanUtils.copyProperties(dto, user);
+
+        // todo 增加工具类实现忽略 null 的 BeanCopy,简化这段代码
+        if (dto.getUsername() != null) {
+            user.setUsername(dto.getUsername());
+        }
+        if (dto.getAvatar() != null) {
+            user.setAvatar(dto.getAvatar());
+        }
+        if (dto.getEmail() != null) {
+            user.setEmail(dto.getEmail());
+        }
+        if (dto.getNickname() != null) {
+            user.setNickname(dto.getNickname());
+        }
+
         this.baseMapper.updateById(user);
         return user;
     }
@@ -231,9 +248,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Override
     public Integer getRootUserId() {
         Integer rootGroupId = groupService.getParticularGroupIdByLevel(GroupLevelEnum.ROOT);
-        QueryWrapper<UserGroupDO> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(UserGroupDO::getGroupId, rootGroupId);
-        UserGroupDO userGroupDO = userGroupMapper.selectOne(wrapper);
+        UserGroupDO userGroupDO = null;
+        if (rootGroupId != 0) {
+            QueryWrapper<UserGroupDO> wrapper = new QueryWrapper<>();
+            wrapper.lambda().eq(UserGroupDO::getGroupId, rootGroupId);
+            userGroupDO = userGroupMapper.selectOne(wrapper);
+        }
         return userGroupDO == null ? 0 : userGroupDO.getUserId();
     }
 

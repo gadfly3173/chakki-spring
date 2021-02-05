@@ -37,7 +37,7 @@ public class CommonConfiguration {
     }
 
     /**
-     * 参考链接：https://mp.baomidou.com/guide/interceptor.htm
+     * 参考链接：https://mp.baomidou.com/guide/interceptor.html
      */
     @Bean
     public ConfigurationCustomizer configurationCustomizer() {
