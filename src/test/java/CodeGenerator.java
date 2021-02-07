@@ -41,7 +41,7 @@ public class CodeGenerator {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir") + "/demo";
         gc.setOutputDir(projectPath + "/src/main/java");
-        gc.setAuthor("pedro");
+        gc.setAuthor("Gadfly");
         gc.setOpen(false);
         gc.setFileOverride(true);
         gc.setBaseResultMap(true);
@@ -50,11 +50,11 @@ public class CodeGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/lin-cms?useUnicode=true&useSSL=false&characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://localhost:3306/chakki-spring?characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8&useUnicode=true");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("123456");
+        dsc.setPassword("yishiyile");
         mpg.setDataSource(dsc);
 
         // 包配置
