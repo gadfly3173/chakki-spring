@@ -317,28 +317,28 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         wrapper.lambda().eq(SemesterDO::getName, name);
         boolean exist = semesterMapper.selectCount(wrapper) > 0;
         if (exist) {
-            throw new ForbiddenException("semester name already exist, please enter a new one", 10221);
+            throw new ForbiddenException(10221);
         }
     }
 
     private void throwClassNotExistById(Integer id) {
         boolean exist = classManageService.checkClassExistById(id);
         if (!exist) {
-            throw new NotFoundException("class not found", 10202);
+            throw new NotFoundException(10202);
         }
     }
 
     private void throwSemesterNotExistById(Integer id) {
         SemesterDO exist = semesterMapper.selectById(id);
         if (exist == null) {
-            throw new NotFoundException("semester not found", 10220);
+            throw new NotFoundException(10220);
         }
     }
 
     private void throwClassNameExist(String name) {
         boolean exist = classManageService.checkClassExistByName(name);
         if (exist) {
-            throw new ForbiddenException("class name already exist, please enter a new one", 10203);
+            throw new ForbiddenException(10203);
         }
     }
 }

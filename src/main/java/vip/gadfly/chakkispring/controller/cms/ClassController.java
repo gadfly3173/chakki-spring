@@ -48,7 +48,7 @@ public class ClassController {
 
     @GetMapping("/class/{id}")
     @GroupRequired
-    @GroupMeta(permission = "查询一个班级", mount = true)
+    @PermissionMeta(value = "查询一个班级", mount = true)
     public ClassDO getClass(@PathVariable @Positive(message = "{id}") Integer id) {
         return classService.getClass(id);
     }
