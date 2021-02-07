@@ -15,7 +15,7 @@
     <select id="selectSignPageByClassId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT u.id,
                u.name,
-               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = u.id AND ss.status &lt; 3) AS signed,
+               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = u.id AND ss.status &lt; 3) AS `signed`,
                u.create_time,
                u.class_id,
                u.end_time
@@ -27,7 +27,7 @@
     <select id="getLatestSignByClassId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT u.id,
                u.name,
-               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = u.id AND ss.status &lt; 3) AS signed,
+               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = u.id AND ss.status &lt; 3) AS `signed`,
                u.create_time,
                u.class_id,
                u.end_time
@@ -39,7 +39,7 @@
     <select id="getStudentLatestSignByClassId" resultType="vip.gadfly.chakkispring.vo.SignListVO">
         SELECT u.id,
                u.name,
-               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.user_id = #{userId} AND ss.sign_id = u.id) AS signed,
+               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.user_id = #{userId} AND ss.sign_id = u.id) AS `signed`,
                u.create_time,
                u.class_id,
                u.end_time
@@ -50,8 +50,8 @@
     </select>
     <select id="selectSignCountInfoById" resultType="vip.gadfly.chakkispring.vo.SignCountVO">
         SELECT sl.*,
-               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = #{signId} AND ss.status = 1) AS signed,
-               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = #{signId} AND ss.status = 2) AS late,
+               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = #{signId} AND ss.status = 1) AS `signed`,
+               (SELECT COUNT(*) FROM student_sign AS ss WHERE ss.sign_id = #{signId} AND ss.status = 2) AS `late`,
                (SELECT COUNT(*)
                 from lin_user AS u
                 WHERE u.id NOT IN (
