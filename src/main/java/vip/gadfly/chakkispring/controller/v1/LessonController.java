@@ -155,4 +155,29 @@ public class LessonController {
     public List<SemesterDO> getAllSemesters() {
         return classService.getAllSemesters();
     }
+
+    @PostMapping("/work/create")
+    @GroupRequired
+    @PermissionMeta(value = "发起作业", mount = true)
+    @TeacherClassCheck(valueType = classIdType, paramType = requestBodyType, valueName = "class_id")
+    public UnifyResponseVO createWork(@RequestBody @Validated NewSignDTO validator) {
+        classService.createSign(validator);
+        return ResponseUtil.generateUnifyResponse(19);
+    }
+
+    @GetMapping("/work/list")
+    @GroupRequired
+    @PermissionMeta(value = "查看所有作业项目", mount = true)
+    @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
+    public PageResponseVO getWorkList(
+            @RequestParam(name = "class_id")
+            @Min(value = 1, message = "{class-id}") Integer classId,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "{count}") Integer count,
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{page}") Integer page) {
+        IPage<SignListDO> iPage = classService.getSignPageByClassId(classId, count, page);
+        return PageUtil.build(iPage);
+    }
+
 }

@@ -52,7 +52,7 @@ public class WorkDO extends BaseModel implements Serializable {
     /**
      * 作业类型：1-课堂 2-回家
      */
-    private Boolean type;
+    private Integer type;
 
     private Date endTime;
 }

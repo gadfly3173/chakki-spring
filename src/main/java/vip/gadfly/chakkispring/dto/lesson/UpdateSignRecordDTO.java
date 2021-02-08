@@ -22,7 +22,6 @@ public class UpdateSignRecordDTO {
     @Min(value = 1, message = "{id}")
     private Integer userId;
 
-    @NotNull(message = "{lesson.sign.end-time.not-null}")
     @Min(value = SignStatusConstant.STATUS_SIGNED, message = "{lesson.sign.status}")
     @Max(value = SignStatusConstant.STATUS_CANCEL, message = "{lesson.sign.status}")
     private Integer signStatus;
