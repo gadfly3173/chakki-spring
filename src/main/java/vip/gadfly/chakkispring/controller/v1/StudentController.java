@@ -43,7 +43,7 @@ public class StudentController {
     private ClassService classService;
 
     @GroupRequired
-    @PermissionMeta(value = "查看自己所属班级", mount = true)
+    @PermissionMeta(value = "查看自己所属班级")
     @GetMapping("/list")
     public List<ClassDO> getClassList() {
         return studentService.getStudentClassList();
@@ -51,7 +51,7 @@ public class StudentController {
 
     @GetMapping("/class/list")
     @GroupRequired
-    @PermissionMeta(value = "查询学生本学期所属班级", mount = true)
+    @PermissionMeta(value = "查询学生本学期所属班级")
     public List<ClassDO> getClassesBySemesterAndStudent(@RequestParam("semester_id") Integer semesterId) {
         Integer userId = LocalUser.getLocalUser().getId();
         return classService.getClassesBySemesterAndStudent(semesterId, userId);
@@ -59,14 +59,14 @@ public class StudentController {
 
     @GetMapping("/{id}")
     @GroupRequired
-    @PermissionMeta(value = "查询特定班级", mount = true)
+    @PermissionMeta(value = "查询特定班级")
     @StudentClassCheck(valueType = "classId", paramType = "PathVariable")
     public ClassDO getClass(@PathVariable @Positive(message = "{id}") Integer id) {
         return classService.getClass(id);
     }
 
     @GroupRequired
-    @PermissionMeta(value = "查看班级内签到项目", mount = true)
+    @PermissionMeta(value = "查看班级内签到项目")
     @GetMapping("/sign/list")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getSignList(
@@ -81,7 +81,7 @@ public class StudentController {
     }
 
     @GroupRequired
-    @PermissionMeta(value = "查看班级最新签到项目", mount = true)
+    @PermissionMeta(value = "查看班级最新签到项目")
     @GetMapping("/sign/latest")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public SignListVO getLatestSign(
@@ -91,7 +91,7 @@ public class StudentController {
     }
 
     @GroupRequired
-    @PermissionMeta(value = "学生进行签到", mount = true)
+    @PermissionMeta(value = "学生进行签到")
     @PostMapping("/sign/confirm/{signId}")
     @StudentClassCheck(valueType = signIdType, paramType = pathVariableType)
     public UnifyResponseVO confirmStudentSign(
@@ -110,7 +110,7 @@ public class StudentController {
 
     @GroupRequired
     @GetMapping("/semester/all")
-    @PermissionMeta(value = "学生查询所有学期", mount = true)
+    @PermissionMeta(value = "学生查询所有学期")
     public List<SemesterDO> getAllSemesters() {
         return classService.getAllSemesters();
     }

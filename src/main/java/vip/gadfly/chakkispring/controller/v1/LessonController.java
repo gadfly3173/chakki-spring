@@ -48,14 +48,14 @@ public class LessonController {
     // 本接口暂时作废
     @GetMapping("/class/all")
     @GroupRequired
-    @PermissionMeta(value = "查询所有班级", mount = true)
+    @PermissionMeta(value = "查询所有班级")
     private List<ClassDO> getAllClasses() {
         return classService.getAllClasses();
     }
 
     @GetMapping("/class/list")
     @GroupRequired
-    @PermissionMeta(value = "查询教师本学期所属班级", mount = true)
+    @PermissionMeta(value = "查询教师本学期所属班级")
     public List<ClassDO> getClassesBySemesterAndTeacher(@RequestParam("semester_id") Integer semesterId) {
         Integer teacherId = LocalUser.getLocalUser().getId();
         return classService.getClassesBySemesterAndTeacher(semesterId, teacherId);
@@ -63,7 +63,7 @@ public class LessonController {
 
     @GetMapping("/class/{id}")
     @GroupRequired
-    @PermissionMeta(value = "查询一个班级", mount = true)
+    @PermissionMeta(value = "查询一个班级")
     @TeacherClassCheck(valueType = classIdType, paramType = pathVariableType)
     public ClassDO getClass(@PathVariable @Positive(message = "{id}") Integer id) {
         return classService.getClass(id);
@@ -71,7 +71,7 @@ public class LessonController {
 
     @GetMapping("/students")
     @GroupRequired
-    @PermissionMeta(value = "查询所有此班级学生", mount = true)
+    @PermissionMeta(value = "查询所有此班级学生")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getStudents(
             @RequestParam(name = "class_id")
@@ -86,7 +86,7 @@ public class LessonController {
 
     @PostMapping("/sign/create")
     @GroupRequired
-    @PermissionMeta(value = "发起签到", mount = true)
+    @PermissionMeta(value = "发起签到")
     @TeacherClassCheck(valueType = classIdType, paramType = requestBodyType, valueName = "class_id")
     public UnifyResponseVO createStudentSign(@RequestBody @Validated NewSignDTO validator) {
         classService.createSign(validator);
@@ -95,7 +95,7 @@ public class LessonController {
 
     @GetMapping("/sign/list")
     @GroupRequired
-    @PermissionMeta(value = "查看所有签到项目", mount = true)
+    @PermissionMeta(value = "查看所有签到项目")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getSignList(
             @RequestParam(name = "class_id")
@@ -110,7 +110,7 @@ public class LessonController {
 
     @GetMapping("/sign/students/query/{signId}")
     @GroupRequired
-    @PermissionMeta(value = "查询单个签到项目下的所有学生", mount = true)
+    @PermissionMeta(value = "查询单个签到项目下的所有学生")
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public PageResponseVO getStudentsBySignId(
             @RequestParam(name = "sign_status", required = false, defaultValue = "0")
@@ -132,7 +132,7 @@ public class LessonController {
 
     @GetMapping("/sign/{id}")
     @GroupRequired
-    @PermissionMeta(value = "查询一个签到信息", mount = true)
+    @PermissionMeta(value = "查询一个签到信息")
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public SignCountVO getSign(@PathVariable @Positive(message = "{id}") Integer id) {
         return classService.getSign(id);
@@ -140,7 +140,7 @@ public class LessonController {
 
     @PostMapping("/sign/record/update/{signId}")
     @GroupRequired
-    @PermissionMeta(value = "修改签到记录", mount = true)
+    @PermissionMeta(value = "修改签到记录")
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public UnifyResponseVO updateStudentSignRecord(@RequestBody @Validated UpdateSignRecordDTO validator,
                                                    @PathVariable Integer signId) {
@@ -152,14 +152,14 @@ public class LessonController {
 
     @GetMapping("/semester/all")
     @GroupRequired
-    @PermissionMeta(value = "教师查询所有学期", mount = true)
+    @PermissionMeta(value = "教师查询所有学期")
     public List<SemesterDO> getAllSemesters() {
         return classService.getAllSemesters();
     }
 
     @PostMapping("/work/create")
     @GroupRequired
-    @PermissionMeta(value = "发起作业", mount = true)
+    @PermissionMeta(value = "发起作业")
     @TeacherClassCheck(valueType = classIdType, paramType = requestBodyType, valueName = "class_id")
     public UnifyResponseVO createWork(@RequestBody @Validated NewWorkDTO validator) {
         classService.createWork(validator);
@@ -168,7 +168,7 @@ public class LessonController {
 
     @GetMapping("/work/list")
     @GroupRequired
-    @PermissionMeta(value = "查看所有作业项目", mount = true)
+    @PermissionMeta(value = "查看所有作业项目")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getWorkList(
             @RequestParam(name = "class_id")
