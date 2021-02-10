@@ -1,15 +1,15 @@
 package vip.gadfly.chakkispring.dto.lesson;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import vip.gadfly.chakkispring.common.constant.WorkTypeConstant;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Gadfly
@@ -40,8 +40,10 @@ public class NewWorkDTO {
     @Max(value = WorkTypeConstant.TYPE_HOME, message = "{lesson.work.type}")
     private Integer type;
 
-    @NotNull(message = "{lesson.sign.end-time.not-null}")
-    @Min(value = 1, message = "{lesson.sign.end-time.not-null}")
-    private Integer endTime;
+    private List<@NotBlank(message = "lesson.work.extend.not-blank") String> extendList;
+
+    // @Future(message = "{lesson.work.end-time.not-null}")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date endTime;
 
 }

@@ -12,6 +12,7 @@ import vip.gadfly.chakkispring.common.annotation.TeacherClassCheck;
 import vip.gadfly.chakkispring.common.util.PageUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
+import vip.gadfly.chakkispring.dto.lesson.NewWorkDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
@@ -160,9 +161,9 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "发起作业", mount = true)
     @TeacherClassCheck(valueType = classIdType, paramType = requestBodyType, valueName = "class_id")
-    public UnifyResponseVO createWork(@RequestBody @Validated NewSignDTO validator) {
-        classService.createSign(validator);
-        return ResponseUtil.generateUnifyResponse(19);
+    public UnifyResponseVO createWork(@RequestBody @Validated NewWorkDTO validator) {
+        classService.createWork(validator);
+        return ResponseUtil.generateUnifyResponse(28);
     }
 
     @GetMapping("/work/list")

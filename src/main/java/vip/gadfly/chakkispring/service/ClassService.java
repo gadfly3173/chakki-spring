@@ -6,6 +6,7 @@ import vip.gadfly.chakkispring.dto.admin.NewSemesterDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateSemesterDTO;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
+import vip.gadfly.chakkispring.dto.lesson.NewWorkDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
@@ -129,7 +130,7 @@ public interface ClassService {
      *
      * @param validator 新签到内容
      */
-    boolean createSign(NewSignDTO validator);
+    void createSign(NewSignDTO validator);
 
     /**
      * 通过班级id分页获取签到项目
@@ -251,4 +252,11 @@ public interface ClassService {
      * @return 班级列表
      */
     List<ClassDO> getClassesBySemesterAndStudent(Integer semesterId, Integer userId);
+
+    /**
+     * 新建作业项目
+     *
+     * @param validator 作业信息
+     */
+    void createWork(NewWorkDTO validator);
 }

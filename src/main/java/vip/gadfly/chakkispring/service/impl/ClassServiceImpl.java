@@ -16,6 +16,7 @@ import vip.gadfly.chakkispring.dto.admin.NewSemesterDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateSemesterDTO;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
+import vip.gadfly.chakkispring.dto.lesson.NewWorkDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.mapper.*;
 import vip.gadfly.chakkispring.model.*;
@@ -58,6 +59,12 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Autowired
     private SemesterMapper semesterMapper;
+
+    @Autowired
+    private WorkMapper workMapper;
+
+    @Autowired
+    private WorkExtendMapper workExtendMapper;
 
     @Override
     public IPage<UserDO> getUserPageByClassId(Integer classId, Integer count, Integer page) {
@@ -157,7 +164,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public boolean createSign(NewSignDTO validator) {
+    public void createSign(NewSignDTO validator) {
         SignListDO sign = new SignListDO();
         sign.setClassId(validator.getClassId());
         sign.setName(validator.getTitle());
@@ -166,7 +173,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         sign.setCreateTime(calendar.getTime());
         calendar.add(Calendar.MINUTE, validator.getEndMinutes());
         sign.setEndTime(calendar.getTime());
-        return signListMapper.insert(sign) > 0;
+        signListMapper.insert(sign);
     }
 
 
@@ -310,6 +317,33 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     @Override
     public List<ClassDO> getClassesBySemesterAndStudent(Integer semesterId, Integer userId) {
         return classManageService.getClassesBySemesterAndStudent(semesterId, userId);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void createWork(NewWorkDTO dto) {
+        WorkDO work = WorkDO
+                .builder()
+                .name(dto.getName())
+                .info(dto.getInfo())
+                .classId(dto.getClassId())
+                .fileNum(dto.getFileNum())
+                .fileSize(dto.getFileSize())
+                .type(dto.getType())
+                .endTime(dto.getEndTime())
+                .build();
+        System.out.println(work.toString());
+        workMapper.insert(work);
+        if (dto.getExtendList() != null && dto.getExtendList().size() > 0) {
+            for (String extend : dto.getExtendList()) {
+                WorkExtendDO workExtendDO = WorkExtendDO
+                        .builder()
+                        .extend(extend.replaceAll("[^a-zA-Z0-9]", "").trim().toUpperCase())
+                        .workId(work.getId())
+                        .build();
+                workExtendMapper.insert(workExtendDO);
+            }
+        }
     }
 
     private void throwSemesterNameExist(String name) {
