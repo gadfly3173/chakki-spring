@@ -7,7 +7,10 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import vip.gadfly.chakkispring.common.constant.WorkTypeConstant;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
