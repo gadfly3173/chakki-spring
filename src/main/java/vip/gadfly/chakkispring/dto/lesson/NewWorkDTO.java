@@ -40,7 +40,7 @@ public class NewWorkDTO {
     @Max(value = WorkTypeConstant.TYPE_HOME, message = "{lesson.work.type}")
     private Integer type;
 
-    private List<@NotBlank(message = "lesson.work.extend.not-blank") String> extendList;
+    private List<@NotBlank(message = "lesson.work.extend.not-blank") String> fileExtend;
 
     // @Future(message = "{lesson.work.end-time.not-null}")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

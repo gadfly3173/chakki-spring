@@ -332,17 +332,19 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
                 .type(dto.getType())
                 .endTime(dto.getEndTime())
                 .build();
-        System.out.println(work.toString());
         workMapper.insert(work);
-        if (dto.getExtendList() != null && dto.getExtendList().size() > 0) {
-            for (String extend : dto.getExtendList()) {
-                WorkExtendDO workExtendDO = WorkExtendDO
-                        .builder()
-                        .extend(extend.replaceAll("[^a-zA-Z0-9]", "").trim().toUpperCase())
-                        .workId(work.getId())
-                        .build();
-                workExtendMapper.insert(workExtendDO);
-            }
+        if (dto.getFileExtend() != null && dto.getFileExtend().size() > 0) {
+            List<WorkExtendDO> relations = dto.getFileExtend()
+                    .stream()
+                    .map(ext -> WorkExtendDO.builder()
+                            .workId(work.getId())
+                            .extend(ext
+                                    .replaceAll("[^a-zA-Z0-9]", "")
+                                    .trim()
+                                    .toUpperCase())
+                            .build())
+                    .collect(Collectors.toList());
+            workExtendMapper.insertBatch(relations);
         }
     }
 
