@@ -3,6 +3,7 @@ package vip.gadfly.chakkispring.dto.lesson;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 import vip.gadfly.chakkispring.common.constant.WorkTypeConstant;
 
 import javax.validation.constraints.Max;
@@ -22,6 +23,7 @@ public class NewWorkDTO {
     @NotBlank(message = "{lesson.work.name.not-null}")
     private String name;
 
+    @Length(max = 255, message = "{group.info.length}")
     private String info;
 
     @NotNull(message = "{class.id.not-null}")
