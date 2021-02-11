@@ -339,7 +339,6 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
                             .workId(work.getId())
                             .extension(ext
                                     .replaceAll("[^a-zA-Z0-9]", "")
-                                    .trim()
                                     .toUpperCase())
                             .build())
                     .collect(Collectors.toList());
