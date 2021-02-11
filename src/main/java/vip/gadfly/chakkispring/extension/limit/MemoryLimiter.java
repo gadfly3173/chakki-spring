@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author Gadfly
@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class MemoryLimiter implements Limiter {
 
-    private final Map<String, RateLimiter> record = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, RateLimiter> record = new ConcurrentHashMap<>();
 
     @Value("${lin.qps.limit.value}")
     private Integer value;
@@ -33,7 +33,7 @@ public class MemoryLimiter implements Limiter {
             return currentLimiter.tryAcquire(1);
         } else {
             RateLimiter limiter = RateLimiter.create(value);
-            record.put(uniqueId, limiter);
+            record.putIfAbsent(uniqueId, limiter);
             return true;
         }
     }
