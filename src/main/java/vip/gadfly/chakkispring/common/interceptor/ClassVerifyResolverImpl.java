@@ -58,6 +58,9 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
             case signIdType:
                 result = ClassPermissionCheckUtil.isTeacherInClassBySignId(id);
                 break;
+            case workIdType:
+                result = ClassPermissionCheckUtil.isTeacherInClassByWorkId(id);
+                break;
             default:
                 throw new RuntimeException("id的值类型错误(classId, signId)，请开发检查");
         }
@@ -90,6 +93,9 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
                 break;
             case signIdType:
                 result = ClassPermissionCheckUtil.isStudentInClassBySignId(id);
+                break;
+            case workIdType:
+                result = ClassPermissionCheckUtil.isStudentInClassByWorkId(id);
                 break;
             default:
                 throw new RuntimeException("id的值类型错误(classId, signId)，请开发检查");

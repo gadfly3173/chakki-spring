@@ -19,10 +19,7 @@ import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.ClassService;
-import vip.gadfly.chakkispring.vo.PageResponseVO;
-import vip.gadfly.chakkispring.vo.SignCountVO;
-import vip.gadfly.chakkispring.vo.StudentSignVO;
-import vip.gadfly.chakkispring.vo.UnifyResponseVO;
+import vip.gadfly.chakkispring.vo.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
@@ -104,7 +101,7 @@ public class LessonController {
             @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
-        IPage<SignListDO> iPage = classService.getSignPageByClassId(classId, count, page);
+        IPage<SignListVO> iPage = classService.getSignPageByClassId(classId, count, page);
         return PageUtil.build(iPage);
     }
 
@@ -177,7 +174,7 @@ public class LessonController {
             @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
-        IPage<SignListDO> iPage = classService.getSignPageByClassId(classId, count, page);
+        IPage<WorkVO> iPage = classService.getWorkPageByClassId(classId, count, page);
         return PageUtil.build(iPage);
     }
 

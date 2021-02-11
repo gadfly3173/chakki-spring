@@ -21,7 +21,7 @@ public interface SignListMapper extends BaseMapper<SignListDO> {
      * @param classId 班级id
      * @return 分页数据
      */
-    IPage<SignListDO> selectSignPageByClassId(Page pager, Integer classId);
+    IPage<SignListVO> selectSignPageByClassId(Page pager, Integer classId);
 
     /**
      * 通过班级id获取最新签到项目

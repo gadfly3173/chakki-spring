@@ -8,6 +8,7 @@ import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.mapper.SignListMapper;
 import vip.gadfly.chakkispring.mapper.StudentClassMapper;
 import vip.gadfly.chakkispring.mapper.TeacherClassMapper;
+import vip.gadfly.chakkispring.mapper.WorkMapper;
 import vip.gadfly.chakkispring.model.StudentClassDO;
 import vip.gadfly.chakkispring.model.TeacherClassDO;
 import vip.gadfly.chakkispring.model.UserDO;
@@ -23,12 +24,18 @@ import javax.annotation.PostConstruct;
 public class ClassPermissionCheckUtil {
 
     private static ClassPermissionCheckUtil classPermissionCheckUtil;
+
     @Autowired
     private StudentClassMapper studentClassMapper;
+
     @Autowired
     private TeacherClassMapper teacherClassMapper;
+
     @Autowired
     private SignListMapper signListMapper;
+
+    @Autowired
+    private WorkMapper workMapper;
 
     public static boolean isStudentInClassByClassId(Integer classId) {
         return isStudentInClass(classId);
@@ -39,12 +46,22 @@ public class ClassPermissionCheckUtil {
         return isStudentInClass(classId);
     }
 
+    public static boolean isStudentInClassByWorkId(Integer workId) {
+        Integer classId = classPermissionCheckUtil.workMapper.selectById(workId).getClassId();
+        return isStudentInClass(classId);
+    }
+
     public static boolean isTeacherInClassByClassId(Integer classId) {
         return isTeacherInClass(classId);
     }
 
     public static boolean isTeacherInClassBySignId(Integer signId) {
         Integer classId = classPermissionCheckUtil.signListMapper.selectById(signId).getClassId();
+        return isTeacherInClass(classId);
+    }
+
+    public static boolean isTeacherInClassByWorkId(Integer workId) {
+        Integer classId = classPermissionCheckUtil.workMapper.selectById(workId).getClassId();
         return isTeacherInClass(classId);
     }
 
@@ -78,5 +95,6 @@ public class ClassPermissionCheckUtil {
         classPermissionCheckUtil.studentClassMapper = this.studentClassMapper;
         classPermissionCheckUtil.teacherClassMapper = this.teacherClassMapper;
         classPermissionCheckUtil.signListMapper = this.signListMapper;
+        classPermissionCheckUtil.workMapper = this.workMapper;
     }
 }

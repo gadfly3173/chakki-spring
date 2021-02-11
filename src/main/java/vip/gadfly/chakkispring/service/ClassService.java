@@ -12,9 +12,7 @@ import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.UserDO;
-import vip.gadfly.chakkispring.vo.SignCountVO;
-import vip.gadfly.chakkispring.vo.StudentSignVO;
-import vip.gadfly.chakkispring.vo.TeacherClassVO;
+import vip.gadfly.chakkispring.vo.*;
 
 import java.util.List;
 
@@ -140,7 +138,7 @@ public interface ClassService {
      * @param page    当前分页
      * @return 用户数据
      */
-    IPage<SignListDO> getSignPageByClassId(Integer classId, Integer count, Integer page);
+    IPage<SignListVO> getSignPageByClassId(Integer classId, Integer count, Integer page);
 
     /**
      * 通过id分页获取签到项目详情
@@ -259,4 +257,14 @@ public interface ClassService {
      * @param validator 作业信息
      */
     void createWork(NewWorkDTO validator);
+
+    /**
+     * 通过班级id分页获取作业项目
+     *
+     * @param classId 班级id
+     * @param count   当前页数目
+     * @param page    当前分页
+     * @return 作业项目
+     */
+    IPage<WorkVO> getWorkPageByClassId(Integer classId, Integer count, Integer page);
 }

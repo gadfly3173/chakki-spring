@@ -23,9 +23,7 @@ import vip.gadfly.chakkispring.model.*;
 import vip.gadfly.chakkispring.service.ClassManageService;
 import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.service.UserService;
-import vip.gadfly.chakkispring.vo.SignCountVO;
-import vip.gadfly.chakkispring.vo.StudentSignVO;
-import vip.gadfly.chakkispring.vo.TeacherClassVO;
+import vip.gadfly.chakkispring.vo.*;
 
 import java.util.Calendar;
 import java.util.List;
@@ -36,6 +34,7 @@ import java.util.stream.Collectors;
  * @author gadfly
  */
 
+@SuppressWarnings("unchecked")
 @Service
 public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implements ClassService {
 
@@ -185,9 +184,9 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<SignListDO> getSignPageByClassId(Integer classId, Integer count, Integer page) {
+    public IPage<SignListVO> getSignPageByClassId(Integer classId, Integer count, Integer page) {
         Page pager = new Page(page, count);
-        IPage<SignListDO> iPage;
+        IPage<SignListVO> iPage;
         iPage = signListMapper.selectSignPageByClassId(pager, classId);
         return iPage;
     }
@@ -346,6 +345,14 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
                     .collect(Collectors.toList());
             workExtendMapper.insertBatch(relations);
         }
+    }
+
+    @Override
+    public IPage<WorkVO> getWorkPageByClassId(Integer classId, Integer count, Integer page) {
+        Page pager = new Page(page, count);
+        IPage<WorkVO> iPage;
+        iPage = workMapper.selectWorkPageByClassId(pager, classId);
+        return iPage;
     }
 
     private void throwSemesterNameExist(String name) {

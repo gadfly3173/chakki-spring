@@ -76,7 +76,7 @@ public class StudentController {
             @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
-        IPage<SignListDO> iPage = classService.getSignPageByClassId(classId, count, page);
+        IPage<SignListVO> iPage = classService.getSignPageByClassId(classId, count, page);
         return PageUtil.build(iPage);
     }
 

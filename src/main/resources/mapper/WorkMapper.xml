@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.gadfly.chakkispring.mapper.WorkMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="vip.gadfly.chakkispring.vo.WorkVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="info" property="info"/>
+        <result column="file_num" property="fileNum"/>
+        <result column="file_size" property="fileSize"/>
+        <result column="type" property="type"/>
+        <result column="handed" property="handed"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="end_time" property="endTime"/>
+        <collection property="fileExtend" column="id" ofType="java.lang.String" select="vip.gadfly.chakkispring.mapper.WorkMapper.selectFileExtendByWorkId">
+        </collection>
+    </resultMap>
+
+    <select id="selectWorkPageByClassId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT w.id,
+               w.name,
+               w.info,
+               w.file_num,
+               w.file_size,
+               w.type,
+               (SELECT COUNT(*) FROM student_work AS sw WHERE sw.work_id = w.id AND sw.delete_time IS NULL) AS `handed`,
+               w.create_time,
+               w.update_time,
+               w.end_time
+        FROM work AS w
+        WHERE w.class_id = #{classId}
+        AND w.delete_time IS NULL
+        ORDER BY w.id DESC
+    </select>
+
+    <select id="selectFileExtendByWorkId" resultType="java.lang.String">
+        SELECT we.extend FROM work_extend AS we WHERE we.work_id = #{workId}
+    </select>
+
+</mapper>
