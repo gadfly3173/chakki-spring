@@ -25,7 +25,7 @@ public class LimitInterceptor implements AsyncHandlerInterceptor {
         boolean ok = limiter.handle(request);
         log.info("limit val : {}", ok);
         if (!ok) {
-            throw new RequestLimitException();
+            throw new RequestLimitException(10140);
         }
         return true;
     }
