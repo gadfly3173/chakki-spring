@@ -63,7 +63,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     private WorkMapper workMapper;
 
     @Autowired
-    private WorkExtendMapper workExtendMapper;
+    private WorkExtensionMapper workExtendMapper;
 
     @Override
     public IPage<UserDO> getUserPageByClassId(Integer classId, Integer count, Integer page) {
@@ -332,12 +332,12 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
                 .endTime(dto.getEndTime())
                 .build();
         workMapper.insert(work);
-        if (dto.getFileExtend() != null && dto.getFileExtend().size() > 0) {
-            List<WorkExtendDO> relations = dto.getFileExtend()
+        if (dto.getFileExtension() != null && dto.getFileExtension().size() > 0) {
+            List<WorkExtensionDO> relations = dto.getFileExtension()
                     .stream()
-                    .map(ext -> WorkExtendDO.builder()
+                    .map(ext -> WorkExtensionDO.builder()
                             .workId(work.getId())
-                            .extend(ext
+                            .extension(ext
                                     .replaceAll("[^a-zA-Z0-9]", "")
                                     .trim()
                                     .toUpperCase())

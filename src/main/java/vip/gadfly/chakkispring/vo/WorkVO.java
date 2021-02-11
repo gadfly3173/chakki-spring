@@ -26,7 +26,7 @@ public class WorkVO implements Serializable {
 
     private Integer type;
 
-    private List<String> fileExtend;
+    private List<String> fileExtension;
 
     private Integer handed;
 

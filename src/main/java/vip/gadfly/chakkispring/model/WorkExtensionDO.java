@@ -22,8 +22,8 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("work_extend")
-public class WorkExtendDO implements Serializable {
+@TableName("work_extension")
+public class WorkExtensionDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,6 +38,6 @@ public class WorkExtendDO implements Serializable {
     /**
      * 扩展名
      */
-    private String extend;
+    private String extension;
 
 }

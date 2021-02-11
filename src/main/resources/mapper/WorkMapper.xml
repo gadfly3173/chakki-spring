@@ -14,7 +14,7 @@
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="end_time" property="endTime"/>
-        <collection property="fileExtend" column="id" ofType="java.lang.String" select="vip.gadfly.chakkispring.mapper.WorkMapper.selectFileExtendByWorkId">
+        <collection property="fileExtension" column="id" ofType="java.lang.String" select="vip.gadfly.chakkispring.mapper.WorkMapper.selectFileExtendByWorkId">
         </collection>
     </resultMap>
 
@@ -36,7 +36,7 @@
     </select>
 
     <select id="selectFileExtendByWorkId" resultType="java.lang.String">
-        SELECT we.extend FROM work_extend AS we WHERE we.work_id = #{workId}
+        SELECT we.extension FROM work_extension AS we WHERE we.work_id = #{workId}
     </select>
 
 </mapper>
