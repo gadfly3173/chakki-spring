@@ -87,7 +87,7 @@ public class ResponseUtil {
                 .build();
     }
 
-    public static PageResponseVO generatePageResult(Integer total, List items, Integer page, Integer count) {
+    public static PageResponseVO generatePageResult(int total, List items, int page, int count) {
         return new PageResponseVO(total, items, page, count);
     }
 }
