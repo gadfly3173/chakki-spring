@@ -356,6 +356,11 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         return iPage;
     }
 
+    @Override
+    public void deleteWork(Integer id) {
+        workMapper.deleteById(id);
+    }
+
     private void throwSemesterNameExist(String name) {
         QueryWrapper<SemesterDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(SemesterDO::getName, name);

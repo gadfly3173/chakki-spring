@@ -16,7 +16,6 @@ import vip.gadfly.chakkispring.dto.lesson.NewWorkDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
-import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.vo.*;
@@ -161,6 +160,15 @@ public class LessonController {
     public UnifyResponseVO createWork(@RequestBody @Validated NewWorkDTO validator) {
         classService.createWork(validator);
         return ResponseUtil.generateUnifyResponse(28);
+    }
+
+    @PostMapping("/work/delete/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "删除作业")
+    @TeacherClassCheck(valueType = workIdType, paramType = pathVariableType)
+    public UnifyResponseVO deleteWork(@PathVariable @Positive(message = "{id}") Integer id) {
+        classService.deleteWork(id);
+        return ResponseUtil.generateUnifyResponse(29);
     }
 
     @GetMapping("/work/list")

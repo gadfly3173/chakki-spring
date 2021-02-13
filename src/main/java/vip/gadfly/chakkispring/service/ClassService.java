@@ -10,7 +10,6 @@ import vip.gadfly.chakkispring.dto.lesson.NewWorkDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
-import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.vo.*;
 
@@ -267,4 +266,11 @@ public interface ClassService {
      * @return 作业项目
      */
     IPage<WorkVO> getWorkPageByClassId(Integer classId, Integer count, Integer page);
+
+    /**
+     * 删除作业项目
+     *
+     * @param id 作业id
+     */
+    void deleteWork(Integer id);
 }

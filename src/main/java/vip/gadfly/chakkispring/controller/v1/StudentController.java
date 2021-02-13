@@ -14,7 +14,6 @@ import vip.gadfly.chakkispring.common.util.PageUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
-import vip.gadfly.chakkispring.model.SignListDO;
 import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.service.StudentService;
 import vip.gadfly.chakkispring.vo.PageResponseVO;
