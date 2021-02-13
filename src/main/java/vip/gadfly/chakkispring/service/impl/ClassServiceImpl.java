@@ -18,6 +18,7 @@ import vip.gadfly.chakkispring.dto.admin.UpdateSemesterDTO;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.dto.lesson.NewWorkDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
+import vip.gadfly.chakkispring.dto.lesson.UpdateWorkDTO;
 import vip.gadfly.chakkispring.mapper.*;
 import vip.gadfly.chakkispring.model.*;
 import vip.gadfly.chakkispring.service.ClassManageService;
@@ -359,6 +360,38 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     @Override
     public void deleteWork(Integer id) {
         workMapper.deleteById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateWork(UpdateWorkDTO dto) {
+        TreeSet<String> treeSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        treeSet.addAll(dto.getFileExtension());
+        WorkDO work = WorkDO
+                .builder()
+                .name(dto.getName())
+                .info(dto.getInfo())
+                .fileSize(dto.getFileSize())
+                .type(dto.getType())
+                .endTime(dto.getEndTime())
+                .build();
+        work.setId(dto.getId());
+        workMapper.updateById(work);
+        if (treeSet.size() > 0) {
+            QueryWrapper<WorkExtensionDO> wrapper = new QueryWrapper<>();
+            wrapper.lambda().eq(WorkExtensionDO::getWorkId, dto.getId());
+            workExtendMapper.delete(wrapper);
+            List<WorkExtensionDO> relations = treeSet
+                    .stream()
+                    .map(ext -> WorkExtensionDO.builder()
+                            .workId(work.getId())
+                            .extension(ext
+                                    .replaceAll("[^a-zA-Z0-9]", "")
+                                    .toUpperCase())
+                            .build())
+                    .collect(Collectors.toList());
+            workExtendMapper.insertBatch(relations);
+        }
     }
 
     private void throwSemesterNameExist(String name) {

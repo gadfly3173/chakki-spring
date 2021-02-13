@@ -14,6 +14,7 @@ import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.dto.lesson.NewWorkDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
+import vip.gadfly.chakkispring.dto.lesson.UpdateWorkDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.UserDO;
@@ -186,4 +187,12 @@ public class LessonController {
         return PageUtil.build(iPage);
     }
 
+    @PostMapping("/work/update")
+    @GroupRequired
+    @PermissionMeta(value = "发起作业")
+    @TeacherClassCheck(valueType = workIdType, paramType = requestBodyType, valueName = "id")
+    public UnifyResponseVO updateWork(@RequestBody @Validated UpdateWorkDTO validator) {
+        classService.updateWork(validator);
+        return ResponseUtil.generateUnifyResponse(30);
+    }
 }

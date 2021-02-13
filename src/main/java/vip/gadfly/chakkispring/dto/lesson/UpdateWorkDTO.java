@@ -21,17 +21,17 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-public class NewWorkDTO {
+public class UpdateWorkDTO {
+
+    @NotNull(message = "{id.positive}")
+    @Min(value = 1, message = "{id.positive}")
+    private Integer id;
 
     @NotBlank(message = "{lesson.work.name.not-null}")
     private String name;
 
     @Length(max = 255, message = "{group.info.length}")
     private String info;
-
-    @NotNull(message = "{class.id.not-null}")
-    @Min(value = 1, message = "{class.id.not-null}")
-    private Integer classId;
 
     @Max(value = 20971520, message = "{lesson.work.file.size}")
     private Integer fileSize;

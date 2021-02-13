@@ -8,6 +8,7 @@ import vip.gadfly.chakkispring.dto.admin.UpdateSemesterDTO;
 import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
 import vip.gadfly.chakkispring.dto.lesson.NewWorkDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
+import vip.gadfly.chakkispring.dto.lesson.UpdateWorkDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.UserDO;
@@ -273,4 +274,11 @@ public interface ClassService {
      * @param id 作业id
      */
     void deleteWork(Integer id);
+
+    /**
+     * 更新作业项目
+     *
+     * @param validator 作业信息
+     */
+    void updateWork(UpdateWorkDTO validator);
 }
