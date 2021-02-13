@@ -7,7 +7,6 @@
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="info" property="info"/>
-        <result column="file_num" property="fileNum"/>
         <result column="file_size" property="fileSize"/>
         <result column="type" property="type"/>
         <result column="handed" property="handed"/>
@@ -22,7 +21,6 @@
         SELECT w.id,
                w.name,
                w.info,
-               w.file_num,
                w.file_size,
                w.type,
                (SELECT COUNT(*) FROM student_work AS sw WHERE sw.work_id = w.id AND sw.delete_time IS NULL) AS `handed`,

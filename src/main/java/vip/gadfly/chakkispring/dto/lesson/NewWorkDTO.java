@@ -33,9 +33,6 @@ public class NewWorkDTO {
     @Min(value = 1, message = "{class.id.not-null}")
     private Integer classId;
 
-    @Max(value = 10, message = "{lesson.work.file.num}")
-    private Integer fileNum;
-
     @Max(value = 20971520, message = "{lesson.work.file.size}")
     private Integer fileSize;
 
@@ -43,6 +40,7 @@ public class NewWorkDTO {
     @Max(value = WorkTypeConstant.TYPE_HOME, message = "{lesson.work.type}")
     private Integer type;
 
+    @NotNull(message = "lesson.work.extension.not-null")
     private List<@NotBlank(message = "lesson.work.extension.not-blank") String> fileExtension;
 
     // @Future(message = "{lesson.work.end-time.not-null}")

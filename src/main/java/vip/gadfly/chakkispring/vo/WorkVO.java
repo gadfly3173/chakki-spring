@@ -20,8 +20,6 @@ public class WorkVO implements Serializable {
 
     private String info;
 
-    private Integer fileNum;
-
     private Integer fileSize;
 
     private Integer type;

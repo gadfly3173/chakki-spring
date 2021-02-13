@@ -40,11 +40,6 @@ public class WorkDO extends BaseModel implements Serializable {
     private Integer classId;
 
     /**
-     * 文件个数限制
-     */
-    private Integer fileNum;
-
-    /**
      * 单文件大小限制，单位为B/byte
      */
     private Integer fileSize;

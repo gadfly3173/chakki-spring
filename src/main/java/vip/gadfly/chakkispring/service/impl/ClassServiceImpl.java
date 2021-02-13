@@ -27,6 +27,7 @@ import vip.gadfly.chakkispring.vo.*;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 
@@ -321,19 +322,20 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createWork(NewWorkDTO dto) {
+        TreeSet<String> treeSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        treeSet.addAll(dto.getFileExtension());
         WorkDO work = WorkDO
                 .builder()
                 .name(dto.getName())
                 .info(dto.getInfo())
                 .classId(dto.getClassId())
-                .fileNum(dto.getFileNum())
                 .fileSize(dto.getFileSize())
                 .type(dto.getType())
                 .endTime(dto.getEndTime())
                 .build();
         workMapper.insert(work);
-        if (dto.getFileExtension() != null && dto.getFileExtension().size() > 0) {
-            List<WorkExtensionDO> relations = dto.getFileExtension()
+        if (treeSet.size() > 0) {
+            List<WorkExtensionDO> relations = treeSet
                     .stream()
                     .map(ext -> WorkExtensionDO.builder()
                             .workId(work.getId())
