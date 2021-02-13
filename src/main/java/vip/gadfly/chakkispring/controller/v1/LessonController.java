@@ -42,10 +42,10 @@ public class LessonController {
     // 班级接口
 
     // 本接口暂时作废
-    @GetMapping("/class/all")
+    // @GetMapping("/class/all")
     @GroupRequired
     @PermissionMeta(value = "查询所有班级")
-    private List<ClassDO> getAllClasses() {
+    public List<ClassDO> getAllClasses() {
         return classService.getAllClasses();
     }
 

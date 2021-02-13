@@ -26,9 +26,9 @@ public class FileController {
      * @param multipartHttpServletRequest 携带文件的 request
      * @return 文件信息
      */
-    @PostMapping("")
+    // @PostMapping("")
     @GroupRequired
-    private List<FileBO> upload(MultipartHttpServletRequest multipartHttpServletRequest) {
+    public List<FileBO> upload(MultipartHttpServletRequest multipartHttpServletRequest) {
         MultiValueMap<String, MultipartFile> fileMap =
                 multipartHttpServletRequest.getMultiFileMap();
         return fileService.upload(fileMap);

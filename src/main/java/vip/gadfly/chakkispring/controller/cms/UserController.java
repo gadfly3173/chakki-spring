@@ -101,9 +101,9 @@ public class UserController {
      * <p>
      * 停用
      */
-    @PutMapping
+    // @PutMapping
     @GroupRequired
-    private UnifyResponseVO update(@RequestBody @Validated UpdateInfoDTO validator) {
+    public UnifyResponseVO update(@RequestBody @Validated UpdateInfoDTO validator) {
         userService.updateUserInfo(validator);
         return ResponseUtil.generateUnifyResponse(4);
     }
