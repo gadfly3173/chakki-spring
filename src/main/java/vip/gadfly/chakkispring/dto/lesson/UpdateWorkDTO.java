@@ -1,6 +1,5 @@
 package vip.gadfly.chakkispring.dto.lesson;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
