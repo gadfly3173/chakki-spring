@@ -46,7 +46,7 @@
         FROM work AS w
         WHERE w.class_id = #{classId}
         AND w.delete_time IS NULL
-        ORDER BY w.id DESC
+        ORDER BY w.id DESC, `handed`
     </select>
 
     <select id="selectFileExtendByWorkId" resultType="java.lang.String">
