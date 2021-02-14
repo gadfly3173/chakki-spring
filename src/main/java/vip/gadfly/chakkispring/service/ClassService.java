@@ -281,4 +281,6 @@ public interface ClassService {
      * @param validator 作业信息
      */
     void updateWork(UpdateWorkDTO validator);
+
+    IPage<WorkForStudentVO> getWorkPageForStudentByClassId(Integer classId, Integer count, Integer page);
 }

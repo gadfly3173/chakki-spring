@@ -19,6 +19,7 @@ import vip.gadfly.chakkispring.service.StudentService;
 import vip.gadfly.chakkispring.vo.PageResponseVO;
 import vip.gadfly.chakkispring.vo.SignListVO;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
+import vip.gadfly.chakkispring.vo.WorkForStudentVO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
@@ -64,9 +65,10 @@ public class StudentController {
         return classService.getClass(id);
     }
 
+    // 停用
     @GroupRequired
     @PermissionMeta(value = "查看班级内签到项目")
-    @GetMapping("/sign/list")
+    // @GetMapping("/sign/list")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO getSignList(
             @RequestParam(name = "class_id")
@@ -113,4 +115,20 @@ public class StudentController {
     public List<SemesterDO> getAllSemesters() {
         return classService.getAllSemesters();
     }
+
+    @GroupRequired
+    @PermissionMeta(value = "查看班级内作业项目")
+    @GetMapping("/work/list")
+    @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
+    public PageResponseVO getWorkList(
+            @RequestParam(name = "class_id")
+            @Min(value = 1, message = "{class-id}") Integer classId,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "{count}") Integer count,
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{page}") Integer page) {
+        IPage<WorkForStudentVO> iPage = classService.getWorkPageForStudentByClassId(classId, count, page);
+        return PageUtil.build(iPage);
+    }
+
 }

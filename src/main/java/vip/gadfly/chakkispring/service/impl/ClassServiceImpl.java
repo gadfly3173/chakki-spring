@@ -358,6 +358,14 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
+    public IPage<WorkForStudentVO> getWorkPageForStudentByClassId(Integer classId, Integer count, Integer page) {
+        Page pager = new Page(page, count);
+        IPage<WorkForStudentVO> iPage;
+        iPage = workMapper.selectWorkPageForStudentByClassId(pager, classId);
+        return iPage;
+    }
+
+    @Override
     public void deleteWork(Integer id) {
         workMapper.deleteById(id);
     }

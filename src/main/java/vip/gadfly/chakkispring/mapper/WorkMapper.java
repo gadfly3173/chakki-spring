@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.model.WorkDO;
+import vip.gadfly.chakkispring.vo.WorkForStudentVO;
 import vip.gadfly.chakkispring.vo.WorkVO;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface WorkMapper extends BaseMapper<WorkDO> {
     IPage<WorkVO> selectWorkPageByClassId(Page pager, @Param("classId") Integer classId);
 
     List<String> selectFileExtendByWorkId(@Param("workId") Integer workId);
+
+    IPage<WorkForStudentVO> selectWorkPageForStudentByClassId(Page pager, @Param("classId") Integer classId);
 }
