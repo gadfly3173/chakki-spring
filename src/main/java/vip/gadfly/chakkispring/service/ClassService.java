@@ -282,5 +282,5 @@ public interface ClassService {
      */
     void updateWork(UpdateWorkDTO validator);
 
-    IPage<WorkForStudentVO> getWorkPageForStudentByClassId(Integer classId, Integer count, Integer page);
+    IPage<WorkVO> getWorkPageForStudentByClassId(Integer classId, Integer count, Integer page);
 }

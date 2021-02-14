@@ -8,6 +8,7 @@ import io.github.talelin.autoconfigure.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
 import vip.gadfly.chakkispring.common.constant.TeacherLevelConstant;
 import vip.gadfly.chakkispring.common.mybatis.Page;
@@ -358,10 +359,11 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<WorkForStudentVO> getWorkPageForStudentByClassId(Integer classId, Integer count, Integer page) {
+    public IPage<WorkVO> getWorkPageForStudentByClassId(Integer classId, Integer count, Integer page) {
+        Integer userId = LocalUser.getLocalUser().getId();
         Page pager = new Page(page, count);
-        IPage<WorkForStudentVO> iPage;
-        iPage = workMapper.selectWorkPageForStudentByClassId(pager, classId);
+        IPage<WorkVO> iPage;
+        iPage = workMapper.selectWorkPageForStudentByClassId(pager, userId, classId);
         return iPage;
     }
 

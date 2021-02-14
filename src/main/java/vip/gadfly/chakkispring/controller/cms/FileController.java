@@ -3,7 +3,6 @@ package vip.gadfly.chakkispring.controller.cms;
 import io.github.talelin.core.annotation.GroupRequired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;

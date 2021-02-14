@@ -19,7 +19,7 @@ import vip.gadfly.chakkispring.service.StudentService;
 import vip.gadfly.chakkispring.vo.PageResponseVO;
 import vip.gadfly.chakkispring.vo.SignListVO;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
-import vip.gadfly.chakkispring.vo.WorkForStudentVO;
+import vip.gadfly.chakkispring.vo.WorkVO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
@@ -127,7 +127,7 @@ public class StudentController {
             @Min(value = 1, message = "{count}") Integer count,
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
-        IPage<WorkForStudentVO> iPage = classService.getWorkPageForStudentByClassId(classId, count, page);
+        IPage<WorkVO> iPage = classService.getWorkPageForStudentByClassId(classId, count, page);
         return PageUtil.build(iPage);
     }
 
