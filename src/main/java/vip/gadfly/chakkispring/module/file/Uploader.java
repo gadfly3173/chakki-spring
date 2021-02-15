@@ -16,7 +16,7 @@ public interface Uploader {
      * @param fileMap 文件map
      * @return 文件数据
      */
-    List<File> upload(MultiValueMap<String, MultipartFile> fileMap);
+    List<File> upload(MultiValueMap<String, MultipartFile> fileMap, List<String> include, List<String> exclude, Long singleFileLimit, int fileNum);
 
     /**
      * 上传文件
@@ -25,5 +25,5 @@ public interface Uploader {
      * @param preHandler 预处理器
      * @return 文件数据
      */
-    List<File> upload(MultiValueMap<String, MultipartFile> fileMap, PreHandler preHandler);
+    List<File> upload(MultiValueMap<String, MultipartFile> fileMap, PreHandler preHandler, List<String> include, List<String> exclude, Long singleFileLimit, int fileNum);
 }

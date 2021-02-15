@@ -1,20 +1,24 @@
 package vip.gadfly.chakkispring.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.github.talelin.autoconfigure.exception.FailedException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
 import vip.gadfly.chakkispring.common.util.IPUtil;
-import vip.gadfly.chakkispring.mapper.ClassMapper;
-import vip.gadfly.chakkispring.mapper.SignListMapper;
-import vip.gadfly.chakkispring.mapper.StudentSignMapper;
-import vip.gadfly.chakkispring.model.ClassDO;
-import vip.gadfly.chakkispring.model.StudentSignDO;
-import vip.gadfly.chakkispring.model.UserDO;
+import vip.gadfly.chakkispring.mapper.*;
+import vip.gadfly.chakkispring.model.*;
+import vip.gadfly.chakkispring.module.file.Uploader;
 import vip.gadfly.chakkispring.service.StudentService;
 import vip.gadfly.chakkispring.vo.SignListVO;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +36,21 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentSignMapper studentSignMapper;
+
+    @Autowired
+    private StudentWorkMapper studentWorkMapper;
+
+    @Autowired
+    private WorkMapper workMapper;
+
+    @Autowired
+    private WorkExtensionMapper workExtensionMapper;
+
+    @Autowired
+    private FileMapper fileMapper;
+
+    @Autowired
+    private Uploader uploader;
 
     @Override
     public List<ClassDO> getStudentClassList() {
@@ -62,6 +81,52 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public boolean signAvailable(Integer signId) {
         return signListMapper.selectById(signId).getEndTime().getTime() > System.currentTimeMillis();
+    }
+
+    @Override
+    public boolean workAvailable(Integer workId) {
+        Date workEndTime = workMapper.selectById(workId).getEndTime();
+        if (workEndTime != null) {
+            return workEndTime.getTime() > System.currentTimeMillis();
+        }
+        return true;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean handStudentWork(Integer workId, MultiValueMap<String, MultipartFile> fileMap, String ip) {
+        Integer userId = LocalUser.getLocalUser().getId();
+        QueryWrapper<StudentWorkDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(StudentWorkDO::getUserId, userId).eq(StudentWorkDO::getWorkId, workId);
+        if (studentWorkMapper.selectCount(wrapper) > 0) {
+            return false;
+        }
+        List<String> include = workExtensionMapper.selectExtensionList(workId);
+        List<Integer> fileIdList = new ArrayList<>();
+        Long singleFileLimit = workMapper.selectFileSizeById(workId);
+        uploader.upload(fileMap, file -> {
+            int found = fileMapper.selectCountByMd5(file.getMd5());
+            // 数据库中不存在
+            if (found == 0) {
+                FileDO fileDO = new FileDO();
+                BeanUtils.copyProperties(file, fileDO);
+                fileMapper.insert(fileDO);
+                fileIdList.add(fileDO.getId());
+                return true;
+            }
+            System.out.println(file.toString());
+            // 已存在，则直接抛异常
+            throw new FailedException(10232);
+        }, include, null, singleFileLimit, 1);
+        StudentWorkDO studentWorkDO = StudentWorkDO
+                .builder()
+                .userId(userId)
+                .workId(workId)
+                .ip(ip)
+                .fileId(fileIdList.get(0))
+                .build();
+        studentWorkMapper.insert(studentWorkDO);
+        return true;
     }
 
     @Override

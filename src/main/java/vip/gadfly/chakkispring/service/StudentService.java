@@ -1,5 +1,7 @@
 package vip.gadfly.chakkispring.service;
 
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.vo.SignListVO;
 
@@ -33,4 +35,8 @@ public interface StudentService {
     SignListVO getLatestSignByClassId(Integer classId);
 
     boolean signAvailable(Integer signId);
+
+    boolean workAvailable(Integer workId);
+
+    boolean handStudentWork(Integer workId, MultiValueMap<String, MultipartFile> fileMap, String ip);
 }

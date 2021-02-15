@@ -17,34 +17,31 @@ public abstract class AbstractUploader implements Uploader {
     private PreHandler preHandler;
 
     @Override
-    public List<File> upload(MultiValueMap<String, MultipartFile> fileMap) {
-        checkFileMap(fileMap);
+    public List<File> upload(MultiValueMap<String, MultipartFile> fileMap, List<String> include, List<String> exclude, Long singleFileLimit, int fileNum) {
+        checkFileMap(fileMap, fileNum);
         // 得到单个文件的大小限制
         // 本地存储需先初始化存储文件夹
-        return handleMultipartFiles(fileMap);
+        return handleMultipartFiles(fileMap, include, exclude, singleFileLimit);
     }
 
     @Override
-    public List<File> upload(MultiValueMap<String, MultipartFile> fileMap, PreHandler preHandler) {
+    public List<File> upload(MultiValueMap<String, MultipartFile> fileMap, PreHandler preHandler, List<String> include, List<String> exclude, Long singleFileLimit, int fileNum) {
         this.preHandler = preHandler;
-        return this.upload(fileMap);
+        return this.upload(fileMap, include, exclude, singleFileLimit, fileNum);
     }
 
-    protected List<File> handleMultipartFiles(MultiValueMap<String, MultipartFile> fileMap) {
-        long singleFileLimit = getSingleFileLimit();
+    protected List<File> handleMultipartFiles(MultiValueMap<String, MultipartFile> fileMap, List<String> include, List<String> exclude, Long singleFileLimit) {
         List<File> res = new ArrayList<>();
         fileMap.keySet().forEach(key -> fileMap.get(key).forEach(file -> {
             if (!file.isEmpty()) {
-                handleOneFile0(res, singleFileLimit, file);
+                handleOneFile0(res, singleFileLimit, file, include, exclude);
             }
         }));
         return res;
     }
 
-    private void handleOneFile0(List<File> res, long singleFileLimit, MultipartFile file) {
+    private void handleOneFile0(List<File> res, long singleFileLimit, MultipartFile file, List<String> include, List<String> exclude) {
         byte[] bytes = getFileBytes(file);
-        String[] include = getFileProperties().getInclude();
-        String[] exclude = getFileProperties().getExclude();
         String ext = checkOneFile(include, exclude, singleFileLimit, file.getOriginalFilename(), bytes.length);
         String newFilename = getNewFilename(ext);
         String storePath = getStorePath(newFilename);
@@ -115,12 +112,11 @@ public abstract class AbstractUploader implements Uploader {
     /**
      * 检查文件
      */
-    protected void checkFileMap(MultiValueMap<String, MultipartFile> fileMap) {
+    protected void checkFileMap(MultiValueMap<String, MultipartFile> fileMap, int fileNum) {
         if (fileMap.isEmpty()) {
             throw new NotFoundException(10026);
         }
-        int nums = getFileProperties().getNums();
-        if (fileMap.size() > nums) {
+        if (fileMap.size() > fileNum) {
             throw new FileTooManyException(10121);
         }
     }
@@ -149,9 +145,9 @@ public abstract class AbstractUploader implements Uploader {
      * @param length          文件大小
      * @return 文件的扩展名，例如： .jpg
      */
-    protected String checkOneFile(String[] include, String[] exclude, long singleFileLimit, String originName, int length) {
+    protected String checkOneFile(List<String> include, List<String> exclude, long singleFileLimit, String originName, int length) {
         // 写到了本地
-        String ext = FileUtil.getFileExt(originName);
+        String ext = FileUtil.getFileExt(originName).toUpperCase();
         // 检测扩展
         if (!this.checkExt(include, exclude, ext)) {
             throw new FileExtensionException(ext + "文件类型不支持");
@@ -169,9 +165,9 @@ public abstract class AbstractUploader implements Uploader {
      * @param ext 后缀名
      * @return 是否通过
      */
-    protected boolean checkExt(String[] include, String[] exclude, String ext) {
-        int inLen = include == null ? 0 : include.length;
-        int exLen = exclude == null ? 0 : exclude.length;
+    protected boolean checkExt(List<String> include, List<String> exclude, String ext) {
+        int inLen = include == null ? 0 : include.size();
+        int exLen = exclude == null ? 0 : exclude.size();
         // 如果两者都有取 include，有一者则用一者
         if (inLen > 0 && exLen > 0) {
             return this.findInInclude(include, ext);
@@ -187,7 +183,7 @@ public abstract class AbstractUploader implements Uploader {
         }
     }
 
-    protected boolean findInInclude(String[] include, String ext) {
+    protected boolean findInInclude(List<String> include, String ext) {
         for (String s : include) {
             if (s.equals(ext)) {
                 return true;
@@ -196,7 +192,7 @@ public abstract class AbstractUploader implements Uploader {
         return false;
     }
 
-    protected boolean findInExclude(String[] exclude, String ext) {
+    protected boolean findInExclude(List<String> exclude, String ext) {
         for (String s : exclude) {
             if (s.equals(ext)) {
                 return true;

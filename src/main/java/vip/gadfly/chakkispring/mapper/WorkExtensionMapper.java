@@ -19,4 +19,6 @@ import java.util.List;
 public interface WorkExtensionMapper extends BaseMapper<WorkExtensionDO> {
 
     void insertBatch(@Param("relations") List<WorkExtensionDO> relations);
+
+    List<String> selectExtensionList(Integer workId);
 }

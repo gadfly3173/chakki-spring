@@ -11,6 +11,7 @@ import vip.gadfly.chakkispring.mapper.FileMapper;
 import vip.gadfly.chakkispring.model.FileDO;
 import vip.gadfly.chakkispring.module.file.FileConstant;
 import vip.gadfly.chakkispring.module.file.FileProperties;
+import vip.gadfly.chakkispring.module.file.FileUtil;
 import vip.gadfly.chakkispring.module.file.Uploader;
 import vip.gadfly.chakkispring.service.FileService;
 
@@ -55,7 +56,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
             // 已存在，则直接转化返回
             res.add(transformDoToBo(found, file.getKey()));
             return false;
-        });
+        }, null, null, FileUtil.parseSize(fileProperties.getSingleLimit()), fileProperties.getNums());
         return res;
     }
 

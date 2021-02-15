@@ -17,5 +17,8 @@
             (#{relation.workId}, #{relation.extension})
         </foreach>
     </insert>
+    <select id="selectExtensionList" resultType="java.lang.String">
+        SELECT we.extension FROM work_extension AS we WHERE work_id = #{workId}
+    </select>
 
 </mapper>

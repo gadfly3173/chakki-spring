@@ -67,4 +67,8 @@
         WHERE w.id = #{workId}
     </select>
 
+    <select id="selectFileSizeById" resultType="java.lang.Long">
+        SELECT w.file_size FROM work AS w WHERE w.id = #{workId}
+    </select>
+
 </mapper>

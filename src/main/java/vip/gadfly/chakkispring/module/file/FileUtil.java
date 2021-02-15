@@ -53,7 +53,7 @@ public class FileUtil {
 
     public static String getFileExt(String filename) {
         int index = filename.lastIndexOf('.');
-        return filename.substring(index);
+        return filename.substring(index + 1);
     }
 
     public static String getFileMD5(byte[] bytes) {

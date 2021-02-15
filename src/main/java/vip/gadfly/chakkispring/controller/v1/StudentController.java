@@ -5,8 +5,11 @@ import io.github.talelin.core.annotation.GroupRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.core.annotation.PermissionModule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.annotation.StudentClassCheck;
 import vip.gadfly.chakkispring.common.util.IPUtil;
@@ -137,6 +140,26 @@ public class StudentController {
     @StudentClassCheck(valueType = workIdType, paramType = pathVariableType)
     public WorkVO getWorkDetailForStudent(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         return classService.getOneWorkForStudent(id);
+    }
+
+    @GroupRequired
+    @PermissionMeta(value = "交作业")
+    @PostMapping("/work/hand/{workId}")
+    @StudentClassCheck(valueType = workIdType, paramType = pathVariableType)
+    public UnifyResponseVO handStudentWork(
+            @Min(value = 1, message = "{lesson.sign.id.positive}")
+            @PathVariable Integer workId,
+            MultipartHttpServletRequest multipartHttpServletRequest) {
+        if (!studentService.workAvailable(workId)) {
+            return ResponseUtil.generateUnifyResponse(10231);
+        }
+        String ip = IPUtil.getIPFromRequest(multipartHttpServletRequest);
+        MultiValueMap<String, MultipartFile> fileMap =
+                multipartHttpServletRequest.getMultiFileMap();
+        if (!studentService.handStudentWork(workId, fileMap, ip)) {
+            return ResponseUtil.generateUnifyResponse(10230);
+        }
+        return ResponseUtil.generateUnifyResponse(31);
     }
 
 }

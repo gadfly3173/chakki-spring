@@ -28,4 +28,6 @@ public interface WorkMapper extends BaseMapper<WorkDO> {
     IPage<WorkVO> selectWorkPageForStudentByClassId(Page pager, @Param("userId") Integer userId, @Param("classId") Integer classId);
 
     WorkVO selectWorkForStudent(@Param("userId") Integer userId, @Param("workId") Integer id);
+
+    Long selectFileSizeById(@Param("workId") Integer workId);
 }
