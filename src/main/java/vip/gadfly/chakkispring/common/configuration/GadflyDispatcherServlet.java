@@ -19,6 +19,16 @@ public class GadflyDispatcherServlet extends DispatcherServlet {
      */
     @Override
     protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpServletRequest processedRequest;
+        boolean multipartRequestParsed;
+        processedRequest = checkMultipart(request);
+        multipartRequestParsed = (processedRequest != request);
+        // Clean up any resources used by a multipart request.
+        if (multipartRequestParsed) {
+            cleanupMultipart(processedRequest);
+            super.doDispatch(request, response);
+            return;
+        }
         super.doDispatch(new GadflyHttpServletRequestWrapper(request), response);
     }
 }
