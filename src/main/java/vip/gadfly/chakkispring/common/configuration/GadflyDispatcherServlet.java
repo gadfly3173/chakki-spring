@@ -25,7 +25,6 @@ public class GadflyDispatcherServlet extends DispatcherServlet {
         multipartRequestParsed = (processedRequest != request);
         // Clean up any resources used by a multipart request.
         if (multipartRequestParsed) {
-            cleanupMultipart(processedRequest);
             super.doDispatch(request, response);
             return;
         }
