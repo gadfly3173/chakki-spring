@@ -131,4 +131,12 @@ public class StudentController {
         return PageUtil.build(iPage);
     }
 
+    @GetMapping("/work/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "查询作业详情")
+    @StudentClassCheck(valueType = workIdType, paramType = pathVariableType)
+    public WorkVO getWorkDetailForStudent(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+        return classService.getOneWorkForStudent(id);
+    }
+
 }

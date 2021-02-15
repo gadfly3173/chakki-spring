@@ -368,6 +368,12 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
+    public WorkVO getOneWorkForStudent(Integer id) {
+        Integer userId = LocalUser.getLocalUser().getId();
+        return workMapper.selectWorkForStudent(userId, id);
+    }
+
+    @Override
     public void deleteWork(Integer id) {
         workMapper.deleteById(id);
     }

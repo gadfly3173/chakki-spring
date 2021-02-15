@@ -1,6 +1,7 @@
 package vip.gadfly.chakkispring.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import org.apache.ibatis.annotations.Param;
 import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
 import vip.gadfly.chakkispring.dto.admin.NewSemesterDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
@@ -283,4 +284,7 @@ public interface ClassService {
     void updateWork(UpdateWorkDTO validator);
 
     IPage<WorkVO> getWorkPageForStudentByClassId(Integer classId, Integer count, Integer page);
+
+    WorkVO getOneWorkForStudent(@Param("id") Integer id);
+
 }

@@ -33,7 +33,7 @@
         ORDER BY w.id DESC
     </select>
 
-    <select id="selectWorkPageForStudentByClassId" parameterType="java.lang.Integer" resultMap="WorkVO">
+    <select id="selectWorkPageForStudentByClassId" resultMap="WorkVO">
         SELECT w.id,
                w.name,
                w.info,
@@ -51,6 +51,20 @@
 
     <select id="selectFileExtendByWorkId" resultType="java.lang.String">
         SELECT we.extension FROM work_extension AS we WHERE we.work_id = #{workId}
+    </select>
+
+    <select id="selectWorkForStudent" resultMap="WorkVO">
+        SELECT w.id,
+               w.name,
+               w.info,
+               w.file_size,
+               w.type,
+               (SELECT COUNT(*) FROM student_work AS sw WHERE sw.user_id = #{userId} AND sw.work_id = w.id AND sw.delete_time IS NULL) AS `handed`,
+               w.create_time,
+               w.update_time,
+               w.end_time
+        FROM work AS w
+        WHERE w.id = #{workId}
     </select>
 
 </mapper>
