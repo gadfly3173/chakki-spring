@@ -54,7 +54,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Autowired
     private UserGroupMapper userGroupMapper;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public UserDO createUser(RegisterDTO dto) {
         boolean exist = this.checkUserExistByUsername(dto.getUsername());

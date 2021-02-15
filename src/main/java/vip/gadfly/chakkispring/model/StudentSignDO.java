@@ -42,11 +42,11 @@ public class StudentSignDO implements Serializable {
     /**
      * 签到状态
      */
-    private int status;
+    private Integer status;
 
     private Date createTime;
 
-    public StudentSignDO(Integer signId, Integer userId, String ip, int status) {
+    public StudentSignDO(Integer signId, Integer userId, String ip, Integer status) {
         this.userId = userId;
         this.signId = signId;
         this.ip = ip;

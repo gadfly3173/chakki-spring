@@ -16,9 +16,9 @@ public class SignCountVO extends SignListDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private int signed;
-    private int unSigned;
-    private int late;
-    private int cancel;
+    private Integer signed;
+    private Integer unSigned;
+    private Integer late;
+    private Integer cancel;
 
 }
