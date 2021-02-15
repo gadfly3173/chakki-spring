@@ -54,7 +54,7 @@ public class AdminController {
     @GetMapping("/users")
     @AdminRequired
     @PermissionMeta(value = "查询所有用户", mount = false)
-    public PageResponseVO getUsers(
+    public PageResponseVO<UserInfoVO> getUsers(
             @RequestParam(name = "group_id", required = false)
             @Min(value = 1, message = "{group.id.positive}") Integer groupId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
@@ -99,7 +99,7 @@ public class AdminController {
     @GetMapping("/group")
     @AdminRequired
     @PermissionMeta(value = "查询所有权限组及其权限", mount = false)
-    public PageResponseVO getGroups(
+    public PageResponseVO<GroupDO> getGroups(
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{page.count.min}")
             @Max(value = 30, message = "{page.count.max}") Integer count,
@@ -120,8 +120,7 @@ public class AdminController {
     @AdminRequired
     @PermissionMeta(value = "查询一个权限组及其权限", mount = false)
     public GroupPermissionBO getGroup(@PathVariable @Positive(message = "{id.positive}") Integer id) {
-        GroupPermissionBO groupPermissions = adminService.getGroup(id);
-        return groupPermissions;
+        return adminService.getGroup(id);
     }
 
     @PostMapping("/group")

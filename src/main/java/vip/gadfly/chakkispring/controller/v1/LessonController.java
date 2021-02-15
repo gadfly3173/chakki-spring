@@ -62,7 +62,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查询一个班级")
     @TeacherClassCheck(valueType = classIdType, paramType = pathVariableType)
-    public ClassDO getClass(@PathVariable @Positive(message = "{id}") Integer id) {
+    public ClassDO getClass(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         return classService.getClass(id);
     }
 
@@ -70,7 +70,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查询所有此班级学生")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO getStudents(
+    public PageResponseVO<UserDO> getStudents(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
@@ -94,7 +94,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查看所有签到项目")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO getSignList(
+    public PageResponseVO<SignListVO> getSignList(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
@@ -109,7 +109,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查询单个签到项目下的所有学生")
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
-    public PageResponseVO getStudentsBySignId(
+    public PageResponseVO<StudentSignVO> getStudentsBySignId(
             @RequestParam(name = "sign_status", required = false, defaultValue = "0")
             @Min(value = 0, message = "{sign-status}") Integer signStatus,
             @RequestParam(name = "order_by_IP", required = false, defaultValue = "false")
@@ -131,7 +131,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查询一个签到信息")
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
-    public SignCountVO getSign(@PathVariable @Positive(message = "{id}") Integer id) {
+    public SignCountVO getSign(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         return classService.getSign(id);
     }
 
@@ -167,7 +167,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "删除作业")
     @TeacherClassCheck(valueType = workIdType, paramType = pathVariableType)
-    public UnifyResponseVO deleteWork(@PathVariable @Positive(message = "{id}") Integer id) {
+    public UnifyResponseVO deleteWork(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         classService.deleteWork(id);
         return ResponseUtil.generateUnifyResponse(29);
     }
@@ -176,7 +176,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查看所有作业项目")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO getWorkList(
+    public PageResponseVO<WorkVO> getWorkList(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")

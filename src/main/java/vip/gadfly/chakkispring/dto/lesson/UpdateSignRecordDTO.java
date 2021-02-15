@@ -18,8 +18,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class UpdateSignRecordDTO {
 
-    @NotNull(message = "{id}")
-    @Min(value = 1, message = "{id}")
+    @NotNull(message = "{id.positive}")
+    @Min(value = 1, message = "{id.positive}")
     private Integer userId;
 
     @Min(value = SignStatusConstant.STATUS_SIGNED, message = "{lesson.sign.status}")

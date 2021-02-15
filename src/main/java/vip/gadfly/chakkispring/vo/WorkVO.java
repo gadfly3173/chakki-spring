@@ -26,6 +26,9 @@ public class WorkVO implements Serializable {
 
     private List<String> fileExtension;
 
+    /**
+     * 教师查为交作业的学生数量，学生查为自己的有效提交次数
+     */
     private Integer handed;
 
     private Date createTime;

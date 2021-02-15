@@ -60,8 +60,8 @@ public class StudentController {
     @GetMapping("/{id}")
     @GroupRequired
     @PermissionMeta(value = "查询特定班级")
-    @StudentClassCheck(valueType = "classId", paramType = "PathVariable")
-    public ClassDO getClass(@PathVariable @Positive(message = "{id}") Integer id) {
+    @StudentClassCheck(valueType = classIdType, paramType = pathVariableType)
+    public ClassDO getClass(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         return classService.getClass(id);
     }
 
@@ -70,7 +70,7 @@ public class StudentController {
     @PermissionMeta(value = "查看班级内签到项目")
     // @GetMapping("/sign/list")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO getSignList(
+    public PageResponseVO<SignListVO> getSignList(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
@@ -120,7 +120,7 @@ public class StudentController {
     @PermissionMeta(value = "查看班级内作业项目")
     @GetMapping("/work/list")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO getWorkList(
+    public PageResponseVO<WorkVO> getWorkList(
             @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
             @RequestParam(name = "count", required = false, defaultValue = "10")
