@@ -2,6 +2,7 @@ package vip.gadfly.chakkispring.common.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
+import vip.gadfly.chakkispring.common.util.IPUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +25,7 @@ public class RequestLogInterceptor implements AsyncHandlerInterceptor {
         log.info("[{}] -> [{}] from: {} costs: {}ms",
                 request.getMethod(),
                 request.getServletPath(),
-                request.getRemoteAddr(),
+                IPUtil.getIPFromRequest(request),
                 System.currentTimeMillis() - startTime.get()
         );
     }

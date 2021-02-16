@@ -3,6 +3,7 @@ package vip.gadfly.chakkispring.module.log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import vip.gadfly.chakkispring.common.util.IPUtil;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +52,6 @@ public class MDCAccessServletFilter implements Filter {
      */
     public void putRequestMDC(ServletRequest servletRequest) {
         MDC.put(MDCAccessConstant.REQUEST_REMOTE_HOST_MDC_KEY, servletRequest.getRemoteHost());
-        MDC.put(MDCAccessConstant.REQUEST_REMOTE_ADDR_MDC_KEY, servletRequest.getRemoteAddr());
         MDC.put(MDCAccessConstant.REQUEST_PROTOCOL_MDC_KEY, servletRequest.getProtocol());
         MDC.put(MDCAccessConstant.REQUEST_PROTOCOL_MDC_KEY, servletRequest.getProtocol());
         MDC.put(MDCAccessConstant.REQUEST_REMOTE_PORT_MDC_KEY, String.valueOf(servletRequest.getRemotePort()));
@@ -60,6 +60,7 @@ public class MDCAccessServletFilter implements Filter {
         if (servletRequest instanceof HttpServletRequest) {
             HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
             MDC.put(MDCAccessConstant.REQUEST_REQUEST_URI_MDC_KEY, httpServletRequest.getRequestURI());
+            MDC.put(MDCAccessConstant.REQUEST_REMOTE_ADDR_MDC_KEY, IPUtil.getIPFromRequest(httpServletRequest));
             StringBuffer requestUrl = httpServletRequest.getRequestURL();
             if (requestUrl != null) {
                 MDC.put(MDCAccessConstant.REQUEST_REQUEST_URL_MDC_KEY, requestUrl.toString());

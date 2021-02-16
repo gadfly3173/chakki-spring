@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.RateLimiter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import vip.gadfly.chakkispring.common.util.IPUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,6 +40,6 @@ public class MemoryLimiter implements Limiter {
     }
 
     private String getUniqueId(HttpServletRequest request) {
-        return request.getLocalAddr();
+        return IPUtil.getIPFromRequest(request);
     }
 }
