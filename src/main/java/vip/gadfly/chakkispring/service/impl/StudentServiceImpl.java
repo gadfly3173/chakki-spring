@@ -14,6 +14,7 @@ import vip.gadfly.chakkispring.common.util.IPUtil;
 import vip.gadfly.chakkispring.mapper.*;
 import vip.gadfly.chakkispring.model.*;
 import vip.gadfly.chakkispring.module.file.Uploader;
+import vip.gadfly.chakkispring.service.FileService;
 import vip.gadfly.chakkispring.service.StudentService;
 import vip.gadfly.chakkispring.vo.SignListVO;
 
@@ -51,6 +52,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private Uploader uploader;
+
+    @Autowired
+    private FileService fileService;
 
     @Override
     public List<ClassDO> getStudentClassList() {
@@ -105,16 +109,14 @@ public class StudentServiceImpl implements StudentService {
         List<Integer> fileIdList = new ArrayList<>();
         Long singleFileLimit = workMapper.selectFileSizeById(workId);
         uploader.upload(fileMap, file -> {
-            int found = fileMapper.selectCountByMd5(file.getMd5());
             // 数据库中不存在
-            if (found == 0) {
+            if (!fileService.checkFileExistByMd5(file.getMd5())) {
                 FileDO fileDO = new FileDO();
                 BeanUtils.copyProperties(file, fileDO);
                 fileMapper.insert(fileDO);
                 fileIdList.add(fileDO.getId());
                 return true;
             }
-            System.out.println(file.toString());
             // 已存在，则直接抛异常
             throw new FailedException(10232);
         }, include, null, singleFileLimit, 1);

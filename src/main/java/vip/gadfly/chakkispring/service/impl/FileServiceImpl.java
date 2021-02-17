@@ -1,5 +1,6 @@
 package vip.gadfly.chakkispring.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,9 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
     public List<FileBO> upload(MultiValueMap<String, MultipartFile> fileMap) {
         List<FileBO> res = new ArrayList<>();
         uploader.upload(fileMap, file -> {
-            FileDO found = this.baseMapper.selectByMd5(file.getMd5());
+            QueryWrapper<FileDO> fileWrapper = new QueryWrapper<>();
+            fileWrapper.lambda().eq(FileDO::getMd5, file.getMd5());
+            FileDO found = this.baseMapper.selectOne(fileWrapper);
             // 数据库中不存在
             if (found == null) {
                 FileDO fileDO = new FileDO();
@@ -62,7 +65,9 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
 
     @Override
     public boolean checkFileExistByMd5(String md5) {
-        return this.getBaseMapper().selectCountByMd5(md5) > 0;
+        QueryWrapper<FileDO> fileWrapper = new QueryWrapper<>();
+        fileWrapper.lambda().eq(FileDO::getMd5, md5);
+        return this.baseMapper.selectCount(fileWrapper) > 0;
     }
 
     private FileBO transformDoToBo(FileDO file, String key) {

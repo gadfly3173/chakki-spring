@@ -1,7 +1,6 @@
 package vip.gadfly.chakkispring.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import vip.gadfly.chakkispring.model.FileDO;
 
@@ -11,8 +10,4 @@ import vip.gadfly.chakkispring.model.FileDO;
  */
 @Repository
 public interface FileMapper extends BaseMapper<FileDO> {
-
-    FileDO selectByMd5(@Param("md5") String md5);
-
-    int selectCountByMd5(@Param("md5") String md5);
 }
