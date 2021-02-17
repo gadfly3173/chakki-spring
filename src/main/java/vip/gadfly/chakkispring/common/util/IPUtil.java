@@ -51,7 +51,10 @@ public class IPUtil {
     public static boolean isInternalIp(String ip) {
         try {
             byte[] addr = IPAddressUtil.textToNumericFormatV4(ip);
-            return internalIp(addr);
+            if (addr != null) {
+                return internalIp(addr);
+            }
+            return false;
         } catch (Exception e) {
             log.error("error ip convert::" + ip);
             return false;
