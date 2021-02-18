@@ -1,19 +1,22 @@
 package vip.gadfly.chakkispring.common.util;
 
+import com.google.common.base.CharMatcher;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import sun.net.util.IPAddressUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
- * 班级用户关联查询工具
+ * IP工具类
  */
 @Slf4j
 public class IPUtil {
 
+    private static final int IPV4_PART_COUNT = 4;
+    private static final char IPV4_DELIMITER = '.';
+    private static final CharMatcher IPV4_DELIMITER_MATCHER = CharMatcher.is(IPV4_DELIMITER);
     private static final String[] IP_HEADER_CANDIDATES = {
             "X-Forwarded-For",
             "Proxy-Client-IP",
@@ -39,18 +42,18 @@ public class IPUtil {
         for (String header : IP_HEADER_CANDIDATES) {
             String ipList = request.getHeader(header);
             if (ipList != null && ipList.length() != 0 && !"unknown".equalsIgnoreCase(ipList)) {
-                log.info("ipList.split(\",\")[0]::" + ipList.split(",")[0]);
+                log.debug("ipList.split(\",\")[0]::" + ipList.split(",")[0]);
                 return ipList.split(",")[0];
             }
         }
 
-        log.info("request.getRemoteAddr()::" + request.getRemoteAddr());
+        log.debug("request.getRemoteAddr()::" + request.getRemoteAddr());
         return request.getRemoteAddr();
     }
 
     public static boolean isInternalIp(String ip) {
         try {
-            byte[] addr = IPAddressUtil.textToNumericFormatV4(ip);
+            byte[] addr = textToNumericFormatV4(ip);
             if (addr != null) {
                 return internalIp(addr);
             }
@@ -87,5 +90,57 @@ public class IPUtil {
             default:
                 return false;
         }
+    }
+
+    private static byte @Nullable [] textToNumericFormatV4(String ipString) {
+        if (IPV4_DELIMITER_MATCHER.countIn(ipString) + 1 != IPV4_PART_COUNT) {
+            return null; // Wrong number of parts
+        }
+
+        byte[] bytes = new byte[IPV4_PART_COUNT];
+        int start = 0;
+        // Iterate through the parts of the ip string.
+        // Invariant: start is always the beginning of an octet.
+        for (int i = 0; i < IPV4_PART_COUNT; i++) {
+            int end = ipString.indexOf(IPV4_DELIMITER, start);
+            if (end == -1) {
+                end = ipString.length();
+            }
+            try {
+                bytes[i] = parseOctet(ipString, start, end);
+            } catch (NumberFormatException ex) {
+                return null;
+            }
+            start = end + 1;
+        }
+
+        return bytes;
+    }
+
+    private static byte parseOctet(String ipString, int start, int end) {
+        // Note: we already verified that this string contains only hex digits, but the string may still
+        // contain non-decimal characters.
+        int length = end - start;
+        if (length <= 0 || length > 3) {
+            throw new NumberFormatException();
+        }
+        // Disallow leading zeroes, because no clear standard exists on
+        // whether these should be interpreted as decimal or octal.
+        if (length > 1 && ipString.charAt(start) == '0') {
+            throw new NumberFormatException();
+        }
+        int octet = 0;
+        for (int i = start; i < end; i++) {
+            octet *= 10;
+            int digit = Character.digit(ipString.charAt(i), 10);
+            if (digit < 0) {
+                throw new NumberFormatException();
+            }
+            octet += digit;
+        }
+        if (octet > 255) {
+            throw new NumberFormatException();
+        }
+        return (byte) octet;
     }
 }
