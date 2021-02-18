@@ -195,4 +195,35 @@ public class LessonController {
         classService.updateWork(validator);
         return ResponseUtil.generateUnifyResponse(30);
     }
+
+    @GetMapping("/work/students/query/{workId}")
+    @GroupRequired
+    @PermissionMeta(value = "查询单个作业项目下的所有学生")
+    @TeacherClassCheck(valueType = workIdType, paramType = pathVariableType)
+    public PageResponseVO<StudentWorkVO> getStudentsByWorkId(
+            @RequestParam(name = "work_status", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{work-status}") Integer workStatus,
+            @RequestParam(name = "order_by_IP", required = false, defaultValue = "false")
+                    boolean orderByIP,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "{count}") Integer count,
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{page}") Integer page,
+            @RequestParam(name = "username", required = false, defaultValue = "")
+                    String username,
+            @Min(value = 1, message = "{id.positive}")
+            @PathVariable Integer workId) {
+        IPage<StudentWorkVO> iPage = classService.getUserPageByWorkId(workId, workStatus, username, count, page,
+                orderByIP);
+        return PageUtil.build(iPage);
+    }
+
+    @GetMapping("/work/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "查询一个作业信息")
+    @TeacherClassCheck(valueType = workIdType, paramType = pathVariableType)
+    public WorkCountVO getWorkDetail(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+        return classService.getWorkDetail(id);
+    }
+
 }

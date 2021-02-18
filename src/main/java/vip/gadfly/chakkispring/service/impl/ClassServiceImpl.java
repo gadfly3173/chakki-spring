@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
 import vip.gadfly.chakkispring.common.constant.TeacherLevelConstant;
+import vip.gadfly.chakkispring.common.constant.WorkStatusConstant;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
 import vip.gadfly.chakkispring.dto.admin.NewSemesterDTO;
@@ -58,6 +59,9 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Autowired
     private StudentSignMapper studentSignMapper;
+
+    @Autowired
+    private StudentWorkMapper studentWorkMapper;
 
     @Autowired
     private SemesterMapper semesterMapper;
@@ -371,6 +375,31 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     public WorkVO getOneWorkForStudent(Integer id) {
         Integer userId = LocalUser.getLocalUser().getId();
         return workMapper.selectWorkForStudent(userId, id);
+    }
+
+    @Override
+    public IPage<StudentWorkVO> getUserPageByWorkId(Integer workId, Integer workStatus, String username, Integer count, Integer page, boolean orderByIP) {
+        Page pager = new Page(page, count);
+        IPage<StudentWorkVO> iPage;
+        switch (workStatus) {
+            case WorkStatusConstant.HANDED:
+                iPage = studentWorkMapper.selectUserWorkDetailByWorkId(pager, workId, username, orderByIP);
+                break;
+            case WorkStatusConstant.UNHANDED:
+                iPage = studentWorkMapper.selectUnhandedUserWorkDetailByWorkId(pager, workId, username, orderByIP);
+                break;
+            case WorkStatusConstant.ALLL:
+            default:
+                pager.setSearchCount(false);
+                pager.setTotal(studentWorkMapper.countClassUserWorkDetailByWorkId(workId, username));
+                iPage = studentWorkMapper.selectClassUserWorkDetailByWorkId(pager, workId, username, orderByIP);
+        }
+        return iPage;
+    }
+
+    @Override
+    public WorkCountVO getWorkDetail(Integer id) {
+        return workMapper.selectWorkCountInfoById(id);
     }
 
     @Override

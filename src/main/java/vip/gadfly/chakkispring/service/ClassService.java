@@ -287,4 +287,8 @@ public interface ClassService {
 
     WorkVO getOneWorkForStudent(@Param("id") Integer id);
 
+    IPage<StudentWorkVO> getUserPageByWorkId(Integer workId, Integer workStatus, String username, Integer count, Integer page, boolean orderByIP);
+
+    WorkCountVO getWorkDetail(Integer id);
+
 }

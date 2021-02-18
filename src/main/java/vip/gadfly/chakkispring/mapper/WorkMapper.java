@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.model.WorkDO;
+import vip.gadfly.chakkispring.vo.WorkCountVO;
 import vip.gadfly.chakkispring.vo.WorkVO;
 
 import java.util.List;
@@ -30,4 +31,6 @@ public interface WorkMapper extends BaseMapper<WorkDO> {
     WorkVO selectWorkForStudent(@Param("userId") Integer userId, @Param("workId") Integer id);
 
     Long selectFileSizeById(@Param("workId") Integer workId);
+
+    WorkCountVO selectWorkCountInfoById(@Param("workId") Integer workId);
 }

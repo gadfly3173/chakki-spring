@@ -71,4 +71,29 @@
         SELECT w.file_size FROM work AS w WHERE w.id = #{workId}
     </select>
 
+    <select id="selectWorkCountInfoById" resultType="vip.gadfly.chakkispring.vo.WorkCountVO">
+        SELECT w.*,
+               (SELECT COUNT(*) FROM student_work AS sw WHERE sw.work_id = #{workId} AND sw.delete_time IS NULL) AS `handed`,
+               (SELECT COUNT(*)
+                from lin_user AS u
+                WHERE u.id NOT IN (
+                    SELECT sw.user_id
+                    FROM student_work AS sw
+                    WHERE sw.work_id = #{workId}
+                        AND w.delete_time IS NULL
+                )
+                  AND u.id IN (
+                    SELECT sc.user_id
+                    from student_class AS sc
+                    WHERE sc.class_id = (
+                        SELECT w.class_id
+                        from work AS w
+                        WHERE w.id = #{workId}
+                            AND w.delete_time IS NULL
+                    )
+                ))                                                                                      AS 'unhanded'
+        FROM work AS w
+        WHERE w.id = #{workId}
+    </select>
+
 </mapper>

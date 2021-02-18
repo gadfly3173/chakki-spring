@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.gadfly.chakkispring.mapper.StudentWorkMapper">
+
+    <resultMap id="WorkResultMap" type="vip.gadfly.chakkispring.vo.StudentWorkVO">
+        <id column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="user_id" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="nickname" property="nickname"/>
+        <result column="work_id" property="workId"/>
+        <result column="ip" property="ip"/>
+        <result column="rate" property="rate"/>
+    </resultMap>
+
+    <select id="selectUserWorkDetailByWorkId" parameterType="java.lang.Integer" resultMap="WorkResultMap">
+        SELECT u.id AS user_id, u.username, u.nickname, sw.work_id, sw.ip, sw.create_time, sw.id, sw.rate
+        from lin_user AS u, student_work AS sw
+        WHERE
+        u.id = sw.user_id AND sw.work_id = #{workId} AND sw.delete_time IS NULL
+        <if test="username != null and username != ''">
+            AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
+        </if>
+        ORDER BY sw.ip
+        <if test="orderByIP">
+            DESC
+        </if>
+    </select>
+
+    <select id="selectUnhandedUserWorkDetailByWorkId" parameterType="java.lang.Integer" resultMap="WorkResultMap">
+        SELECT u.id AS user_id, u.username, u.nickname
+        from lin_user AS u
+        WHERE
+        u.id NOT IN (
+            SELECT swi.user_id FROM student_work AS swi
+            WHERE swi.work_id = #{workId} AND swi.delete_time IS NULL
+        )
+        AND u.id IN (
+            SELECT sc.user_id from student_class AS sc
+            WHERE sc.class_id = (
+                SELECT w.class_id from work AS w
+                WHERE w.id = #{workId} AND w.delete_time IS NULL
+            )
+        )
+        <if test="username != null and username != ''">
+            AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
+        </if>
+    </select>
+
+    <select id="selectClassUserWorkDetailByWorkId" parameterType="java.lang.Integer" resultMap="WorkResultMap">
+        SELECT u.id AS user_id, u.username, u.nickname, sw.work_id, sw.ip, sw.create_time, sw.rate, sw.update_time
+        FROM lin_user AS u LEFT JOIN student_work AS sw
+        ON u.id = sw.user_id
+        WHERE u.id IN (
+            SELECT sc.user_id
+            FROM student_class AS sc
+            WHERE sc.class_id = (
+                SELECT w.class_id from work AS w
+                WHERE w.id = #{workId}  AND w.delete_time IS NULL
+            )
+        )
+        AND sw.work_id = #{workId}
+        <if test="username != null and username != ''">
+            AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
+        </if>
+        UNION
+        SELECT u.id AS user_id, u.username, u.nickname, null AS work_id, null AS ip, null AS create_time, null AS rate, null AS update_time
+        FROM lin_user AS u
+        WHERE
+        u.id NOT IN (
+            SELECT swi.user_id FROM student_work AS swi
+            WHERE swi.work_id = #{workId} AND swi.delete_time IS NULL
+        )
+        AND u.id IN (
+            SELECT sc.user_id from student_class AS sc
+            WHERE sc.class_id = (
+                SELECT w.class_id from work AS w
+                WHERE w.id = #{workId} AND w.delete_time IS NULL
+            )
+        )
+        <if test="username != null and username != ''">
+            AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
+        </if>
+        ORDER BY `ip`
+        <if test="orderByIP">
+            DESC
+        </if>
+    </select>
+    <select id="countClassUserWorkDetailByWorkId" resultType="java.lang.Long">
+        SELECT COUNT(*) AS TOTAL
+        FROM lin_user u
+        WHERE u.id IN (
+            SELECT sc.user_id
+            FROM student_class AS sc
+            WHERE sc.class_id = (
+                SELECT w.class_id from work AS w
+                WHERE w.id = #{workId} AND  w.delete_time IS NULL
+            )
+        <if test="username != null and username != ''">
+            AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
+        </if>
+        )
+    </select>
+</mapper>
