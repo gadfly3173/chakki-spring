@@ -5,13 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import vip.gadfly.chakkispring.common.LocalUser;
-import vip.gadfly.chakkispring.mapper.SignListMapper;
-import vip.gadfly.chakkispring.mapper.StudentClassMapper;
-import vip.gadfly.chakkispring.mapper.TeacherClassMapper;
-import vip.gadfly.chakkispring.mapper.WorkMapper;
+import vip.gadfly.chakkispring.mapper.*;
 import vip.gadfly.chakkispring.model.StudentClassDO;
 import vip.gadfly.chakkispring.model.TeacherClassDO;
-import vip.gadfly.chakkispring.model.UserDO;
 
 import javax.annotation.PostConstruct;
 
@@ -37,37 +33,41 @@ public class ClassPermissionCheckUtil {
     @Autowired
     private WorkMapper workMapper;
 
-    public static boolean isStudentInClassByClassId(Integer classId) {
-        return isStudentInClass(classId);
-    }
+    @Autowired
+    private StudentWorkMapper studentWorkMapper;
 
     public static boolean isStudentInClassBySignId(Integer signId) {
-        Integer classId = classPermissionCheckUtil.signListMapper.selectById(signId).getClassId();
-        return isStudentInClass(classId);
+        Integer classId = getClassIdBySignId(signId);
+        return isStudentInClassByClassId(classId);
     }
 
     public static boolean isStudentInClassByWorkId(Integer workId) {
-        Integer classId = classPermissionCheckUtil.workMapper.selectById(workId).getClassId();
-        return isStudentInClass(classId);
+        Integer classId = getClassIdByWorkId(workId);
+        return isStudentInClassByClassId(classId);
     }
 
-    public static boolean isTeacherInClassByClassId(Integer classId) {
-        return isTeacherInClass(classId);
+    public static boolean isStudentInClassByStudentWorkId(Integer id) {
+        Integer workId = getWorkIdByStudentWorkId(id);
+        return isStudentInClassByWorkId(workId);
     }
 
     public static boolean isTeacherInClassBySignId(Integer signId) {
-        Integer classId = classPermissionCheckUtil.signListMapper.selectById(signId).getClassId();
-        return isTeacherInClass(classId);
+        Integer classId = getClassIdBySignId(signId);
+        return isTeacherInClassByClassId(classId);
     }
 
     public static boolean isTeacherInClassByWorkId(Integer workId) {
-        Integer classId = classPermissionCheckUtil.workMapper.selectById(workId).getClassId();
-        return isTeacherInClass(classId);
+        Integer classId = getClassIdByWorkId(workId);
+        return isTeacherInClassByClassId(classId);
     }
 
-    private static boolean isStudentInClass(Integer classId) {
-        UserDO user = LocalUser.getLocalUser();
-        Integer userId = user.getId();
+    public static boolean isTeacherInClassByStudentWorkId(Integer id) {
+        Integer workId = getWorkIdByStudentWorkId(id);
+        return isTeacherInClassByWorkId(workId);
+    }
+
+    public static boolean isStudentInClassByClassId(Integer classId) {
+        Integer userId = LocalUser.getLocalUser().getId();
         QueryWrapper<StudentClassDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(StudentClassDO::getUserId, userId).eq(StudentClassDO::getClassId, classId);
         boolean result = classPermissionCheckUtil.studentClassMapper.selectCount(wrapper) > 0;
@@ -77,9 +77,8 @@ public class ClassPermissionCheckUtil {
         return result;
     }
 
-    private static boolean isTeacherInClass(Integer classId) {
-        UserDO user = LocalUser.getLocalUser();
-        Integer userId = user.getId();
+    public static boolean isTeacherInClassByClassId(Integer classId) {
+        Integer userId = LocalUser.getLocalUser().getId();
         QueryWrapper<TeacherClassDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(TeacherClassDO::getUserId, userId).eq(TeacherClassDO::getClassId, classId);
         boolean result = classPermissionCheckUtil.teacherClassMapper.selectCount(wrapper) > 0;
@@ -89,6 +88,18 @@ public class ClassPermissionCheckUtil {
         return result;
     }
 
+    private static Integer getClassIdBySignId(Integer signId) {
+        return classPermissionCheckUtil.signListMapper.selectById(signId).getClassId();
+    }
+
+    private static Integer getClassIdByWorkId(Integer workId) {
+        return classPermissionCheckUtil.workMapper.selectById(workId).getClassId();
+    }
+
+    private static Integer getWorkIdByStudentWorkId(Integer id) {
+        return classPermissionCheckUtil.studentWorkMapper.selectById(id).getWorkId();
+    }
+
     @PostConstruct
     public void init() {
         classPermissionCheckUtil = this;
@@ -96,5 +107,6 @@ public class ClassPermissionCheckUtil {
         classPermissionCheckUtil.teacherClassMapper = this.teacherClassMapper;
         classPermissionCheckUtil.signListMapper = this.signListMapper;
         classPermissionCheckUtil.workMapper = this.workMapper;
+        classPermissionCheckUtil.studentWorkMapper = this.studentWorkMapper;
     }
 }

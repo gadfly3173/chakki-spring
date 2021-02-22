@@ -29,5 +29,9 @@ public class ClassVerifyConstant {
      * workId
      */
     public static final String workIdType = "workId";
+    /**
+     * studentWorkId
+     */
+    public static final String studentWorkIdType = "studentWorkId";
 
 }

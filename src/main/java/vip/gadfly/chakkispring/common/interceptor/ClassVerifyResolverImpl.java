@@ -48,7 +48,7 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
                 id = getIdByRequestBody(request, teacherClassCheck.valueName());
                 break;
             default:
-                throw new RuntimeException("id的参数类型错误(PathVariable, RequestParam)，请开发检查");
+                throw new RuntimeException("id的参数类型错误，请开发检查");
         }
         boolean result;
         switch (teacherClassCheck.valueType()) {
@@ -61,8 +61,11 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
             case workIdType:
                 result = ClassPermissionCheckUtil.isTeacherInClassByWorkId(id);
                 break;
+            case studentWorkIdType:
+                result = ClassPermissionCheckUtil.isTeacherInClassByStudentWorkId(id);
+                break;
             default:
-                throw new RuntimeException("id的值类型错误(classId, signId)，请开发检查");
+                throw new RuntimeException("id的值类型错误，请开发检查");
         }
         if (!result) {
             throw new AuthorizationException(10002);
@@ -84,7 +87,7 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
                 id = getIdByRequestBody(request, studentClassCheck.valueName());
                 break;
             default:
-                throw new RuntimeException("id的参数类型错误(PathVariable, RequestParam)，请开发检查");
+                throw new RuntimeException("id的参数类型错误，请开发检查");
         }
         boolean result;
         switch (studentClassCheck.valueType()) {
@@ -97,8 +100,11 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
             case workIdType:
                 result = ClassPermissionCheckUtil.isStudentInClassByWorkId(id);
                 break;
+            case studentWorkIdType:
+                result = ClassPermissionCheckUtil.isStudentInClassByStudentWorkId(id);
+                break;
             default:
-                throw new RuntimeException("id的值类型错误(classId, signId)，请开发检查");
+                throw new RuntimeException("id的值类型错误，请开发检查");
         }
         if (!result) {
             throw new AuthorizationException(10002);
