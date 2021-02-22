@@ -39,6 +39,7 @@ public class CommonConfiguration {
     /**
      * 参考链接：https://mp.baomidou.com/guide/interceptor.html
      */
+    @SuppressWarnings("deprecation")
     @Bean
     public ConfigurationCustomizer configurationCustomizer() {
         return configuration -> configuration.setUseDeprecatedExecutor(false);

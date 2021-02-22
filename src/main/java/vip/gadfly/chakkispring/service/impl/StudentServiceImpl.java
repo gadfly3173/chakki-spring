@@ -58,25 +58,25 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<ClassDO> getStudentClassList() {
-        UserDO user = LocalUser.getLocalUser();
-        return classMapper.selectUserClasses(user.getId());
+        Integer userId = LocalUser.getLocalUser().getId();
+        return classMapper.selectUserClasses(userId);
     }
 
     @Override
     public boolean confirmSign(Integer signId, String ip) {
-        UserDO user = LocalUser.getLocalUser();
+        Integer userId = LocalUser.getLocalUser().getId();
         QueryWrapper<StudentSignDO> wrapper = new QueryWrapper<>();
         if (IPUtil.isInternalIp(ip)) {
             wrapper.lambda()
                     .eq(StudentSignDO::getSignId, signId)
-                    .and(i -> i.eq(StudentSignDO::getUserId, user.getId())
+                    .and(i -> i.eq(StudentSignDO::getUserId, userId)
                             .or()
                             .eq(StudentSignDO::getIp, ip));
         } else {
             wrapper.lambda().eq(StudentSignDO::getSignId, signId).eq(StudentSignDO::getUserId, user.getId());
         }
         if (studentSignMapper.selectCount(wrapper) == 0) {
-            return studentSignMapper.insert(new StudentSignDO(signId, user.getId(), ip,
+            return studentSignMapper.insert(new StudentSignDO(signId, userId, ip,
                     SignStatusConstant.STATUS_SIGNED)) > 0;
         }
         return false;
