@@ -73,7 +73,7 @@ public class StudentServiceImpl implements StudentService {
                             .or()
                             .eq(StudentSignDO::getIp, ip));
         } else {
-            wrapper.lambda().eq(StudentSignDO::getSignId, signId).eq(StudentSignDO::getUserId, user.getId());
+            wrapper.lambda().eq(StudentSignDO::getSignId, signId).eq(StudentSignDO::getUserId, userId);
         }
         if (studentSignMapper.selectCount(wrapper) == 0) {
             return studentSignMapper.insert(new StudentSignDO(signId, userId, ip,

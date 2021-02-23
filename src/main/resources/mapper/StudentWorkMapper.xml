@@ -15,7 +15,7 @@
     </resultMap>
 
     <select id="selectUserWorkDetailByWorkId" parameterType="java.lang.Integer" resultMap="WorkResultMap">
-        SELECT u.id AS user_id, u.username, u.nickname, sw.work_id, sw.ip, sw.create_time, sw.id, sw.rate
+        SELECT sw.id, u.id AS user_id, u.username, u.nickname, sw.work_id, sw.ip, sw.create_time, sw.id, sw.rate
         from lin_user AS u, student_work AS sw
         WHERE
         u.id = sw.user_id AND sw.work_id = #{workId} AND sw.delete_time IS NULL
@@ -49,7 +49,7 @@
     </select>
 
     <select id="selectClassUserWorkDetailByWorkId" parameterType="java.lang.Integer" resultMap="WorkResultMap">
-        SELECT u.id AS user_id, u.username, u.nickname, sw.work_id, sw.ip, sw.create_time, sw.rate, sw.update_time
+        SELECT u.id AS user_id, u.username, u.nickname,sw.id, sw.work_id, sw.ip, sw.create_time, sw.rate, sw.update_time
         FROM lin_user AS u LEFT JOIN student_work AS sw
         ON u.id = sw.user_id
         WHERE u.id IN (
@@ -65,7 +65,7 @@
             AND (u.username LIKE CONCAT('%', #{username}, '%') OR u.nickname LIKE CONCAT('%', #{username}, '%'))
         </if>
         UNION
-        SELECT u.id AS user_id, u.username, u.nickname, null AS work_id, null AS ip, null AS create_time, null AS rate, null AS update_time
+        SELECT u.id AS user_id, u.username, u.nickname,null AS id, null AS work_id, null AS ip, null AS create_time, null AS rate, null AS update_time
         FROM lin_user AS u
         WHERE
         u.id NOT IN (

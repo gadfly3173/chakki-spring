@@ -106,7 +106,7 @@ public abstract class AbstractUploader implements Uploader {
      */
     protected String getNewFilename(String ext) {
         String uuid = UUID.randomUUID().toString().replace("-", "");
-        return uuid + ext;
+        return uuid + "." + ext;
     }
 
     /**

@@ -23,11 +23,14 @@ import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
 import vip.gadfly.chakkispring.dto.lesson.UpdateWorkDTO;
 import vip.gadfly.chakkispring.mapper.*;
 import vip.gadfly.chakkispring.model.*;
+import vip.gadfly.chakkispring.module.file.FileProperties;
+import vip.gadfly.chakkispring.module.file.FileUtil;
 import vip.gadfly.chakkispring.service.ClassManageService;
 import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.service.UserService;
 import vip.gadfly.chakkispring.vo.*;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TreeSet;
@@ -71,6 +74,12 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Autowired
     private WorkExtensionMapper workExtendMapper;
+
+    @Autowired
+    private FileMapper fileMapper;
+
+    @Autowired
+    private FileProperties fileProperties;
 
     @Override
     public IPage<UserDO> getUserPageByClassId(Integer classId, Integer count, Integer page) {
@@ -388,7 +397,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
             case WorkStatusConstant.UNHANDED:
                 iPage = studentWorkMapper.selectUnhandedUserWorkDetailByWorkId(pager, workId, username, orderByIP);
                 break;
-            case WorkStatusConstant.ALLL:
+            case WorkStatusConstant.ALL:
             default:
                 pager.setSearchCount(false);
                 pager.setTotal(studentWorkMapper.countClassUserWorkDetailByWorkId(workId, username));
@@ -400,6 +409,28 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     @Override
     public WorkCountVO getWorkDetail(Integer id) {
         return workMapper.selectWorkCountInfoById(id);
+    }
+
+    @Override
+    public File getStudentWorkFile(Integer id) {
+        StudentWorkDO studentWork = studentWorkMapper.selectById(id);
+        FileDO fileDO = fileMapper.selectById(studentWork.getFileId());
+        String absolutePath = FileUtil.getFileAbsolutePath(fileProperties.getStoreDir(), fileDO.getPath());
+        return new File(absolutePath);
+    }
+
+    @Override
+    public String getStudentWorkFilename(Integer id) {
+        StudentWorkDO studentWork = studentWorkMapper.selectById(id);
+        WorkDO work = workMapper.selectById(studentWork.getWorkId());
+        FileDO fileDO = fileMapper.selectById(studentWork.getFileId());
+        UserDO user = userService.getById(studentWork.getUserId());
+        return String.format("%s_%s_%s_%tF.%s",
+                work.getName(),
+                user.getUsername(),
+                user.getNickname(),
+                studentWork.getCreateTime(),
+                fileDO.getExtension().toLowerCase());
     }
 
     @Override

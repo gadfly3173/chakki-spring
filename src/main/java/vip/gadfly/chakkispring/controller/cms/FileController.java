@@ -63,7 +63,7 @@ public class FileController {
     }
 
     private ResponseEntity<FileSystemResource> export(File file, String filename) {
-        if (!file.exists()) {
+        if (!file.canRead()) {
             throw new NotFoundException(10020);
         }
         HttpHeaders headers = new HttpHeaders();
@@ -72,7 +72,7 @@ public class FileController {
         headers.setPragma("no-cache");
         headers.setExpires(0L);
         headers.setLastModified(System.currentTimeMillis());
-        headers.setETag(String.valueOf(System.currentTimeMillis()));
+        headers.setETag("\"" + System.currentTimeMillis() + "\"");
         return ResponseEntity
                 .ok()
                 .headers(headers)

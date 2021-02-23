@@ -15,6 +15,7 @@ import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.vo.*;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -291,4 +292,7 @@ public interface ClassService {
 
     WorkCountVO getWorkDetail(Integer id);
 
+    File getStudentWorkFile(Integer id);
+
+    String getStudentWorkFilename(Integer id);
 }

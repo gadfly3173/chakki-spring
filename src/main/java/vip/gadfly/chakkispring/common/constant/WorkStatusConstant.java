@@ -16,6 +16,6 @@ public class WorkStatusConstant {
     /**
      * 全部
      */
-    public static final int ALLL = 0;
+    public static final int ALL = 0;
 
 }
