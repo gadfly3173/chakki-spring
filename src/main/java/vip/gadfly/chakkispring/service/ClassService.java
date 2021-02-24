@@ -6,10 +6,7 @@ import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
 import vip.gadfly.chakkispring.dto.admin.NewSemesterDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateSemesterDTO;
-import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
-import vip.gadfly.chakkispring.dto.lesson.NewWorkDTO;
-import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
-import vip.gadfly.chakkispring.dto.lesson.UpdateWorkDTO;
+import vip.gadfly.chakkispring.dto.lesson.*;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.UserDO;
@@ -300,4 +297,6 @@ public interface ClassService {
     File workFilesToZip(Integer id) throws IOException;
 
     String getWorkZipFilename(Integer id);
+
+    void rateStudentWork(RateStudentWorkDTO dto, Integer id);
 }

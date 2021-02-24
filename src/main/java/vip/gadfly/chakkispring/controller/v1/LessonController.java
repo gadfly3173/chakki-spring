@@ -11,10 +11,7 @@ import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.annotation.TeacherClassCheck;
 import vip.gadfly.chakkispring.common.util.PageUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
-import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
-import vip.gadfly.chakkispring.dto.lesson.NewWorkDTO;
-import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
-import vip.gadfly.chakkispring.dto.lesson.UpdateWorkDTO;
+import vip.gadfly.chakkispring.dto.lesson.*;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.UserDO;
@@ -226,4 +223,13 @@ public class LessonController {
         return classService.getWorkDetail(id);
     }
 
+    @PostMapping("/work/student/rate/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "给学生作业打分")
+    @TeacherClassCheck(valueType = studentWorkIdType, paramType = pathVariableType)
+    public UnifyResponseVO rateStudentWork(@RequestBody @Validated RateStudentWorkDTO validator,
+                                           @PathVariable @Positive(message = "{id.positive}") Integer id) {
+        classService.rateStudentWork(validator, id);
+        return ResponseUtil.generateUnifyResponse(32);
+    }
 }

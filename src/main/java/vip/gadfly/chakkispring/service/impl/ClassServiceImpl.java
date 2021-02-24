@@ -1,6 +1,7 @@
 package vip.gadfly.chakkispring.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.github.talelin.autoconfigure.exception.ForbiddenException;
@@ -18,10 +19,7 @@ import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
 import vip.gadfly.chakkispring.dto.admin.NewSemesterDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateSemesterDTO;
-import vip.gadfly.chakkispring.dto.lesson.NewSignDTO;
-import vip.gadfly.chakkispring.dto.lesson.NewWorkDTO;
-import vip.gadfly.chakkispring.dto.lesson.UpdateSignRecordDTO;
-import vip.gadfly.chakkispring.dto.lesson.UpdateWorkDTO;
+import vip.gadfly.chakkispring.dto.lesson.*;
 import vip.gadfly.chakkispring.mapper.*;
 import vip.gadfly.chakkispring.model.*;
 import vip.gadfly.chakkispring.module.file.FileProperties;
@@ -447,7 +445,6 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
             throw new NotFoundException(10020);
         }
         File zipFile = File.createTempFile(String.valueOf(System.currentTimeMillis()), ".zip");
-        zipFile.deleteOnExit();
         ZipOutputStream zos = null;
         try {
             zos = new ZipOutputStream(new FileOutputStream(zipFile));
@@ -473,6 +470,13 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         return String.format("%s_%tF.zip",
                 work.getName(),
                 System.currentTimeMillis());
+    }
+
+    @Override
+    public void rateStudentWork(RateStudentWorkDTO dto, Integer id) {
+        UpdateWrapper<StudentWorkDO> wrapper = new UpdateWrapper<>();
+        wrapper.lambda().eq(StudentWorkDO::getId, id).set(StudentWorkDO::getRate, dto.getRate());
+        studentWorkMapper.update(null, wrapper);
     }
 
     @Override
