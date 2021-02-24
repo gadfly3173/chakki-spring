@@ -480,6 +480,11 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
+    public void deleteStudentWork(Integer id) {
+        studentWorkMapper.deleteById(id);
+    }
+
+    @Override
     public void deleteWork(Integer id) {
         workMapper.deleteById(id);
     }

@@ -232,4 +232,13 @@ public class LessonController {
         classService.rateStudentWork(validator, id);
         return ResponseUtil.generateUnifyResponse(32);
     }
+
+    @PostMapping("/work/student/delete/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "删除学生作业")
+    @TeacherClassCheck(valueType = studentWorkIdType, paramType = pathVariableType)
+    public UnifyResponseVO rateStudentWork(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+        classService.deleteStudentWork(id);
+        return ResponseUtil.generateUnifyResponse(33);
+    }
 }

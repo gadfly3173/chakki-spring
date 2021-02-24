@@ -299,4 +299,7 @@ public interface ClassService {
     String getWorkZipFilename(Integer id);
 
     void rateStudentWork(RateStudentWorkDTO dto, Integer id);
+
+    void deleteStudentWork(Integer id);
+
 }
