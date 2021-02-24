@@ -16,6 +16,7 @@ import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.vo.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -295,4 +296,8 @@ public interface ClassService {
     File getStudentWorkFile(Integer id);
 
     String getStudentWorkFilename(Integer id);
+
+    File workFilesToZip(Integer id) throws IOException;
+
+    String getWorkZipFilename(Integer id);
 }

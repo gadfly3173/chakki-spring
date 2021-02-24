@@ -13,6 +13,7 @@ import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
 import vip.gadfly.chakkispring.common.constant.TeacherLevelConstant;
 import vip.gadfly.chakkispring.common.constant.WorkStatusConstant;
 import vip.gadfly.chakkispring.common.mybatis.Page;
+import vip.gadfly.chakkispring.common.util.ZipUtil;
 import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
 import vip.gadfly.chakkispring.dto.admin.NewSemesterDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
@@ -31,10 +32,13 @@ import vip.gadfly.chakkispring.service.UserService;
 import vip.gadfly.chakkispring.vo.*;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.zip.ZipOutputStream;
 
 
 /**
@@ -431,6 +435,44 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
                 user.getNickname(),
                 studentWork.getCreateTime(),
                 fileDO.getExtension().toLowerCase());
+    }
+
+    @Override
+    public File workFilesToZip(Integer id) throws IOException {
+        WorkDO work = workMapper.selectById(id);
+        QueryWrapper<StudentWorkDO> studentWorkWrapper = new QueryWrapper<>();
+        studentWorkWrapper.lambda().eq(StudentWorkDO::getWorkId, work.getId());
+        List<StudentWorkDO> studentWorkDOList = studentWorkMapper.selectList(studentWorkWrapper);
+        if (studentWorkDOList == null) {
+            throw new NotFoundException(10020);
+        }
+        File zipFile = File.createTempFile(String.valueOf(System.currentTimeMillis()), ".zip");
+        zipFile.deleteOnExit();
+        ZipOutputStream zos = null;
+        try {
+            zos = new ZipOutputStream(new FileOutputStream(zipFile));
+            for (StudentWorkDO tempDO : studentWorkDOList) {
+                FileDO fileDO = fileMapper.selectById(tempDO.getFileId());
+                String absolutePath = FileUtil.getFileAbsolutePath(fileProperties.getStoreDir(), fileDO.getPath());
+                File resFile = new File(absolutePath);
+                String filename = getStudentWorkFilename(tempDO.getId());
+                ZipUtil.zipFile(resFile, "", zos, null, filename);
+            }
+        } finally {
+            if (zos != null) {
+                zos.finish();
+                zos.close();
+            }
+        }
+        return zipFile;
+    }
+
+    @Override
+    public String getWorkZipFilename(Integer id) {
+        WorkDO work = workMapper.selectById(id);
+        return String.format("%s_%tF.zip",
+                work.getName(),
+                System.currentTimeMillis());
     }
 
     @Override

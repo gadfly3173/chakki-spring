@@ -21,6 +21,7 @@ import vip.gadfly.chakkispring.service.FileService;
 
 import javax.validation.constraints.Positive;
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -59,6 +60,17 @@ public class FileController {
             @PathVariable @Positive(message = "{id.positive}") Integer id) {
         File file = classService.getStudentWorkFile(id);
         String filename = classService.getStudentWorkFilename(id);
+        return export(file, filename);
+    }
+
+    @GetMapping("/lesson/work/download/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "下载指定作业项目的全部文件", module = "教师")
+    @TeacherClassCheck(valueType = workIdType, paramType = pathVariableType)
+    public ResponseEntity<FileSystemResource> downloadWorkFile(
+            @PathVariable @Positive(message = "{id.positive}") Integer id) throws IOException {
+        File file = classService.workFilesToZip(id);
+        String filename = classService.getWorkZipFilename(id);
         return export(file, filename);
     }
 
