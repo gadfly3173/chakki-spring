@@ -25,7 +25,7 @@ public class ValidateCodeUtil {
     private final int height = 45; //验证码的高
     private final int lineSize = 30; //验证码中夹杂的干扰线数量
     private final int randomStrNum = 4; //验证码字符个数
-    private final String randomString = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWSYZ";
+    private final String randomString = "23456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWSYZ";
 
     // 颜色的设置
     private static Color getRandomColor(int fc, int bc) {

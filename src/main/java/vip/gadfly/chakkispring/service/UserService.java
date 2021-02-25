@@ -174,4 +174,6 @@ public interface UserService extends IService<UserDO> {
      * @return 超级管理员的id
      */
     Integer getRootUserId();
+
+    boolean getUserMFAStatus(Integer userId);
 }

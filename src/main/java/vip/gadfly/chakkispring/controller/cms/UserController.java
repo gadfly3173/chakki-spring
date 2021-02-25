@@ -1,5 +1,6 @@
 package vip.gadfly.chakkispring.controller.cms;
 
+import io.github.talelin.autoconfigure.exception.AuthorizationException;
 import io.github.talelin.autoconfigure.exception.FailedException;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
 import io.github.talelin.autoconfigure.exception.ParameterException;
@@ -15,17 +16,16 @@ import vip.gadfly.chakkispring.common.util.ValidateCodeUtil;
 import vip.gadfly.chakkispring.dto.user.*;
 import vip.gadfly.chakkispring.model.GroupDO;
 import vip.gadfly.chakkispring.model.UserDO;
-import vip.gadfly.chakkispring.service.GroupService;
-import vip.gadfly.chakkispring.service.LogService;
-import vip.gadfly.chakkispring.service.UserIdentityService;
-import vip.gadfly.chakkispring.service.UserService;
+import vip.gadfly.chakkispring.service.*;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 import vip.gadfly.chakkispring.vo.UserInfoVO;
 import vip.gadfly.chakkispring.vo.UserPermissionVO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +55,9 @@ public class UserController {
     @Autowired
     private LogService logService;
 
+    @Autowired
+    private GoogleAuthenticatorService googleAuthenticatorService;
+
     /**
      * 用户注册
      */
@@ -80,7 +83,7 @@ public class UserController {
      */
     @PostMapping("/login")
     public Tokens login(@RequestBody @Validated LoginDTO validator, HttpSession session) {
-        String sessionCode= String.valueOf(session.getAttribute(ValidateCodeUtil.sessionKey));
+        String sessionCode = String.valueOf(session.getAttribute(ValidateCodeUtil.sessionKey));
         String receivedCode = validator.getCaptcha();
         if (!sessionCode.equalsIgnoreCase(receivedCode)) {
             throw new FailedException(10101);
@@ -124,6 +127,60 @@ public class UserController {
     public UnifyResponseVO update(@RequestBody @Validated UpdateInfoDTO validator) {
         userService.updateUserInfo(validator);
         return ResponseUtil.generateUnifyResponse(4);
+    }
+
+    /**
+     * 获取两步验证密钥
+     */
+    @PostMapping("/get_mfa_secret")
+    @GroupRequired
+    public String setUserMFASecret() throws UnsupportedEncodingException {
+        UserDO user = LocalUser.getLocalUser();
+        if (googleAuthenticatorService.MFAexist(user.getId())) {
+            throw new FailedException(10103);
+        }
+        return googleAuthenticatorService.getQrUrl(user.getUsername(), user.getId());
+    }
+
+    /**
+     * 获取两步验证开通状态
+     */
+    @GetMapping("/mfa")
+    @GroupRequired
+    public boolean getUserMFAStatus() {
+        Integer userId = LocalUser.getLocalUser().getId();
+        return userService.getUserMFAStatus(userId);
+    }
+
+    /**
+     * 删除两步验证密钥
+     */
+    @PostMapping("/delete_mfa_secret/{code}")
+    @GroupRequired
+    public UnifyResponseVO deleteUserMFASecret(@PathVariable @NotNull Integer code) {
+        UserDO user = LocalUser.getLocalUser();
+        if (googleAuthenticatorService.validCode(user.getUsername(), code)) {
+            googleAuthenticatorService.cancelMFA(user.getId());
+            return ResponseUtil.generateUnifyResponse(34);
+        }
+        throw new AuthorizationException(10102);
+    }
+
+    /**
+     * 启用后验证两步验证密钥，错误则取消绑定
+     */
+    @PostMapping("/confirm_mfa_secret/{code}")
+    @GroupRequired
+    public UnifyResponseVO confirmUserMFASecret(@PathVariable @NotNull Integer code) {
+        UserDO user = LocalUser.getLocalUser();
+        if (googleAuthenticatorService.notNewCreated(user.getId())) {
+            throw new FailedException(10104);
+        }
+        if (!googleAuthenticatorService.validCode(user.getUsername(), code)) {
+            googleAuthenticatorService.cancelMFA(user.getId());
+            return ResponseUtil.generateUnifyResponse(34);
+        }
+        return ResponseUtil.generateUnifyResponse(35);
     }
 
     /**

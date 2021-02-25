@@ -131,6 +131,12 @@
             <version>20200713.1</version>
         </dependency>
 
+        <!-- 两步验证 -->
+        <dependency>
+            <groupId>com.warrenstrange</groupId>
+            <artifactId>googleauth</artifactId>
+            <version>1.4.0</version>
+        </dependency>
 
     </dependencies>
 

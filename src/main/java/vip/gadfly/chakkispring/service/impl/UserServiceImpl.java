@@ -20,6 +20,7 @@ import vip.gadfly.chakkispring.dto.user.ChangePasswordDTO;
 import vip.gadfly.chakkispring.dto.user.RegisterDTO;
 import vip.gadfly.chakkispring.dto.user.UpdateInfoDTO;
 import vip.gadfly.chakkispring.mapper.UserGroupMapper;
+import vip.gadfly.chakkispring.mapper.UserMFAMapper;
 import vip.gadfly.chakkispring.mapper.UserMapper;
 import vip.gadfly.chakkispring.model.GroupDO;
 import vip.gadfly.chakkispring.model.PermissionDO;
@@ -53,6 +54,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     @Autowired
     private UserGroupMapper userGroupMapper;
+
+    @Autowired
+    private UserMFAMapper userMFAMapper;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -255,6 +259,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             userGroupDO = userGroupMapper.selectOne(wrapper);
         }
         return userGroupDO == null ? 0 : userGroupDO.getUserId();
+    }
+
+    @Override
+    public boolean getUserMFAStatus(Integer userId) {
+        return StringUtils.hasText(userMFAMapper.getSecretKeyByUserId(userId));
     }
 
     private void checkGroupsExist(List<Integer> ids) {

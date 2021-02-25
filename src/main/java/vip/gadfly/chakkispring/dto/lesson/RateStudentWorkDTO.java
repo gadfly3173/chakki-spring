@@ -3,7 +3,6 @@ package vip.gadfly.chakkispring.dto.lesson;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
