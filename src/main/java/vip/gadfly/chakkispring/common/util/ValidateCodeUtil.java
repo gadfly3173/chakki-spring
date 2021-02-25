@@ -76,14 +76,13 @@ public class ValidateCodeUtil {
 
 
     // 生成随机图片
-    public void getRandomCodeImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        BufferedImage image = getBufferedImage(request);
+    public void getRandomCodeImage(HttpSession session, HttpServletResponse response) throws IOException {
+        BufferedImage image = getBufferedImage(session);
         //  将图片以png格式返回,返回的是图片
         ImageIO.write(image, "PNG", response.getOutputStream());
     }
 
-    private BufferedImage getBufferedImage(HttpServletRequest request) {
-        HttpSession session = request.getSession();
+    private BufferedImage getBufferedImage(HttpSession session) {
         // BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
@@ -110,8 +109,8 @@ public class ValidateCodeUtil {
 
 
     // 生成随机图片的base64编码字符串
-    public String getRandomCodeBase64(HttpServletRequest request) throws IOException {
-        BufferedImage image = getBufferedImage(request);
+    public String getRandomCodeBase64(HttpSession session) throws IOException {
+        BufferedImage image = getBufferedImage(session);
         // 返回 base64
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ImageIO.write(image, "PNG", bos);

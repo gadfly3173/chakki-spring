@@ -7,7 +7,9 @@ import io.github.talelin.autoconfigure.exception.ParameterException;
 import io.github.talelin.core.annotation.*;
 import io.github.talelin.core.token.DoubleJWT;
 import io.github.talelin.core.token.Tokens;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.common.LocalUser;
@@ -17,6 +19,7 @@ import vip.gadfly.chakkispring.dto.user.*;
 import vip.gadfly.chakkispring.model.GroupDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.*;
+import vip.gadfly.chakkispring.vo.TokensWithMFA;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 import vip.gadfly.chakkispring.vo.UserInfoVO;
 import vip.gadfly.chakkispring.vo.UserPermissionVO;
@@ -82,7 +85,7 @@ public class UserController {
      * 用户登录
      */
     @PostMapping("/login")
-    public Tokens login(@RequestBody @Validated LoginDTO validator, HttpSession session) {
+    public TokensWithMFA login(@RequestBody @Validated LoginDTO validator, HttpSession session) {
         String sessionCode = String.valueOf(session.getAttribute(ValidateCodeUtil.sessionKey));
         String receivedCode = validator.getCaptcha();
         if (!sessionCode.equalsIgnoreCase(receivedCode)) {
@@ -99,6 +102,13 @@ public class UserController {
         if (!valid) {
             throw new ParameterException(10031);
         }
+        boolean MFARequire = googleAuthenticatorService.MFAexist(user.getId());
+        if (MFARequire) {
+            session.setAttribute("username", user.getUsername());
+            session.setAttribute("userid", user.getId());
+            session.setMaxInactiveInterval(60);
+            return TokensWithMFA.builder().MFARequire(true).build();
+        }
         logService.createLog(
                 user.getUsername() + "登录成功获取了令牌",
                 "", user.getId(), user.getUsername(),
@@ -106,14 +116,30 @@ public class UserController {
                 "/cms/user/login",
                 200
         );
-        return jwt.generateTokens(user.getId());
+        Tokens tokens = jwt.generateTokens(user.getId());
+        TokensWithMFA tokensWithMFA = new TokensWithMFA();
+        BeanUtils.copyProperties(tokens, tokensWithMFA);
+        return tokensWithMFA;
+    }
+
+    @PostMapping("/login_with_mfa/{code}")
+    public Tokens loginWithMFA(@PathVariable @NotNull Integer code, HttpSession session) {
+        String username = String.valueOf(session.getAttribute("username"));
+        Integer userId = (Integer) session.getAttribute("userid");
+        if (!StringUtils.hasText(username) || userId == null) {
+            throw new FailedException(10102);
+        }
+        if (googleAuthenticatorService.validCode(username, code)) {
+            return jwt.generateTokens(userId);
+        }
+        throw new FailedException(10102);
     }
 
     @GetMapping("/get_captcha_img")
-    public String getCaptchaImg(HttpServletRequest request) throws IOException {
+    public String getCaptchaImg(HttpSession session) throws IOException {
         ValidateCodeUtil validateCode = new ValidateCodeUtil();
         // 返回base64
-        String base64String = validateCode.getRandomCodeBase64(request);
+        String base64String = validateCode.getRandomCodeBase64(session);
         return "data:image/png;base64," + base64String;
     }
 
