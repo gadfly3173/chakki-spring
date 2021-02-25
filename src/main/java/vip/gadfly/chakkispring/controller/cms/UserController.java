@@ -1,5 +1,6 @@
 package vip.gadfly.chakkispring.controller.cms;
 
+import io.github.talelin.autoconfigure.exception.FailedException;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
 import io.github.talelin.autoconfigure.exception.ParameterException;
 import io.github.talelin.core.annotation.*;
@@ -10,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
+import vip.gadfly.chakkispring.common.util.ValidateCodeUtil;
 import vip.gadfly.chakkispring.dto.user.*;
 import vip.gadfly.chakkispring.model.GroupDO;
 import vip.gadfly.chakkispring.model.UserDO;
@@ -21,6 +23,9 @@ import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 import vip.gadfly.chakkispring.vo.UserInfoVO;
 import vip.gadfly.chakkispring.vo.UserPermissionVO;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -74,7 +79,12 @@ public class UserController {
      * 用户登录
      */
     @PostMapping("/login")
-    public Tokens login(@RequestBody @Validated LoginDTO validator) {
+    public Tokens login(@RequestBody @Validated LoginDTO validator, HttpSession session) {
+        String sessionCode= String.valueOf(session.getAttribute(ValidateCodeUtil.sessionKey));
+        String receivedCode = validator.getCaptcha();
+        if (!sessionCode.equalsIgnoreCase(receivedCode)) {
+            throw new FailedException(10101);
+        }
         UserDO user = userService.getUserByUsername(validator.getUsername());
         if (user == null) {
             throw new NotFoundException(10021);
@@ -94,6 +104,14 @@ public class UserController {
                 200
         );
         return jwt.generateTokens(user.getId());
+    }
+
+    @GetMapping("/get_captcha_img")
+    public String getCaptchaImg(HttpServletRequest request) throws IOException {
+        ValidateCodeUtil validateCode = new ValidateCodeUtil();
+        // 返回base64
+        String base64String = validateCode.getRandomCodeBase64(request);
+        return "data:image/png;base64," + base64String;
     }
 
     /**
