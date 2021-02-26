@@ -73,7 +73,7 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .maxAge(3600)
                 .allowedHeaders("*")
                 .allowCredentials(true)
-                .exposedHeaders(HttpHeaders.CONTENT_DISPOSITION, HttpHeaders.SET_COOKIE);
+                .exposedHeaders(HttpHeaders.CONTENT_DISPOSITION);
     }
 
     @Override
