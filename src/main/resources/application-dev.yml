@@ -7,7 +7,6 @@ server:
     context-path: /api
     session:
       cookie:
-        domain: "localhost"
         name: "CHAKKISESSIONID"
         path: "/"
 
