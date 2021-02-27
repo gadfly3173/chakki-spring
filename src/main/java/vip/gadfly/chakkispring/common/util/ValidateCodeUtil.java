@@ -1,7 +1,6 @@
 package vip.gadfly.chakkispring.common.util;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
@@ -15,17 +14,15 @@ import java.util.Random;
  * @author Gadfly
  */
 
-
 public class ValidateCodeUtil {
-
 
     public static final String sessionKey = "JCCODE";
     private static final Random random = new Random();
-    private final int width = 165; //验证码的宽
-    private final int height = 45; //验证码的高
-    private final int lineSize = 30; //验证码中夹杂的干扰线数量
-    private final int randomStrNum = 4; //验证码字符个数
-    private final String randomString = "23456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWSYZ";
+    private static final int width = 165; // 验证码的宽
+    private static final int height = 45; // 验证码的高
+    private static final int lineSize = 30; // 验证码中夹杂的干扰线数量
+    private static final int randomStrNum = 4; // 验证码字符个数
+    private static final String randomString = "23456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWSYZ";
 
     // 颜色的设置
     private static Color getRandomColor(int fc, int bc) {
@@ -54,7 +51,6 @@ public class ValidateCodeUtil {
         g.setStroke(new BasicStroke(2.0f));
         g.setColor(getRandomColor(68, 190));
         g.drawLine(x, y, x + xl, y + yl);
-
     }
 
     // 随机字符的获取
@@ -73,7 +69,6 @@ public class ValidateCodeUtil {
         g.drawString(rand, 40 * i + 10, 25);
         return randomStr;
     }
-
 
     // 生成随机图片
     public void getRandomCodeImage(HttpSession session, HttpServletResponse response) throws IOException {
@@ -103,10 +98,9 @@ public class ValidateCodeUtil {
         session.removeAttribute(sessionKey);
         // 重新将验证码放入session
         session.setAttribute(sessionKey, randomStr);
-        session.setMaxInactiveInterval(60);
+        session.setMaxInactiveInterval(300);
         return image;
     }
-
 
     // 生成随机图片的base64编码字符串
     public String getRandomCodeBase64(HttpSession session) throws IOException {

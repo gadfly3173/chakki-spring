@@ -7,6 +7,7 @@ import io.github.talelin.autoconfigure.exception.ParameterException;
 import io.github.talelin.core.annotation.*;
 import io.github.talelin.core.token.DoubleJWT;
 import io.github.talelin.core.token.Tokens;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -24,7 +25,6 @@ import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 import vip.gadfly.chakkispring.vo.UserInfoVO;
 import vip.gadfly.chakkispring.vo.UserPermissionVO;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
@@ -41,6 +41,7 @@ import java.util.Map;
 @RequestMapping("/cms/user")
 @PermissionModule(value = "用户")
 @Validated
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -95,10 +96,12 @@ public class UserController {
         if (user == null) {
             throw new NotFoundException(10021);
         }
+        long startTime = System.currentTimeMillis();
         boolean valid = userIdentityService.verifyUsernamePassword(
                 user.getId(),
                 user.getUsername(),
                 validator.getPassword());
+        log.info("verifyUsernamePassword cost : " + (System.currentTimeMillis() - startTime) + "ms");
         if (!valid) {
             throw new ParameterException(10031);
         }
@@ -106,7 +109,7 @@ public class UserController {
         if (MFARequire) {
             session.setAttribute("username", user.getUsername());
             session.setAttribute("userid", user.getId());
-            session.setMaxInactiveInterval(60);
+            session.setMaxInactiveInterval(300);
             return TokensWithMFA.builder().MFARequire(true).build();
         }
         logService.createLog(
@@ -129,10 +132,17 @@ public class UserController {
         if (!StringUtils.hasText(username) || userId == null) {
             throw new FailedException(10102);
         }
-        if (googleAuthenticatorService.validCode(username, code)) {
-            return jwt.generateTokens(userId);
+        if (!googleAuthenticatorService.validCode(username, code)) {
+            throw new FailedException(10102);
         }
-        throw new FailedException(10102);
+        logService.createLog(
+                username + "通过MFA登录成功获取了令牌",
+                "", userId, username,
+                "post",
+                "/cms/user/login_with_mfa",
+                200
+        );
+        return jwt.generateTokens(userId);
     }
 
     @GetMapping("/get_captcha_img")
