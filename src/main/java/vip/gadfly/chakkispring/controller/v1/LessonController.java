@@ -5,8 +5,11 @@ import io.github.talelin.core.annotation.GroupRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.core.annotation.PermissionModule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.annotation.TeacherClassCheck;
 import vip.gadfly.chakkispring.common.util.PageUtil;
@@ -241,4 +244,52 @@ public class LessonController {
         classService.deleteStudentWork(id);
         return ResponseUtil.generateUnifyResponse(33);
     }
+
+    @PostMapping("/announcement/create")
+    @GroupRequired
+    @PermissionMeta(value = "发布通知公告")
+    @TeacherClassCheck(valueType = classIdType, paramType = requestBodyType, valueName = "class_id")
+    public Integer createAnnouncement(@RequestBody @Validated NewAnnouncementDTO dto) {
+        return classService.createAnnouncement(dto);
+    }
+
+    @PostMapping("/announcement/attachment/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "修改公告文件")
+    @TeacherClassCheck(valueType = announcementIdType, paramType = requestBodyType, valueName = "class_id")
+    public UnifyResponseVO updateAnnouncementAttachment(
+            @Min(value = 1, message = "{id.positive}")
+            @PathVariable Integer id,
+            MultipartHttpServletRequest multipartHttpServletRequest) {
+        MultiValueMap<String, MultipartFile> fileMap =
+                multipartHttpServletRequest.getMultiFileMap();
+        if (!classService.updateAnnouncementAttachment(id, fileMap)) {
+            return ResponseUtil.generateUnifyResponse(10240);
+        }
+        return ResponseUtil.generateUnifyResponse(36);
+    }
+
+    @GetMapping("/announcement/list")
+    @GroupRequired
+    @PermissionMeta(value = "查看所有通知公告")
+    @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
+    public PageResponseVO<AnnouncementVO> getAnnouncementList(
+            @RequestParam(name = "class_id")
+            @Min(value = 1, message = "{class-id}") Integer classId,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "{count}") Integer count,
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{page}") Integer page) {
+        IPage<AnnouncementVO> iPage = classService.getAnnouncementPageByClassId(classId, count, page);
+        return PageUtil.build(iPage);
+    }
+
+    @GetMapping("/announcement/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "查看单个通知公告")
+    @TeacherClassCheck(valueType = announcementIdType, paramType = pathVariableType)
+    public AnnouncementVO getAnnouncementVO(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+        return classService.getAnnouncementVO(id);
+    }
+
 }

@@ -2,6 +2,8 @@ package vip.gadfly.chakkispring.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
 import vip.gadfly.chakkispring.dto.admin.NewSemesterDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
@@ -301,5 +303,13 @@ public interface ClassService {
     void rateStudentWork(RateStudentWorkDTO dto, Integer id);
 
     void deleteStudentWork(Integer id);
+
+    Integer createAnnouncement(NewAnnouncementDTO dto);
+
+    boolean updateAnnouncementAttachment(Integer id, MultiValueMap<String, MultipartFile> fileMap);
+
+    IPage<AnnouncementVO> getAnnouncementPageByClassId(Integer classId, Integer count, Integer page);
+
+    AnnouncementVO getAnnouncementVO(Integer id);
 
 }

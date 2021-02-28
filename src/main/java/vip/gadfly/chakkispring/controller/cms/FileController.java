@@ -9,10 +9,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import vip.gadfly.chakkispring.bo.FileBO;
@@ -40,14 +37,15 @@ public class FileController {
     private ClassService classService;
 
     /**
-     * 文件上传
+     * 上传共用图片
      *
      * @param multipartHttpServletRequest 携带文件的 request
      * @return 文件信息
      */
-    // @PostMapping("")
+    @PostMapping("/img/upload")
     @ResponseBody
     @GroupRequired
+    @PermissionMeta(value = "上传共用图片", module = "文件管理")
     public List<FileBO> upload(MultipartHttpServletRequest multipartHttpServletRequest) {
         MultiValueMap<String, MultipartFile> fileMap =
                 multipartHttpServletRequest.getMultiFileMap();

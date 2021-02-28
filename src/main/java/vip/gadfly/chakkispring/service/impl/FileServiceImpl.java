@@ -59,7 +59,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileDO> implements 
             // 已存在，则直接转化返回
             res.add(transformDoToBo(found, file.getKey()));
             return false;
-        }, null, null, FileUtil.parseSize(fileProperties.getSingleLimit()), fileProperties.getNums());
+        }, fileProperties.getIncludeList(), null, FileUtil.parseSize(fileProperties.getSingleLimit()), fileProperties.getNums());
         return res;
     }
 

@@ -8,12 +8,16 @@ lin:
     exclude:
     # 包括文件类型
     include:
+      - JPG
+      - PNG
+      - JPEG
+      - BMP
     # 文件最大数量
     nums: 10
     # 服务器文件路径
     serve-path: assets/**
     # 单个文件最大体积
-    single-limit: 200MB
+    single-limit: 5MB
     # 本地文件保存位置
     store-dir: assets/
     # 上传实现

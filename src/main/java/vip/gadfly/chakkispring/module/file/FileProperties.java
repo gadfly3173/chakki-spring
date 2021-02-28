@@ -5,6 +5,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import vip.gadfly.chakkispring.common.factory.YamlPropertySourceFactory;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Component
 @ConfigurationProperties("lin.file")
 @PropertySource(
@@ -85,5 +88,9 @@ public class FileProperties {
 
     public void setDomain(String domain) {
         this.domain = domain;
+    }
+
+    public List<String> getIncludeList() {
+        return Arrays.asList(include);
     }
 }

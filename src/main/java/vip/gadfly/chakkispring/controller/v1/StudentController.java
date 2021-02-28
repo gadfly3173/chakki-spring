@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.annotation.StudentClassCheck;
+import vip.gadfly.chakkispring.common.annotation.TeacherClassCheck;
 import vip.gadfly.chakkispring.common.util.IPUtil;
 import vip.gadfly.chakkispring.common.util.PageUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
@@ -19,10 +20,7 @@ import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.service.StudentService;
-import vip.gadfly.chakkispring.vo.PageResponseVO;
-import vip.gadfly.chakkispring.vo.SignListVO;
-import vip.gadfly.chakkispring.vo.UnifyResponseVO;
-import vip.gadfly.chakkispring.vo.WorkVO;
+import vip.gadfly.chakkispring.vo.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
@@ -160,6 +158,29 @@ public class StudentController {
             return ResponseUtil.generateUnifyResponse(10230);
         }
         return ResponseUtil.generateUnifyResponse(31);
+    }
+
+    @GetMapping("/announcement/list")
+    @GroupRequired
+    @PermissionMeta(value = "查看所有通知公告")
+    @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
+    public PageResponseVO<AnnouncementVO> getAnnouncementList(
+            @RequestParam(name = "class_id")
+            @Min(value = 1, message = "{class-id}") Integer classId,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "{count}") Integer count,
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{page}") Integer page) {
+        IPage<AnnouncementVO> iPage = classService.getAnnouncementPageByClassId(classId, count, page);
+        return PageUtil.build(iPage);
+    }
+
+    @GetMapping("/announcement/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "查看单个通知公告")
+    @StudentClassCheck(valueType = announcementIdType, paramType = pathVariableType)
+    public AnnouncementVO getAnnouncementVO(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+        return classService.getAnnouncementVO(id);
     }
 
 }

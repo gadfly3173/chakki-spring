@@ -6,9 +6,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.github.talelin.autoconfigure.exception.ForbiddenException;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
 import vip.gadfly.chakkispring.common.constant.TeacherLevelConstant;
@@ -24,8 +27,10 @@ import vip.gadfly.chakkispring.mapper.*;
 import vip.gadfly.chakkispring.model.*;
 import vip.gadfly.chakkispring.module.file.FileProperties;
 import vip.gadfly.chakkispring.module.file.FileUtil;
+import vip.gadfly.chakkispring.module.file.Uploader;
 import vip.gadfly.chakkispring.service.ClassManageService;
 import vip.gadfly.chakkispring.service.ClassService;
+import vip.gadfly.chakkispring.service.FileService;
 import vip.gadfly.chakkispring.service.UserService;
 import vip.gadfly.chakkispring.vo.*;
 
@@ -54,6 +59,12 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     private ClassManageService classManageService;
 
     @Autowired
+    private FileService fileService;
+
+    @Autowired
+    private Uploader uploader;
+
+    @Autowired
     private StudentClassMapper studentClassMapper;
 
     @Autowired
@@ -79,6 +90,9 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Autowired
     private FileMapper fileMapper;
+
+    @Autowired
+    private AnnouncementMapper announcementMapper;
 
     @Autowired
     private FileProperties fileProperties;
@@ -485,6 +499,53 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
+    public Integer createAnnouncement(NewAnnouncementDTO dto) {
+        AnnouncementDO announcementDO = AnnouncementDO.builder()
+                .classId(dto.getClassId())
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .build();
+        announcementMapper.insert(announcementDO);
+        return announcementDO.getId();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateAnnouncementAttachment(Integer id, MultiValueMap<String, MultipartFile> fileMap) {
+        uploader.upload(fileMap, file -> {
+            QueryWrapper<FileDO> fileWrapper = new QueryWrapper<>();
+            fileWrapper.lambda().eq(FileDO::getMd5, file.getMd5());
+            FileDO found = fileMapper.selectOne(fileWrapper);
+            // 数据库中不存在
+            if (found == null) {
+                FileDO fileDO = new FileDO();
+                BeanUtils.copyProperties(file, fileDO);
+                fileMapper.insert(fileDO);
+                updateAnnouncementAttachmentFile(id, file.getKey(), fileDO.getId());
+                return true;
+            }
+            // 已存在
+            updateAnnouncementAttachmentFile(id, file.getKey(), found.getId());
+            return false;
+        }, null, null, FileUtil.parseSize(fileProperties.getSingleLimit()), 1);
+        return true;
+    }
+
+    @Override
+    public IPage<AnnouncementVO> getAnnouncementPageByClassId(Integer classId, Integer count, Integer page) {
+        Page pager = new Page(page, count);
+        IPage<AnnouncementVO> iPage;
+        iPage = announcementMapper.selectAnnouncementPageByClassId(pager, classId);
+        return iPage;
+    }
+
+    @Override
+    public AnnouncementVO getAnnouncementVO(Integer id) {
+        return announcementMapper.selectAnnouncementVOById(id);
+    }
+
+
+    @Override
     public void deleteWork(Integer id) {
         workMapper.deleteById(id);
     }
@@ -550,4 +611,12 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
             throw new ForbiddenException(10203);
         }
     }
+
+    private void updateAnnouncementAttachmentFile(Integer id, String filename, Integer fileId) {
+        AnnouncementDO announcementDO = announcementMapper.selectById(id);
+        announcementDO.setFileId(fileId);
+        announcementDO.setFilename(filename);
+        announcementMapper.updateById(announcementDO);
+    }
+
 }

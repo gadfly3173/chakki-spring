@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.gadfly.chakkispring.mapper.AnnouncementMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="AnnouncementVO" type="vip.gadfly.chakkispring.vo.AnnouncementVO">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="filename" property="filename"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="selectAnnouncementPageByClassId" resultType="vip.gadfly.chakkispring.vo.AnnouncementVO">
+        SELECT a.id,
+               a.title,
+               a.create_time,
+               a.update_time
+        FROM announcement AS a
+        WHERE a.class_id = #{classId}
+          AND a.delete_time IS NULL
+        ORDER BY a.id DESC
+    </select>
+
+    <select id="selectAnnouncementVOById" resultType="vip.gadfly.chakkispring.vo.AnnouncementVO">
+        SELECT a.id,
+               a.title,
+               a.content,
+               a.filename,
+               a.create_time,
+               a.update_time
+        FROM announcement AS a
+        WHERE a.id = #{id}
+          AND a.delete_time IS NULL
+    </select>
+</mapper>

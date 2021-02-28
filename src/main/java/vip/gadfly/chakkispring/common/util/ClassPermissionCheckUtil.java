@@ -36,6 +36,9 @@ public class ClassPermissionCheckUtil {
     @Autowired
     private StudentWorkMapper studentWorkMapper;
 
+    @Autowired
+    private AnnouncementMapper announcementMapper;
+
     public static boolean isStudentInClassBySignId(Integer signId) {
         Integer classId = getClassIdBySignId(signId);
         return isStudentInClassByClassId(classId);
@@ -51,6 +54,11 @@ public class ClassPermissionCheckUtil {
         return isStudentInClassByWorkId(workId);
     }
 
+    public static boolean isStudentInClassByAnnouncementId(Integer id) {
+        Integer classId = getClassIdByAnnouncementId(id);
+        return isStudentInClassByClassId(classId);
+    }
+
     public static boolean isTeacherInClassBySignId(Integer signId) {
         Integer classId = getClassIdBySignId(signId);
         return isTeacherInClassByClassId(classId);
@@ -64,6 +72,11 @@ public class ClassPermissionCheckUtil {
     public static boolean isTeacherInClassByStudentWorkId(Integer id) {
         Integer workId = getWorkIdByStudentWorkId(id);
         return isTeacherInClassByWorkId(workId);
+    }
+
+    public static boolean isTeacherInClassByAnnouncementId(Integer id) {
+        Integer classId = getClassIdByAnnouncementId(id);
+        return isTeacherInClassByClassId(classId);
     }
 
     public static boolean isStudentInClassByClassId(Integer classId) {
@@ -100,6 +113,10 @@ public class ClassPermissionCheckUtil {
         return classPermissionCheckUtil.studentWorkMapper.selectById(id).getWorkId();
     }
 
+    private static Integer getClassIdByAnnouncementId(Integer id) {
+        return classPermissionCheckUtil.announcementMapper.selectById(id).getClassId();
+    }
+
     @PostConstruct
     public void init() {
         classPermissionCheckUtil = this;
@@ -108,5 +125,6 @@ public class ClassPermissionCheckUtil {
         classPermissionCheckUtil.signListMapper = this.signListMapper;
         classPermissionCheckUtil.workMapper = this.workMapper;
         classPermissionCheckUtil.studentWorkMapper = this.studentWorkMapper;
+        classPermissionCheckUtil.announcementMapper = this.announcementMapper;
     }
 }
