@@ -39,7 +39,7 @@ public class ValidateCodeUtil {
 
     // 字体的设置
     private Font getFont() {
-        return new Font("Times New Roman", Font.BOLD, 42);
+        return new Font("Times New Roman", Font.BOLD + Font.ITALIC, 42);
     }
 
     // 干扰线的绘制
