@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.github.talelin.autoconfigure.exception.ForbiddenException;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -500,10 +502,17 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Override
     public Integer createAnnouncement(NewAnnouncementDTO dto) {
+        PolicyFactory policy = Sanitizers.FORMATTING
+                .and(Sanitizers.LINKS)
+                .and(Sanitizers.BLOCKS)
+                .and(Sanitizers.IMAGES)
+                .and(Sanitizers.STYLES)
+                .and(Sanitizers.TABLES);
+        String safeHTML = policy.sanitize(dto.getContent());
         AnnouncementDO announcementDO = AnnouncementDO.builder()
                 .classId(dto.getClassId())
                 .title(dto.getTitle())
-                .content(dto.getContent())
+                .content(safeHTML)
                 .build();
         announcementMapper.insert(announcementDO);
         return announcementDO.getId();
