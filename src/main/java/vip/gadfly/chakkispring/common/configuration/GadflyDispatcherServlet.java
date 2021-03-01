@@ -14,8 +14,8 @@ public class GadflyDispatcherServlet extends DispatcherServlet {
     /**
      * 包装成我们自定义的request
      *
-     * @param request
-     * @param response
+     * @param request request
+     * @param response response
      */
     @Override
     protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {

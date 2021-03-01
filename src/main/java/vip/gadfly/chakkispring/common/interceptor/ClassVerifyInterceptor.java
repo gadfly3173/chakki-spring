@@ -13,9 +13,7 @@ import java.lang.reflect.Method;
 
 /**
  * @author Gadfly
- */
-
-/**
+ *
  * 班级访问拦截器
  */
 @Component

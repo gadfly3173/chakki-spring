@@ -59,7 +59,7 @@ public class RestExceptionHandler {
             log.error("", exception);
         } else {
             unifyResponse.setMessage(errorMessage);
-            log.error("", exception.getClass().getConstructor(int.class, String.class).newInstance(code, errorMessage));
+            log.error(exception.getClass().getConstructor(int.class, String.class).newInstance(code, errorMessage).toString());
         }
         return unifyResponse;
     }
@@ -69,7 +69,7 @@ public class RestExceptionHandler {
      */
     @ExceptionHandler({ConstraintViolationException.class})
     public UnifyResponseVO processException(ConstraintViolationException exception, HttpServletRequest request, HttpServletResponse response) {
-        log.error("", exception);
+        log.error(exception.toString());
         Map<String, Object> msg = new HashMap<>();
         exception.getConstraintViolations().forEach(constraintViolation -> {
             String template = constraintViolation.getMessage();

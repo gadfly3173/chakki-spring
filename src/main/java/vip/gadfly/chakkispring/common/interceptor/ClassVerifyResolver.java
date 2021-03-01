@@ -9,9 +9,7 @@ import java.io.IOException;
 
 /**
  * @author Gadfly
- */
-
-/**
+ *
  * 班级权限验证接口
  */
 public interface ClassVerifyResolver {
