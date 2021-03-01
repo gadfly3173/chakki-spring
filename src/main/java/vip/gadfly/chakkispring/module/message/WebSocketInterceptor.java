@@ -20,7 +20,6 @@ import java.util.Map;
 
 import static vip.gadfly.chakkispring.module.message.MessageConstant.USER_KEY;
 
-@SuppressWarnings("Duplicates")
 public class WebSocketInterceptor implements HandshakeInterceptor {
     @Autowired
     private DoubleJWT jwt;

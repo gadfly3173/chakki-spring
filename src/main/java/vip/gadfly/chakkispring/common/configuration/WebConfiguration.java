@@ -114,9 +114,9 @@ public class WebConfiguration implements WebMvcConfigurer {
      */
     @Bean
     public WebServerFactoryCustomizer<TomcatServletWebServerFactory> cookieProcessorCustomizer() {
-        return tomcatServletWebServerFactory -> tomcatServletWebServerFactory.addContextCustomizers(context -> {
-            context.setCookieProcessor(new LegacyCookieProcessor());
-        });
+        return tomcatServletWebServerFactory ->
+                tomcatServletWebServerFactory.addContextCustomizers(context ->
+                        context.setCookieProcessor(new LegacyCookieProcessor()));
     }
 
     private String getDirServePath() {

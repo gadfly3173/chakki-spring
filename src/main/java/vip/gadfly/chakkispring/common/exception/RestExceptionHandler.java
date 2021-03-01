@@ -34,7 +34,7 @@ import java.util.Map;
 import static io.github.talelin.autoconfigure.util.RequestUtil.getSimpleRequest;
 
 
-@SuppressWarnings({"Duplicates", "unchecked"})
+@SuppressWarnings("unchecked")
 @Order
 @RestControllerAdvice
 @Slf4j
