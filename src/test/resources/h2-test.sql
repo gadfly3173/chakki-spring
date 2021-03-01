@@ -1,18 +1,3 @@
-DROP TABLE IF EXISTS book;
-CREATE TABLE book
-(
-    id          int(10) unsigned NOT NULL AUTO_INCREMENT,
-    title       varchar(50)      NOT NULL,
-    author      varchar(30)               DEFAULT NULL,
-    summary     varchar(1000)             DEFAULT NULL,
-    image       varchar(100)              DEFAULT NULL,
-    create_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    update_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    delete_time datetime(3)               DEFAULT NULL,
-    PRIMARY KEY (id)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
 DROP TABLE IF EXISTS lin_file;
 CREATE TABLE lin_file
 (
