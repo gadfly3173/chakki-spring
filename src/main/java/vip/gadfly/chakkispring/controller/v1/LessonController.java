@@ -240,7 +240,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "删除学生作业")
     @TeacherClassCheck(valueType = studentWorkIdType, paramType = pathVariableType)
-    public UnifyResponseVO rateStudentWork(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public UnifyResponseVO deleteStudentWork(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         classService.deleteStudentWork(id);
         return ResponseUtil.generateUnifyResponse(33);
     }
@@ -292,4 +292,12 @@ public class LessonController {
         return classService.getAnnouncementVO(id);
     }
 
+    @PostMapping("/announcement/delete/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "删除通知公告")
+    @TeacherClassCheck(valueType = announcementIdType, paramType = pathVariableType)
+    public UnifyResponseVO deleteAnnouncement(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+        classService.deleteAnnouncement(id);
+        return ResponseUtil.generateUnifyResponse(37);
+    }
 }

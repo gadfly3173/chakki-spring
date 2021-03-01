@@ -553,6 +553,11 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         return announcementMapper.selectAnnouncementVOById(id);
     }
 
+    @Override
+    public void deleteAnnouncement(Integer id) {
+        announcementMapper.deleteById(id);
+    }
+
 
     @Override
     public void deleteWork(Integer id) {

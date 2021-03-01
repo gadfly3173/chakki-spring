@@ -312,4 +312,6 @@ public interface ClassService {
 
     AnnouncementVO getAnnouncementVO(Integer id);
 
+    void deleteAnnouncement(Integer id);
+
 }
