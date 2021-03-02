@@ -8,9 +8,11 @@ import javax.validation.ConstraintValidatorContext;
 public class CharSizeValidator implements ConstraintValidator<CharSize, String> {
 
     public int maxCharSize;
+    public int minCharSize;
 
     public void initialize(CharSize charSize) {
         this.maxCharSize = charSize.max();
+        this.minCharSize = charSize.min();
     }
 
     @Override
@@ -20,6 +22,6 @@ public class CharSizeValidator implements ConstraintValidator<CharSize, String> 
             return true;
         }
         int f = StringValue.getBytes().length;
-        return f <= maxCharSize;
+        return f >= minCharSize && f <= maxCharSize;
     }
 }

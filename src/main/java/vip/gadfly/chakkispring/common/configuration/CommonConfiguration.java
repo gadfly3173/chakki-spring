@@ -8,12 +8,17 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import io.github.talelin.autoconfigure.bean.PermissionMetaCollector;
+import org.hibernate.validator.HibernateValidator;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import vip.gadfly.chakkispring.common.interceptor.RequestLogInterceptor;
 import vip.gadfly.chakkispring.module.log.MDCAccessServletFilter;
+
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 
 @Configuration(proxyBeanMethods = false)
@@ -60,7 +65,6 @@ public class CommonConfiguration {
         return new PermissionMetaCollector();
     }
 
-
     /**
      * 接口中，自动转换的有：驼峰转换为下划线，空值输出null
      */
@@ -85,5 +89,15 @@ public class CommonConfiguration {
         filterRegistrationBean.setFilter(mdcAccessServletFilter);
         filterRegistrationBean.setName("mdc-access-servlet-filter");
         return filterRegistrationBean;
+    }
+
+    @Bean
+    public Validator validator() {
+        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
+                .configure()
+                // 快速失败模式
+                .failFast(true)
+                .buildValidatorFactory();
+        return validatorFactory.getValidator();
     }
 }
