@@ -70,13 +70,6 @@ public class ValidateCodeUtil {
         return randomStr;
     }
 
-    // 生成随机图片
-    public void getRandomCodeImage(HttpSession session, HttpServletResponse response) throws IOException {
-        BufferedImage image = getBufferedImage(session);
-        //  将图片以png格式返回,返回的是图片
-        ImageIO.write(image, "PNG", response.getOutputStream());
-    }
-
     private BufferedImage getBufferedImage(HttpSession session) {
         // BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);

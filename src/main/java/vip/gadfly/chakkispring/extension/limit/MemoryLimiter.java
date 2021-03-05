@@ -9,6 +9,7 @@ import vip.gadfly.chakkispring.common.util.IPUtil;
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Gadfly
@@ -26,12 +27,15 @@ public class MemoryLimiter implements Limiter {
 
     @Override
     public boolean handle(HttpServletRequest request) {
+        if ("OPTIONS".equals(request.getMethod())) {
+            return true;
+        }
         String uniqueId = getUniqueId(request);
         log.info("uniqueId: {}", uniqueId);
         RateLimiter currentLimiter = record.get(uniqueId);
         if (currentLimiter != null) {
             // 减去当前访问的一次
-            return currentLimiter.tryAcquire(1);
+            return currentLimiter.tryAcquire(1, 100L, TimeUnit.MILLISECONDS);
         } else {
             RateLimiter limiter = RateLimiter.create(value);
             record.putIfAbsent(uniqueId, limiter);

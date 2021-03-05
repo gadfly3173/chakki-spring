@@ -68,7 +68,7 @@ public class GoogleAuthenticatorService {
         if (userMFAMapper.selectCount(wrapper) > 0) {
             throw new FailedException(10103);
         }
-        //每次调用createCredentials都会生成新的secretKey
+        // 每次调用createCredentials都会生成新的secretKey
         GoogleAuthenticatorKey key = googleAuthenticator.createCredentials(username);
         log.info("username={},secretKey={}", username, key.getKey());
         return String.format(KEY_FORMAT, "Chakki", URLEncoder.encode(username, StandardCharsets.UTF_8.name()), key.getKey(), "Chakki");
