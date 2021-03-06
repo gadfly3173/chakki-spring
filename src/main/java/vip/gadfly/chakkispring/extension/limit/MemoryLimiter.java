@@ -27,9 +27,6 @@ public class MemoryLimiter implements Limiter {
 
     @Override
     public boolean handle(HttpServletRequest request) {
-        if ("OPTIONS".equals(request.getMethod())) {
-            return true;
-        }
         String uniqueId = getUniqueId(request);
         log.info("uniqueId: {}", uniqueId);
         RateLimiter currentLimiter = record.get(uniqueId);

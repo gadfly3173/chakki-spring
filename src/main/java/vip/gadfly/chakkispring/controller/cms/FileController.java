@@ -1,11 +1,10 @@
 package vip.gadfly.chakkispring.controller.cms;
 
-import io.github.talelin.autoconfigure.exception.NotFoundException;
 import io.github.talelin.core.annotation.GroupRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
@@ -13,14 +12,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import vip.gadfly.chakkispring.bo.FileBO;
+import vip.gadfly.chakkispring.common.annotation.StudentClassCheck;
 import vip.gadfly.chakkispring.common.annotation.TeacherClassCheck;
+import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.service.FileService;
 
 import javax.validation.constraints.Positive;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static vip.gadfly.chakkispring.common.constant.ClassVerifyConstant.*;
@@ -60,7 +60,7 @@ public class FileController {
             @PathVariable @Positive(message = "{id.positive}") Integer id) {
         File file = classService.getStudentWorkFile(id);
         String filename = classService.getStudentWorkFilename(id);
-        return export(file, filename);
+        return ResponseUtil.generateFileResponse(file, filename);
     }
 
     @GetMapping("/lesson/work/download/{id}")
@@ -71,7 +71,7 @@ public class FileController {
             @PathVariable @Positive(message = "{id.positive}") Integer id) throws IOException {
         File file = classService.workFilesToZip(id);
         String filename = classService.getWorkZipFilename(id);
-        return export(file, filename);
+        return ResponseUtil.generateFileResponse(file, filename);
     }
 
     private ResponseEntity<FileSystemResource> export(File file, String filename) {

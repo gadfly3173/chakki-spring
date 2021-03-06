@@ -1,14 +1,19 @@
 package vip.gadfly.chakkispring.common.util;
 
 import io.github.talelin.autoconfigure.bean.Code;
+import io.github.talelin.autoconfigure.exception.NotFoundException;
 import io.github.talelin.autoconfigure.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import vip.gadfly.chakkispring.vo.PageResponseVO;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 
@@ -89,5 +94,24 @@ public class ResponseUtil {
 
     public static PageResponseVO generatePageResult(int total, List items, int page, int count) {
         return new PageResponseVO(total, items, page, count);
+    }
+
+    public static ResponseEntity<FileSystemResource> generateFileResponse(File file, String filename) {
+        if (!file.canRead()) {
+            throw new NotFoundException(10020);
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl(CacheControl.noStore().mustRevalidate());
+        headers.setContentDisposition(ContentDisposition.attachment().filename(filename, StandardCharsets.UTF_8).build());
+        headers.setPragma("no-cache");
+        headers.setExpires(0);
+        headers.setLastModified(System.currentTimeMillis());
+        headers.setETag("\"" + System.currentTimeMillis() + "\"");
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentLength(file.length())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(new FileSystemResource(file));
     }
 }

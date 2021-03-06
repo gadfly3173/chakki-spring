@@ -22,6 +22,10 @@ public class LimitInterceptor implements AsyncHandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // 跳过OPTIONS请求
+        if ("OPTIONS".equals(request.getMethod())) {
+            return true;
+        }
         boolean ok = limiter.handle(request);
         log.info("limit val : {}", ok);
         if (!ok) {
