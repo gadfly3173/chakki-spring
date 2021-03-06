@@ -160,7 +160,7 @@ public class UserController {
      */
     // @PutMapping
     @GroupRequired
-    public UnifyResponseVO update(@RequestBody @Validated UpdateInfoDTO validator) {
+    public UnifyResponseVO<String> update(@RequestBody @Validated UpdateInfoDTO validator) {
         userService.updateUserInfo(validator);
         return ResponseUtil.generateUnifyResponse(4);
     }
@@ -193,7 +193,7 @@ public class UserController {
      */
     @PostMapping("/delete_mfa_secret/{code}")
     @GroupRequired
-    public UnifyResponseVO deleteUserMFASecret(@PathVariable @NotNull Integer code) {
+    public UnifyResponseVO<String> deleteUserMFASecret(@PathVariable @NotNull Integer code) {
         UserDO user = LocalUser.getLocalUser();
         if (googleAuthenticatorService.validCode(user.getUsername(), code)) {
             googleAuthenticatorService.cancelMFA(user.getId());
@@ -207,7 +207,7 @@ public class UserController {
      */
     @PostMapping("/confirm_mfa_secret/{code}")
     @GroupRequired
-    public UnifyResponseVO confirmUserMFASecret(@PathVariable @NotNull Integer code) {
+    public UnifyResponseVO<String> confirmUserMFASecret(@PathVariable @NotNull Integer code) {
         UserDO user = LocalUser.getLocalUser();
         if (googleAuthenticatorService.notNewCreated(user.getId())) {
             throw new FailedException(10104);
@@ -224,7 +224,7 @@ public class UserController {
      */
     @PutMapping("/change_password")
     @GroupRequired
-    public UnifyResponseVO updatePassword(@RequestBody @Validated ChangePasswordDTO validator) {
+    public UnifyResponseVO<String> updatePassword(@RequestBody @Validated ChangePasswordDTO validator) {
         userService.changeUserPassword(validator);
         return ResponseUtil.generateUnifyResponse(2);
     }

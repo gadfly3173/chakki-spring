@@ -73,7 +73,7 @@ public class AdminController {
     @PutMapping("/user/{id}/password")
     @AdminRequired
     @PermissionMeta(value = "修改用户密码", mount = false)
-    public UnifyResponseVO changeUserPassword(@PathVariable @Positive(message = "{id.positive}") Integer id,
+    public UnifyResponseVO<String> changeUserPassword(@PathVariable @Positive(message = "{id.positive}") Integer id,
                                               @RequestBody @Validated ResetPasswordDTO validator) {
         adminService.changeUserPassword(id, validator);
         return ResponseUtil.generateUnifyResponse(2);
@@ -82,7 +82,7 @@ public class AdminController {
     @DeleteMapping("/user/{id}")
     @AdminRequired
     @PermissionMeta(value = "删除用户", mount = false)
-    public UnifyResponseVO deleteUser(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public UnifyResponseVO<String> deleteUser(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         adminService.deleteUser(id);
         return ResponseUtil.generateUnifyResponse(3);
     }
@@ -90,7 +90,7 @@ public class AdminController {
     @PutMapping("/user/{id}")
     @AdminRequired
     @PermissionMeta(value = "管理员更新用户信息", mount = false)
-    public UnifyResponseVO updateUser(@PathVariable @Positive(message = "{id.positive}") Integer id,
+    public UnifyResponseVO<String> updateUser(@PathVariable @Positive(message = "{id.positive}") Integer id,
                                       @RequestBody @Validated UpdateUserInfoDTO validator) {
         adminService.updateUserInfo(id, validator);
         return ResponseUtil.generateUnifyResponse(4);
@@ -126,7 +126,7 @@ public class AdminController {
     @PostMapping("/group")
     @AdminRequired
     @PermissionMeta(value = "新建权限组", mount = false)
-    public UnifyResponseVO createGroup(@RequestBody @Validated NewGroupDTO validator) {
+    public UnifyResponseVO<String> createGroup(@RequestBody @Validated NewGroupDTO validator) {
         adminService.createGroup(validator);
         return ResponseUtil.generateUnifyResponse(13);
     }
@@ -134,7 +134,7 @@ public class AdminController {
     @PutMapping("/group/{id}")
     @AdminRequired
     @PermissionMeta(value = "更新一个权限组", mount = false)
-    public UnifyResponseVO updateGroup(@PathVariable @Positive(message = "{id.positive}") Integer id,
+    public UnifyResponseVO<String> updateGroup(@PathVariable @Positive(message = "{id.positive}") Integer id,
                                        @RequestBody @Validated UpdateGroupDTO validator) {
         adminService.updateGroup(id, validator);
         return ResponseUtil.generateUnifyResponse(5);
@@ -143,7 +143,7 @@ public class AdminController {
     @DeleteMapping("/group/{id}")
     @AdminRequired
     @PermissionMeta(value = "删除一个权限组", mount = false)
-    public UnifyResponseVO deleteGroup(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public UnifyResponseVO<String> deleteGroup(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         adminService.deleteGroup(id);
         return ResponseUtil.generateUnifyResponse(6);
     }
@@ -151,7 +151,7 @@ public class AdminController {
     @PostMapping("/permission/dispatch")
     @AdminRequired
     @PermissionMeta(value = "分配单个权限", mount = false)
-    public UnifyResponseVO dispatchPermission(@RequestBody @Validated DispatchPermissionDTO validator) {
+    public UnifyResponseVO<String> dispatchPermission(@RequestBody @Validated DispatchPermissionDTO validator) {
         adminService.dispatchPermission(validator);
         return ResponseUtil.generateUnifyResponse(7);
     }
@@ -159,7 +159,7 @@ public class AdminController {
     @PostMapping("/permission/dispatch/batch")
     @AdminRequired
     @PermissionMeta(value = "分配多个权限", mount = false)
-    public UnifyResponseVO dispatchPermissions(@RequestBody @Validated DispatchPermissionListDTO validator) {
+    public UnifyResponseVO<String> dispatchPermissions(@RequestBody @Validated DispatchPermissionListDTO validator) {
         adminService.dispatchPermissions(validator);
         return ResponseUtil.generateUnifyResponse(7);
     }
@@ -167,7 +167,7 @@ public class AdminController {
     @PostMapping("/permission/remove")
     @AdminRequired
     @PermissionMeta(value = "删除多个权限", mount = false)
-    public UnifyResponseVO removePermissions(@RequestBody @Validated RemovePermissionListDTO validator) {
+    public UnifyResponseVO<String> removePermissions(@RequestBody @Validated RemovePermissionListDTO validator) {
         adminService.removePermissions(validator);
         return ResponseUtil.generateUnifyResponse(8);
     }

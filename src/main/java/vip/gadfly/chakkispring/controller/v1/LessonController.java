@@ -85,7 +85,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "发起签到")
     @TeacherClassCheck(valueType = classIdType, paramType = requestBodyType, valueName = "class_id")
-    public UnifyResponseVO createStudentSign(@RequestBody @Validated NewSignDTO validator) {
+    public UnifyResponseVO<String> createStudentSign(@RequestBody @Validated NewSignDTO validator) {
         classService.createSign(validator);
         return ResponseUtil.generateUnifyResponse(19);
     }
@@ -139,7 +139,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "修改签到记录")
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
-    public UnifyResponseVO updateStudentSignRecord(@RequestBody @Validated UpdateSignRecordDTO validator,
+    public UnifyResponseVO<String> updateStudentSignRecord(@RequestBody @Validated UpdateSignRecordDTO validator,
                                                    @PathVariable Integer signId) {
         if (classService.updateSignRecord(validator, signId)) {
             return ResponseUtil.generateUnifyResponse(21);
@@ -158,7 +158,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "发起作业")
     @TeacherClassCheck(valueType = classIdType, paramType = requestBodyType, valueName = "class_id")
-    public UnifyResponseVO createWork(@RequestBody @Validated NewWorkDTO validator) {
+    public UnifyResponseVO<String> createWork(@RequestBody @Validated NewWorkDTO validator) {
         classService.createWork(validator);
         return ResponseUtil.generateUnifyResponse(28);
     }
@@ -167,7 +167,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "删除作业")
     @TeacherClassCheck(valueType = workIdType, paramType = pathVariableType)
-    public UnifyResponseVO deleteWork(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public UnifyResponseVO<String> deleteWork(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         classService.deleteWork(id);
         return ResponseUtil.generateUnifyResponse(29);
     }
@@ -191,7 +191,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "发起作业")
     @TeacherClassCheck(valueType = workIdType, paramType = requestBodyType, valueName = "id")
-    public UnifyResponseVO updateWork(@RequestBody @Validated UpdateWorkDTO validator) {
+    public UnifyResponseVO<String> updateWork(@RequestBody @Validated UpdateWorkDTO validator) {
         classService.updateWork(validator);
         return ResponseUtil.generateUnifyResponse(30);
     }
@@ -230,7 +230,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "给学生作业打分")
     @TeacherClassCheck(valueType = studentWorkIdType, paramType = pathVariableType)
-    public UnifyResponseVO rateStudentWork(@RequestBody @Validated RateStudentWorkDTO validator,
+    public UnifyResponseVO<String> rateStudentWork(@RequestBody @Validated RateStudentWorkDTO validator,
                                            @PathVariable @Positive(message = "{id.positive}") Integer id) {
         classService.rateStudentWork(validator, id);
         return ResponseUtil.generateUnifyResponse(32);
@@ -240,7 +240,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "删除学生作业")
     @TeacherClassCheck(valueType = studentWorkIdType, paramType = pathVariableType)
-    public UnifyResponseVO deleteStudentWork(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public UnifyResponseVO<String> deleteStudentWork(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         classService.deleteStudentWork(id);
         return ResponseUtil.generateUnifyResponse(33);
     }
@@ -257,7 +257,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "修改公告文件")
     @TeacherClassCheck(valueType = announcementIdType, paramType = requestBodyType, valueName = "class_id")
-    public UnifyResponseVO updateAnnouncementAttachment(
+    public UnifyResponseVO<String> updateAnnouncementAttachment(
             @Min(value = 1, message = "{id.positive}")
             @PathVariable Integer id,
             MultipartHttpServletRequest multipartHttpServletRequest) {
@@ -296,7 +296,7 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "删除通知公告")
     @TeacherClassCheck(valueType = announcementIdType, paramType = pathVariableType)
-    public UnifyResponseVO deleteAnnouncement(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public UnifyResponseVO<String> deleteAnnouncement(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         classService.deleteAnnouncement(id);
         return ResponseUtil.generateUnifyResponse(37);
     }

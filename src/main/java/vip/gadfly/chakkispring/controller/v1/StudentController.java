@@ -96,7 +96,7 @@ public class StudentController {
     @PermissionMeta(value = "学生进行签到")
     @PostMapping("/sign/confirm/{signId}")
     @StudentClassCheck(valueType = signIdType, paramType = pathVariableType)
-    public UnifyResponseVO confirmStudentSign(
+    public UnifyResponseVO<String> confirmStudentSign(
             @Min(value = 1, message = "{lesson.sign.id.positive}")
             @PathVariable Integer signId,
             HttpServletRequest request) {
@@ -144,7 +144,7 @@ public class StudentController {
     @PermissionMeta(value = "交作业")
     @PostMapping("/work/hand/{workId}")
     @StudentClassCheck(valueType = workIdType, paramType = pathVariableType)
-    public UnifyResponseVO handStudentWork(
+    public UnifyResponseVO<String> handStudentWork(
             @Min(value = 1, message = "{lesson.sign.id.positive}")
             @PathVariable Integer workId,
             MultipartHttpServletRequest multipartHttpServletRequest) {
