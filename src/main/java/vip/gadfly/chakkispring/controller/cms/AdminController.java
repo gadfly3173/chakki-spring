@@ -74,7 +74,7 @@ public class AdminController {
     @AdminRequired
     @PermissionMeta(value = "修改用户密码", mount = false)
     public UnifyResponseVO<String> changeUserPassword(@PathVariable @Positive(message = "{id.positive}") Integer id,
-                                              @RequestBody @Validated ResetPasswordDTO validator) {
+                                                      @RequestBody @Validated ResetPasswordDTO validator) {
         adminService.changeUserPassword(id, validator);
         return ResponseUtil.generateUnifyResponse(2);
     }
@@ -91,7 +91,7 @@ public class AdminController {
     @AdminRequired
     @PermissionMeta(value = "管理员更新用户信息", mount = false)
     public UnifyResponseVO<String> updateUser(@PathVariable @Positive(message = "{id.positive}") Integer id,
-                                      @RequestBody @Validated UpdateUserInfoDTO validator) {
+                                              @RequestBody @Validated UpdateUserInfoDTO validator) {
         adminService.updateUserInfo(id, validator);
         return ResponseUtil.generateUnifyResponse(4);
     }
@@ -135,7 +135,7 @@ public class AdminController {
     @AdminRequired
     @PermissionMeta(value = "更新一个权限组", mount = false)
     public UnifyResponseVO<String> updateGroup(@PathVariable @Positive(message = "{id.positive}") Integer id,
-                                       @RequestBody @Validated UpdateGroupDTO validator) {
+                                               @RequestBody @Validated UpdateGroupDTO validator) {
         adminService.updateGroup(id, validator);
         return ResponseUtil.generateUnifyResponse(5);
     }

@@ -31,11 +31,11 @@ public class MultimediaWordCountValidator implements ConstraintValidator<Multime
     private String delHtmlTags(String htmlStr) {
         htmlStr = htmlStr.toLowerCase();
         //定义script的正则表达式
-        String scriptRegex="<script[^>]*?>[\\s\\S]*?</script>";
+        String scriptRegex = "<script[^>]*?>[\\s\\S]*?</script>";
         //定义style的正则表达式，去除style样式，防止css代码过多时只截取到css样式代码
-        String styleRegex="<style[^>]*?>[\\s\\S]*?</style>";
+        String styleRegex = "<style[^>]*?>[\\s\\S]*?</style>";
         //定义HTML标签的正则表达式，去除标签，只提取文字内容
-        String htmlRegex="<[^>]+>";
+        String htmlRegex = "<[^>]+>";
 
         // 过滤script标签
         htmlStr = htmlStr.replaceAll(scriptRegex, "");
@@ -46,7 +46,7 @@ public class MultimediaWordCountValidator implements ConstraintValidator<Multime
         return htmlStr; // 返回文本字符串
     }
 
-    private int countWords(String s){
+    private int countWords(String s) {
 
         int wordCount = 0;
 

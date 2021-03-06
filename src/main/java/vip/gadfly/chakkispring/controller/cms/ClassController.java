@@ -66,7 +66,7 @@ public class ClassController {
     @GroupRequired
     @PermissionMeta(value = "更新一个班级")
     public UnifyResponseVO<String> updateClass(@PathVariable @Positive(message = "{id.positive}") Integer id,
-                                       @RequestBody @Validated UpdateClassDTO validator) {
+                                               @RequestBody @Validated UpdateClassDTO validator) {
         if (classService.updateClass(id, validator)) {
             return ResponseUtil.generateUnifyResponse(14);
         }
@@ -215,7 +215,7 @@ public class ClassController {
     @GroupRequired
     @PermissionMeta(value = "更新一个学期")
     public UnifyResponseVO<String> updateSemester(@PathVariable @Positive(message = "{id.positive}") Integer id,
-                                          @RequestBody @Validated UpdateSemesterDTO validator) {
+                                                  @RequestBody @Validated UpdateSemesterDTO validator) {
         if (classService.updateSemester(id, validator)) {
             return ResponseUtil.generateUnifyResponse(24);
         }

@@ -42,14 +42,6 @@ public class LessonController {
 
     // 班级接口
 
-    // 本接口暂时作废
-    // @GetMapping("/class/all")
-    @GroupRequired
-    @PermissionMeta(value = "查询所有班级")
-    public List<ClassDO> getAllClasses() {
-        return classService.getAllClasses();
-    }
-
     @GetMapping("/class/list")
     @GroupRequired
     @PermissionMeta(value = "查询教师本学期所属班级")
@@ -140,7 +132,7 @@ public class LessonController {
     @PermissionMeta(value = "修改签到记录")
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public UnifyResponseVO<String> updateStudentSignRecord(@RequestBody @Validated UpdateSignRecordDTO validator,
-                                                   @PathVariable Integer signId) {
+                                                           @PathVariable Integer signId) {
         if (classService.updateSignRecord(validator, signId)) {
             return ResponseUtil.generateUnifyResponse(21);
         }
@@ -231,7 +223,7 @@ public class LessonController {
     @PermissionMeta(value = "给学生作业打分")
     @TeacherClassCheck(valueType = studentWorkIdType, paramType = pathVariableType)
     public UnifyResponseVO<String> rateStudentWork(@RequestBody @Validated RateStudentWorkDTO validator,
-                                           @PathVariable @Positive(message = "{id.positive}") Integer id) {
+                                                   @PathVariable @Positive(message = "{id.positive}") Integer id) {
         classService.rateStudentWork(validator, id);
         return ResponseUtil.generateUnifyResponse(32);
     }
