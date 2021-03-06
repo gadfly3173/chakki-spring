@@ -13,6 +13,12 @@ spring:
     resources:
       # 关闭默认静态资源的映射规则
       add-mappings: false
+  servlet:
+    multipart:
+      # 总体文件最大体积（只能从max-file-size设置总体文件的大小）
+      max-file-size: 200MB
+      max-request-size: 200MB
+
 
 
 mybatis-plus:

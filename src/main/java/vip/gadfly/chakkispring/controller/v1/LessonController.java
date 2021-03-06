@@ -245,6 +245,16 @@ public class LessonController {
         return classService.createAnnouncement(dto);
     }
 
+    @PostMapping("/announcement/update/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "修改通知公告")
+    @TeacherClassCheck(valueType = announcementIdType, paramType = pathVariableType)
+    public UnifyResponseVO<String> updateAnnouncement(@PathVariable @Positive(message = "{id.positive}") Integer id,
+                                                      @RequestBody @Validated NewAnnouncementDTO dto) {
+        classService.updateAnnouncement(id, dto);
+        return ResponseUtil.generateUnifyResponse(38);
+    }
+
     @PostMapping("/announcement/attachment/{id}")
     @GroupRequired
     @PermissionMeta(value = "修改公告文件")

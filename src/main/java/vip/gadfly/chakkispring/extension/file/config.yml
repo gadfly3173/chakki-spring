@@ -3,7 +3,8 @@
 lin:
   file:
     # 文件服务域名
-    domain: https://chakki.gadfly.vip/
+    # 如果公共读文件服务器所在域名与前端相同，只写"/"即可，否则写完整域名，如"https://example.org/"
+    domain: /
     # 排除文件类型
     exclude:
     # 包括文件类型
@@ -17,13 +18,8 @@ lin:
     # 服务器文件路径
     serve-path: assets/**
     # 单个文件最大体积
-    single-limit: 5MB
+    single-limit: 100MB
     # 本地文件保存位置
     store-dir: assets/
     # 上传实现
     uploader: local
-spring:
-  servlet:
-    multipart:
-      # 总体文件最大体积（只能从max-file-size设置总体文件的大小）
-      max-file-size: 200MB

@@ -74,23 +74,16 @@ public class FileController {
         return ResponseUtil.generateFileResponse(file, filename);
     }
 
-    private ResponseEntity<FileSystemResource> export(File file, String filename) {
-        if (!file.canRead()) {
-            throw new NotFoundException(10020);
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.setCacheControl(CacheControl.noStore().mustRevalidate());
-        headers.setContentDisposition(ContentDisposition.attachment().filename(filename, StandardCharsets.UTF_8).build());
-        headers.setPragma("no-cache");
-        headers.setExpires(0L);
-        headers.setLastModified(System.currentTimeMillis());
-        headers.setETag("\"" + System.currentTimeMillis() + "\"");
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .contentLength(file.length())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(new FileSystemResource(file));
+    @GetMapping("/lesson/announcement/download/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "下载公告附件", module = "文件管理")
+    @TeacherClassCheck(valueType = announcementIdType, paramType = pathVariableType)
+    @StudentClassCheck(valueType = announcementIdType, paramType = pathVariableType)
+    public ResponseEntity<FileSystemResource> downloadAnnouncementFile(
+            @PathVariable @Positive(message = "{id.positive}") Integer id) {
+        File file = classService.getAnnouncementFile(id);
+        String filename = classService.getAnnouncementFilename(id);
+        return ResponseUtil.generateFileResponse(file, filename);
     }
 
 }

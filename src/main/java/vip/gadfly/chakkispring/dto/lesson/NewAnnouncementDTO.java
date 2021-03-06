@@ -26,7 +26,6 @@ public class NewAnnouncementDTO {
     @CharSize(max = 64000, message = "{lesson.announcement.content.size}")
     private String content;
 
-    @NotNull(message = "{class.id.not-null}")
     @Min(value = 1, message = "{class.id.not-null}")
     private Integer classId;
 

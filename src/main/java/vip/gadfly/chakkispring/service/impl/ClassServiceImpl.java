@@ -596,6 +596,32 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         }
     }
 
+    @Override
+    public File getAnnouncementFile(Integer id) {
+        AnnouncementDO announcementDO = announcementMapper.selectById(id);
+        FileDO fileDO = fileMapper.selectById(announcementDO.getFileId());
+        String absolutePath = FileUtil.getFileAbsolutePath(fileProperties.getStoreDir(), fileDO.getPath());
+        return new File(absolutePath);
+    }
+
+    @Override
+    public String getAnnouncementFilename(Integer id) {
+        AnnouncementDO announcementDO = announcementMapper.selectById(id);
+        FileDO fileDO = fileMapper.selectById(announcementDO.getFileId());
+        return String.format("%s.%s",
+                announcementDO.getFilename(),
+                fileDO.getExtension().toLowerCase());
+    }
+
+    @Override
+    public void updateAnnouncement(Integer id, NewAnnouncementDTO dto) {
+        AnnouncementDO announcementDO = announcementMapper.selectById(id);
+        announcementDO.setContent(dto.getContent());
+        announcementDO.setTitle(dto.getTitle());
+        announcementDO.setUpdateTime(null);
+        announcementMapper.updateById(announcementDO);
+    }
+
     private void throwSemesterNameExist(String name) {
         QueryWrapper<SemesterDO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(SemesterDO::getName, name);
@@ -630,6 +656,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         AnnouncementDO announcementDO = announcementMapper.selectById(id);
         announcementDO.setFileId(fileId);
         announcementDO.setFilename(filename);
+        announcementDO.setUpdateTime(null);
         announcementMapper.updateById(announcementDO);
     }
 

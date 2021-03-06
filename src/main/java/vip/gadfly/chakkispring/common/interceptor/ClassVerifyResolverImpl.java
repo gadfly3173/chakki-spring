@@ -50,6 +50,9 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
             default:
                 throw new RuntimeException("id的参数类型错误，请开发检查");
         }
+        if (id == 0) {
+            return false;
+        }
         boolean result;
         switch (teacherClassCheck.valueType()) {
             case classIdType:
@@ -91,6 +94,9 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
                 break;
             default:
                 throw new RuntimeException("id的参数类型错误，请开发检查");
+        }
+        if (id == 0) {
+            return false;
         }
         boolean result;
         switch (studentClassCheck.valueType()) {
@@ -142,6 +148,9 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
             for (int x = 0; x < keyList.length - 1; x++) {
                 tmpJson = jsonObject.get(keyList[x]);
             }
+        }
+        if (tmpJson.get(keyList[keyList.length - 1]) == null) {
+            return 0;
         }
         return tmpJson.get(keyList[keyList.length - 1]).asInt();
     }

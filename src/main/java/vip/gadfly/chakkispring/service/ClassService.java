@@ -314,4 +314,9 @@ public interface ClassService {
 
     void deleteAnnouncement(Integer id);
 
+    File getAnnouncementFile(Integer id);
+
+    String getAnnouncementFilename(Integer id);
+
+    void updateAnnouncement(Integer id, NewAnnouncementDTO dto);
 }
