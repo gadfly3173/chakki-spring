@@ -46,8 +46,7 @@ public class PermissionHandleListener implements ApplicationListener<ContextRefr
                     .anyMatch(meta -> meta.getModule().equals(permission.getModule())
                             && meta.getPermission().equals(permission.getName()));
             if (!stayedInMeta) {
-                permission.setMount(false);
-                permissionService.updateById(permission);
+                permissionService.removeById(permission.getId());
             }
         }
     }
