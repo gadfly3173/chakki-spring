@@ -1,6 +1,7 @@
 package vip.gadfly.chakkispring.controller.cms;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.github.talelin.autoconfigure.exception.AuthorizationException;
 import io.github.talelin.core.annotation.AdminRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.core.annotation.PermissionModule;
@@ -15,6 +16,7 @@ import vip.gadfly.chakkispring.model.GroupDO;
 import vip.gadfly.chakkispring.model.PermissionDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.service.AdminService;
+import vip.gadfly.chakkispring.service.GoogleAuthenticatorService;
 import vip.gadfly.chakkispring.service.GroupService;
 import vip.gadfly.chakkispring.vo.PageResponseVO;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
@@ -43,6 +45,9 @@ public class AdminController {
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private GoogleAuthenticatorService googleAuthenticatorService;
 
     @GetMapping("/permission")
     @AdminRequired
@@ -85,6 +90,14 @@ public class AdminController {
     public UnifyResponseVO<String> deleteUser(@PathVariable @Positive(message = "{id.positive}") Integer id) {
         adminService.deleteUser(id);
         return ResponseUtil.generateUnifyResponse(3);
+    }
+
+    @DeleteMapping("/user/mfa/{id}")
+    @AdminRequired
+    @PermissionMeta(value = "删除用户两步验证", mount = false)
+    public UnifyResponseVO<String> deleteUserMFA(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+        googleAuthenticatorService.cancelMFA(id);
+        return ResponseUtil.generateUnifyResponse(34);
     }
 
     @PutMapping("/user/{id}")
