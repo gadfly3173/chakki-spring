@@ -8,7 +8,6 @@ import vip.gadfly.chakkispring.common.annotation.MultimediaWordCount;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author Gadfly

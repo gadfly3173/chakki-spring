@@ -1,7 +1,6 @@
 package vip.gadfly.chakkispring.controller.cms;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.github.talelin.autoconfigure.exception.AuthorizationException;
 import io.github.talelin.core.annotation.AdminRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.core.annotation.PermissionModule;
