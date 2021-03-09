@@ -21,6 +21,8 @@ public class AnnouncementVO implements Serializable {
 
     private String filename;
 
+    private Long filesize;
+
     private Date createTime;
 
     private Date updateTime;

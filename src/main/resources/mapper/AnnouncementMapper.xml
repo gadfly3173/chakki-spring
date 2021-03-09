@@ -8,11 +8,12 @@
         <result column="title" property="title"/>
         <result column="content" property="content"/>
         <result column="filename" property="filename"/>
+        <result column="size" property="filesize"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
-    <select id="selectAnnouncementPageByClassId" resultType="vip.gadfly.chakkispring.vo.AnnouncementVO">
+    <select id="selectAnnouncementPageByClassId" resultMap="AnnouncementVO">
         SELECT a.id,
                a.title,
                a.create_time,
@@ -23,14 +24,16 @@
         ORDER BY a.id DESC
     </select>
 
-    <select id="selectAnnouncementVOById" resultType="vip.gadfly.chakkispring.vo.AnnouncementVO">
+    <select id="selectAnnouncementVOById" resultMap="AnnouncementVO">
         SELECT a.id,
                a.title,
                a.content,
                a.filename,
+               f.size,
                a.create_time,
                a.update_time
-        FROM announcement AS a
+        FROM announcement AS a LEFT JOIN lin_file AS f
+        ON a.file_id = f.id
         WHERE a.id = #{id}
           AND a.delete_time IS NULL
     </select>
