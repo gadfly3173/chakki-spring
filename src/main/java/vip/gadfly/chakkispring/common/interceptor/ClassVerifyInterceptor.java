@@ -52,13 +52,12 @@ public class ClassVerifyInterceptor implements HandlerInterceptor {
         } else if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Method method = handlerMethod.getMethod();
-            boolean result = false;
             TeacherClassCheck teacherClassCheck = method.getAnnotation(TeacherClassCheck.class);
             StudentClassCheck studentClassCheck = method.getAnnotation(StudentClassCheck.class);
             if (teacherClassCheck != null) {
-                result = classVerifyResolver.handleTeacherClassCheck(request, response, teacherClassCheck);
+                return classVerifyResolver.handleTeacherClassCheck(request, response, teacherClassCheck);
             }
-            if (!result && studentClassCheck != null) {
+            if (studentClassCheck != null) {
                 return classVerifyResolver.handleStudentClassCheck(request, response, studentClassCheck);
             }
             return true;

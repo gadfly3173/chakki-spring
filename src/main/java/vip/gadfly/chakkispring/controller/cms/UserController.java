@@ -132,7 +132,7 @@ public class UserController {
         if (!StringUtils.hasText(username) || userId == null) {
             throw new FailedException(10102);
         }
-        if (!googleAuthenticatorService.validCode(username, code)) {
+        if (!googleAuthenticatorService.validCodeWithUsername(username, code)) {
             throw new FailedException(10102);
         }
         logService.createLog(
@@ -170,12 +170,12 @@ public class UserController {
      */
     @PostMapping("/get_mfa_secret")
     @GroupRequired
-    public String setUserMFASecret() throws UnsupportedEncodingException {
+    public String setUserMFASecret(HttpSession session) throws UnsupportedEncodingException {
         UserDO user = LocalUser.getLocalUser();
         if (googleAuthenticatorService.MFAexist(user.getId())) {
             throw new FailedException(10103);
         }
-        return googleAuthenticatorService.getQrUrl(user.getUsername(), user.getId());
+        return googleAuthenticatorService.getQrUrl(user.getUsername(), user.getId(), session);
     }
 
     /**
@@ -195,7 +195,7 @@ public class UserController {
     @GroupRequired
     public UnifyResponseVO<String> deleteUserMFASecret(@PathVariable @NotNull Integer code) {
         UserDO user = LocalUser.getLocalUser();
-        if (googleAuthenticatorService.validCode(user.getUsername(), code)) {
+        if (googleAuthenticatorService.validCodeWithUsername(user.getUsername(), code)) {
             googleAuthenticatorService.cancelMFA(user.getId());
             return ResponseUtil.generateUnifyResponse(34);
         }
@@ -203,20 +203,21 @@ public class UserController {
     }
 
     /**
-     * 启用后验证两步验证密钥，错误则取消绑定
+     * 启用后验证两步验证密钥，成功才会写入数据库
      */
     @PostMapping("/confirm_mfa_secret/{code}")
     @GroupRequired
-    public UnifyResponseVO<String> confirmUserMFASecret(@PathVariable @NotNull Integer code) {
+    public UnifyResponseVO<String> confirmUserMFASecret(@PathVariable @NotNull Integer code, HttpSession session) {
         UserDO user = LocalUser.getLocalUser();
-        if (googleAuthenticatorService.notNewCreated(user.getId())) {
+        String secretKey = String.valueOf(session.getAttribute("secretKey"));
+        if (!StringUtils.hasText(secretKey)) {
             throw new FailedException(10104);
         }
-        if (!googleAuthenticatorService.validCode(user.getUsername(), code)) {
-            googleAuthenticatorService.cancelMFA(user.getId());
-            return ResponseUtil.generateUnifyResponse(34);
+        if (googleAuthenticatorService.validCodeWithSecret(secretKey, code)) {
+            googleAuthenticatorService.saveUserCredentials(secretKey, user.getId());
+            return ResponseUtil.generateUnifyResponse(35);
         }
-        return ResponseUtil.generateUnifyResponse(35);
+        throw new FailedException(10104);
     }
 
     /**

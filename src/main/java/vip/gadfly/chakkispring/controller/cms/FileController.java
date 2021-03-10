@@ -76,10 +76,20 @@ public class FileController {
 
     @GetMapping("/lesson/announcement/download/{id}")
     @GroupRequired
-    @PermissionMeta(value = "下载公告附件", module = "文件管理")
+    @PermissionMeta(value = "下载公告附件", module = "教师")
     @TeacherClassCheck(valueType = announcementIdType, paramType = pathVariableType)
-    @StudentClassCheck(valueType = announcementIdType, paramType = pathVariableType)
     public ResponseEntity<FileSystemResource> downloadAnnouncementFile(
+            @PathVariable @Positive(message = "{id.positive}") Integer id) {
+        File file = classService.getAnnouncementFile(id);
+        String filename = classService.getAnnouncementFilename(id);
+        return ResponseUtil.generateFileResponse(file, filename);
+    }
+
+    @GetMapping("/class/announcement/download/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "下载公告附件", module = "学生")
+    @StudentClassCheck(valueType = announcementIdType, paramType = pathVariableType)
+    public ResponseEntity<FileSystemResource> downloadStudentAnnouncementFile(
             @PathVariable @Positive(message = "{id.positive}") Integer id) {
         File file = classService.getAnnouncementFile(id);
         String filename = classService.getAnnouncementFilename(id);

@@ -14,6 +14,7 @@ import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.model.UserMFADO;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -62,27 +63,26 @@ public class GoogleAuthenticatorService {
     /**
      * 生成二维码链接
      */
-    public String getQrUrl(String username, Integer userId) throws UnsupportedEncodingException {
+    public String getQrUrl(String username, Integer userId, HttpSession session) throws UnsupportedEncodingException {
         QueryWrapper<UserMFADO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(UserMFADO::getUserId, userId);
         if (userMFAMapper.selectCount(wrapper) > 0) {
             throw new FailedException(10103);
         }
         // 每次调用createCredentials都会生成新的secretKey
-        GoogleAuthenticatorKey key = googleAuthenticator.createCredentials(username);
-        log.info("username={},secretKey={}", username, key.getKey());
+        GoogleAuthenticatorKey key = googleAuthenticator.createCredentials();
+        log.info("username={}, secretKey={}", username, key.getKey());
+        session.setAttribute("secretKey", key.getKey());
+        session.setMaxInactiveInterval(300);
         return String.format(KEY_FORMAT, "Chakki", URLEncoder.encode(username, StandardCharsets.UTF_8.name()), key.getKey(), "Chakki");
     }
 
-    public boolean validCode(String username, int code) {
+    public boolean validCodeWithUsername(String username, int code) {
         return googleAuthenticator.authorizeUser(username, code);
     }
 
-    public boolean notNewCreated(Integer userId) {
-        QueryWrapper<UserMFADO> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(UserMFADO::getUserId, userId);
-        long createTimestamp = userMFAMapper.selectOne(wrapper).getCreateTime().getTime();
-        return System.currentTimeMillis() - createTimestamp > 1000 * 60 * 5;
+    public boolean validCodeWithSecret(String secret, int code) {
+        return googleAuthenticator.authorize(secret, code);
     }
 
     public void cancelMFA(Integer userId) {
@@ -95,5 +95,11 @@ public class GoogleAuthenticatorService {
         QueryWrapper<UserMFADO> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(UserMFADO::getUserId, userId);
         return userMFAMapper.selectCount(wrapper) > 0;
+    }
+
+    public void saveUserCredentials(String secretKey, Integer userId) {
+        // secretKey要保存在数据库中
+        UserMFADO userMFADO = UserMFADO.builder().userId(userId).secret(secretKey).build();
+        userMFAMapper.insert(userMFADO);
     }
 }
