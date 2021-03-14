@@ -23,7 +23,9 @@ public class ValidateCodeUtil {
     private static final int randomStrNum = 4; // 验证码字符个数
     private static final String randomString = "23456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWSYZ";
 
-    // 颜色的设置
+    /**
+     * 颜色的设置
+     */
     private static Color getRandomColor(int fc, int bc) {
 
         fc = Math.min(fc, 255);
@@ -36,12 +38,16 @@ public class ValidateCodeUtil {
         return new Color(r, g, b);
     }
 
-    // 字体的设置
+    /**
+     * 字体的设置
+     */
     private Font getFont() {
         return new Font("Times New Roman", Font.BOLD + Font.ITALIC, 42);
     }
 
-    // 干扰线的绘制
+    /**
+     * 干扰线的绘制
+     */
     private void drawLine(Graphics2D g) {
         int x = random.nextInt(width);
         int y = random.nextInt(height);
@@ -52,13 +58,17 @@ public class ValidateCodeUtil {
         g.drawLine(x, y, x + xl, y + yl);
     }
 
-    // 随机字符的获取
+    /**
+     * 随机字符的获取
+     */
     private String getRandomString(int num) {
         num = num > 0 ? num : randomString.length();
         return String.valueOf(randomString.charAt(random.nextInt(num)));
     }
 
-    // 字符串的绘制
+    /**
+     * 字符串的绘制
+     */
     private String drawString(Graphics2D g, String randomStr, int i) {
         g.setFont(getFont());
         g.setColor(getRandomColor(28, 200));
@@ -94,7 +104,12 @@ public class ValidateCodeUtil {
         return image;
     }
 
-    // 生成随机图片的base64编码字符串
+    /**
+     * 生成随机图片的base64编码字符串
+     *
+     * @param session session
+     * @return base64
+     */
     public String getRandomCodeBase64(HttpSession session) throws IOException {
         BufferedImage image = getBufferedImage(session);
         // 返回 base64
