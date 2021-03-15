@@ -1,6 +1,7 @@
 package vip.gadfly.chakkispring.controller.v1;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.github.talelin.autoconfigure.exception.FailedException;
 import io.github.talelin.core.annotation.GroupRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.core.annotation.PermissionModule;
@@ -258,7 +259,7 @@ public class LessonController {
     @PostMapping("/announcement/attachment/{id}")
     @GroupRequired
     @PermissionMeta(value = "修改公告文件")
-    @TeacherClassCheck(valueType = announcementIdType, paramType = requestBodyType, valueName = "class_id")
+    @TeacherClassCheck(valueType = announcementIdType, paramType = pathVariableType)
     public UnifyResponseVO<String> updateAnnouncementAttachment(
             @Min(value = 1, message = "{id.positive}")
             @PathVariable Integer id,
@@ -266,7 +267,7 @@ public class LessonController {
         MultiValueMap<String, MultipartFile> fileMap =
                 multipartHttpServletRequest.getMultiFileMap();
         if (!classService.updateAnnouncementAttachment(id, fileMap)) {
-            return ResponseUtil.generateUnifyResponse(10240);
+            throw new FailedException(10240);
         }
         return ResponseUtil.generateUnifyResponse(36);
     }

@@ -3,6 +3,7 @@ package vip.gadfly.chakkispring.common.interceptor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.talelin.autoconfigure.exception.AuthorizationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import vip.gadfly.chakkispring.common.annotation.StudentClassCheck;
@@ -24,6 +25,7 @@ import static vip.gadfly.chakkispring.common.constant.ClassVerifyConstant.*;
 
 @SuppressWarnings("Duplicates")
 @Component
+@Slf4j
 public class ClassVerifyResolverImpl implements ClassVerifyResolver {
 
     @Autowired
@@ -51,7 +53,7 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
                 throw new RuntimeException("id的参数类型错误，请开发检查");
         }
         if (id == 0) {
-            return false;
+            throw new RuntimeException("id的参数类型错误，请开发检查");
         }
         boolean result;
         switch (teacherClassCheck.valueType()) {
@@ -76,6 +78,7 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
         if (!result) {
             throw new AuthorizationException(10002);
         }
+        log.info(String.format("TeacherClassCheckOK, id:%s, type:%s, paramType:%s", id, teacherClassCheck.valueType(), teacherClassCheck.paramType()));
         return true;
     }
 
@@ -96,7 +99,7 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
                 throw new RuntimeException("id的参数类型错误，请开发检查");
         }
         if (id == 0) {
-            return false;
+            throw new RuntimeException("id的参数类型错误，请开发检查");
         }
         boolean result;
         switch (studentClassCheck.valueType()) {
@@ -121,6 +124,7 @@ public class ClassVerifyResolverImpl implements ClassVerifyResolver {
         if (!result) {
             throw new AuthorizationException(10002);
         }
+        log.info(String.format("StudentClassCheckOK, id:%s, type:%s, paramType:%s", id, studentClassCheck.valueType(), studentClassCheck.paramType()));
         return true;
     }
 
