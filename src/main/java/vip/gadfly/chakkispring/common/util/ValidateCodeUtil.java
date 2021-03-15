@@ -13,6 +13,7 @@ import java.util.Random;
  * @author Gadfly
  */
 
+@SuppressWarnings("SpellCheckingInspection")
 public class ValidateCodeUtil {
 
     public static final String sessionKey = "JCCODE";
