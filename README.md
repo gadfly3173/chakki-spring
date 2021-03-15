@@ -1,50 +1,65 @@
-<h1 align="center">
-  <a href="http://doc.cms.7yue.pro/">
-  <img src="http://doc.cms.7yue.pro/left-logo.png" width="250"/></a>
-  <br>
-  Lin-CMS-Spring-boot
-</h1>
-
-<h4 align="center">一个简单易用的CMS后端项目 | <a href="http://doc.cms.7yue.pro/" target="_blank">Lin-CMS-Spring-boot</a></h4>
-
-<p align="center">
-
-  <a href="https://spring.io/" rel="nofollow">
-  <img src="https://img.shields.io/badge/spring%20boot-2.2.2.RELEASE-green" alt="spring boot" data-canonical-src="https://img.shields.io/badge/spring%20boot-2.2.2.RELEASE-green" style="max-width:100%;">
-  </a>
-  
-  <a href="https://pypi.org/project/Lin-CMS/" rel="nofollow">
-  <img src="https://img.shields.io/badge/mybatis--plus-3.3.0-yellow" alt="mybatis-plus" data-canonical-src="https://img.shields.io/badge/mybatis--plus-3.3.0-yellow" style="max-width:100%;">
-  </a>
-  
-  <a href="https://mybatis.plus/" rel="nofollow">
-  <img src="https://img.shields.io/badge/license-MIT-lightgrey.svg" alt="LISENCE" data-canonical-src="https://img.shields.io/badge/license-MIT-lightgrey.svg" style="max-width:100%;">
-  </a>
-  
-</p>
-
-<blockquote align="center">
-  <em>Lin-CMS</em> 是林间有风团队经过大量项目实践所提炼出的一套<strong>内容管理系统框架</strong>。<br>
- Lin-CMS 可以有效的帮助开发者提高 CMS 的开发效率。
-</blockquote>
-
-<p align="center">
-  <a href="##预览">预览</a>&nbsp;|&nbsp;
-  <a href="##简介">简介</a>&nbsp;|&nbsp;
-  <a href="##联系和交流">联系和交流</a>
-</p>
-
 ## 预览
 
-### 线上 demo
+### Lin-CMS 线上 demo
 
-[http://face.cms.7yue.pro/](http://face.cms.7yue.pro/)
+[http://face.cms.talelin.com/](http://face.cms.talelin.com/)
 
-### 文档地址
+### Lin-CMS 文档地址
 
-[http://doc.cms.7yue.pro/](http://doc.cms.7yue.pro/)
+[https://doc.cms.talelin.com/](https://doc.cms.talelin.com/)
+
+## 依赖
+* JDK 1.8+，已在 JAVA8、9、11 上测试通过。
+* MySQL 5.6+，确保你有可用的数据库环境。
+* Maven 3.6+，依赖、打包需要它。
+
+## 快速上手
+
+`resource` 目录下的 `schema.sql` 为数据库初始化配置的sql
+
+数据库连接配置在 `application-dev.yml` 中，或者复制一个副本重命名为 `application-prod.yml` 并修改，运行时加上参数 `--spring.profiles.active=prod`
+
+```bash
+# clone the project
+git clone https://github.com/gadfly3173/chakki-spring.git
+
+# build
+mvn clean package -U
+```
+
+推荐的 nginx 配置：
+```nginx
+server {
+listen 80;
+listen 443;
+    server_name  chakki.gadfly.vip;
+    root /home/chakki;
+    gzip  on;
+    gzip_types text/plain application/x-javascript application/javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;
+    gzip_static on;
+    client_max_body_size 200m;
+
+    location / {
+    }
+
+    location ^~ /api/ {
+        proxy_pass http://127.0.0.1:19560;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-Host $server_name;
+    }
+
+    # jar 运行时会在运行 jar 的路径下生成 assets 文件夹，assets 中存放用户上传的文件
+    location ^~ /assets/ {
+        alias /home/chakki/backend/assets/;
+    }
+}
+```
 
 ## 简介
+
+本项目为 Spring Boot 后端，前端端请移步 [chakki-vue](https://github.com/gadfly3173/chakki-vue)
 
 ### 什么是Lin CMS
 
@@ -84,21 +99,6 @@ Lin CMS 也有自己的前端实现，强强联合为你助力。
 #### 完善的文档
 
 Lin CMS 提供大量的文档来帮助开发者使用
-
-
-## 联系和交流
-
-### QQ 交流群
-
-QQ 群号：643205479
-
-<img class="QR-img" width="258" height="300" src="http://imglf3.nosdn0.126.net/img/Qk5LWkJVWkF3Nmdyc2xGcUtScEJLOVV1clErY1dJa0FsQ3E1aDZQWlZHZ2dCbSt4WXA1V3dRPT0.jpg?imageView&thumbnail=1680x0&quality=96&stripmeta=0&type=jpg">
-
-### 微信公众号
-
-微信搜索：林间有风
-
-<img class="QR-img" src="http://imglf6.nosdn0.126.net/img/YUdIR2E3ME5weEdlNThuRmI4TFh3UWhiNmladWVoaTlXUXpicEFPa1F6czFNYkdmcWRIbGRRPT0.jpg?imageView&thumbnail=500x0&quality=96&stripmeta=0&type=jpg">
 
 ## 注意事项
 
