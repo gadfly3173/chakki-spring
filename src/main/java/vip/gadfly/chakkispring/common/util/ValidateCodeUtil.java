@@ -42,7 +42,7 @@ public class ValidateCodeUtil {
      * 字体的设置
      */
     private Font getFont() {
-        return new Font("Times New Roman", Font.BOLD + Font.ITALIC, 42);
+        return new Font("Times New Roman", Font.BOLD + Font.ITALIC, 36);
     }
 
     /**
@@ -74,8 +74,12 @@ public class ValidateCodeUtil {
         g.setColor(getRandomColor(28, 200));
         String rand = getRandomString(random.nextInt(randomString.length()));
         randomStr += rand;
+        // 设置每个字符的随机旋转
+        double radianPercent = (random.nextBoolean() ? -1 : 1) * Math.PI * (random.nextInt(60) / 280D);
+        g.rotate(radianPercent, 38 * i + 10, 35);
         g.translate(random.nextInt(3), random.nextInt(6));
-        g.drawString(rand, 40 * i + 10, 25);
+        g.drawString(rand, 38 * i + 10, 25);
+        g.rotate(-radianPercent, 38 * i + 10, 35);
         return randomStr;
     }
 
