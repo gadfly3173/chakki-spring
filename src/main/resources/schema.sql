@@ -266,6 +266,26 @@ CREATE TABLE `question`
   ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- 问题-回答 关系表
+-- ----------------------------
+DROP TABLE IF EXISTS `question_answer`;
+CREATE TABLE `question_answer`
+(
+    `id`               int(10) UNSIGNED                                              NOT NULL AUTO_INCREMENT,
+    `questionnaire_id` int(10) UNSIGNED                                              NOT NULL COMMENT '问卷id',
+    `question_id`      int(10) UNSIGNED                                              NOT NULL COMMENT '问题id',
+    `answer`           varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
+    `option_id`        int(10) UNSIGNED                                              NULL     DEFAULT NULL,
+    `create_time`      datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `update_time`      datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    `delete_time`      datetime(3)                                                   NULL     DEFAULT NULL,
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- 问卷表
 -- ----------------------------
 DROP TABLE IF EXISTS `questionnaire`;
@@ -338,6 +358,26 @@ CREATE TABLE `student_class`
   ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- 学生-问卷 关系表
+-- ----------------------------
+DROP TABLE IF EXISTS `student_questionnaire`;
+CREATE TABLE `student_questionnaire`
+(
+    `id`               int(10) UNSIGNED                                             NOT NULL AUTO_INCREMENT,
+    `user_id`          int(10) UNSIGNED                                             NOT NULL COMMENT '学生id',
+    `questionnaire_id` int(10) UNSIGNED                                             NOT NULL COMMENT '问卷id',
+    `ip`               varchar(39) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
+    `create_time`      datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `update_time`      datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    `delete_time`      datetime(3)                                                  NULL     DEFAULT NULL,
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- 学生-签到 关系表
 -- ----------------------------
 DROP TABLE IF EXISTS `student_sign`;
@@ -346,7 +386,7 @@ CREATE TABLE `student_sign`
     `id`          int(10) UNSIGNED                                             NOT NULL AUTO_INCREMENT,
     `user_id`     int(10) UNSIGNED                                             NOT NULL COMMENT '学生id',
     `sign_id`     int(10) UNSIGNED                                             NOT NULL COMMENT '签到项目id',
-    `ip`          varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
+    `ip`          varchar(39) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
     `create_time` datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `status`      tinyint(1)                                                   NOT NULL DEFAULT 1 COMMENT '签到状态：1-正常签到 2-迟到 3-作废',
     PRIMARY KEY (`id`) USING BTREE,
@@ -365,7 +405,7 @@ CREATE TABLE `student_work`
     `id`          int(10) UNSIGNED                                             NOT NULL AUTO_INCREMENT,
     `user_id`     int(10) UNSIGNED                                             NOT NULL COMMENT '学生id',
     `work_id`     int(10) UNSIGNED                                             NOT NULL COMMENT '作业项目id',
-    `ip`          varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
+    `ip`          varchar(39) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
     `file_id`     int(10)                                                      NOT NULL COMMENT '对应的文件id',
     `rate`        tinyint(2)                                                   NULL     DEFAULT NULL COMMENT '教师打分',
     `create_time` datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
