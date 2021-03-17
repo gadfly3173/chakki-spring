@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-public class NewOption {
+public class NewOptionDTO {
 
     @Length(min = 1, max = 60, message = "{lesson.questionnaire.question.option.title.not-null}")
     private String title;

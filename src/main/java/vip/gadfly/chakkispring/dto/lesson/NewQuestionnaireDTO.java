@@ -20,7 +20,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-public class NewQuestionnaire {
+public class NewQuestionnaireDTO {
 
     @Length(min = 1, max = 60, message = "{lesson.questionnaire.title.not-null}")
     private String title;
@@ -35,7 +35,7 @@ public class NewQuestionnaire {
     @Valid
     @NotNull(message = "{lesson.questionnaire.length}")
     @Size(min = 1, max = 99, message = "{lesson.questionnaire.length}")
-    private List<NewQuestion> questions;
+    private List<NewQuestionDTO> questions;
 
     private Date endTime;
 }

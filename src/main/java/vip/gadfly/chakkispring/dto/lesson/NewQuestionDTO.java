@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-public class NewQuestion {
+public class NewQuestionDTO {
 
     @Length(min = 1, max = 60, message = "{lesson.questionnaire.question.title.not-null}")
     private String title;
@@ -39,6 +39,6 @@ public class NewQuestion {
     private Integer limit;
 
     @Valid
-    private List<NewOption> options;
+    private List<NewOptionDTO> options;
 
 }
