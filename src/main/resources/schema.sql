@@ -157,7 +157,7 @@ CREATE TABLE `lin_user`
     `create_time` datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `update_time` datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     `delete_time` datetime(3)                                                   NULL     DEFAULT NULL,
-    `is_new`      int(1)                                                        NULL     DEFAULT NULL COMMENT '是否为默认密码/新用户',
+    `is_new`      tinyint(1)                                                    NULL     DEFAULT NULL COMMENT '是否为默认密码/新用户',
     PRIMARY KEY (`id`) USING BTREE,
     UNIQUE INDEX `username_del` (`username`, `delete_time`) USING BTREE,
     UNIQUE INDEX `email_del` (`email`, `delete_time`) USING BTREE
@@ -221,6 +221,66 @@ CREATE TABLE `lin_user_mfa`
     `delete_time` datetime(3)                                                  NULL     DEFAULT NULL,
     PRIMARY KEY (`id`) USING BTREE,
     UNIQUE INDEX `user_secret_del` (`user_id`, `secret`, `delete_time`) USING BTREE
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- 选项表
+-- ----------------------------
+DROP TABLE IF EXISTS `option`;
+CREATE TABLE `option`
+(
+    `id`          int(10) UNSIGNED                                              NOT NULL AUTO_INCREMENT,
+    `title`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '选项内容',
+    `question_id` int(10) UNSIGNED                                              NOT NULL COMMENT '对应问卷',
+    `order`       tinyint(2)                                                    NOT NULL COMMENT '顺序编号',
+    `update_time` datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    `delete_time` datetime(3)                                                   NULL     DEFAULT NULL,
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- 问题表
+-- ----------------------------
+DROP TABLE IF EXISTS `question`;
+CREATE TABLE `question`
+(
+    `id`               int(10) UNSIGNED                                             NOT NULL AUTO_INCREMENT,
+    `title`            varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '问题标题',
+    `questionnaire_id` int(10) UNSIGNED                                             NOT NULL COMMENT '对应问卷',
+    `order`            tinyint(2)                                                   NOT NULL COMMENT '顺序编号',
+    `type`             tinyint(2)                                                   NOT NULL COMMENT '问题类型：1-简答 2-选择',
+    `limit`            tinyint(2)                                                   NULL     DEFAULT NULL COMMENT '多选限制数量',
+    `create_time`      datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `update_time`      datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    `delete_time`      datetime(3)                                                  NULL     DEFAULT NULL,
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- 问卷表
+-- ----------------------------
+DROP TABLE IF EXISTS `questionnaire`;
+CREATE TABLE `questionnaire`
+(
+    `id`          int(10) UNSIGNED                                              NOT NULL AUTO_INCREMENT,
+    `title`       varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '问卷标题',
+    `info`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '问卷简介',
+    `class_id`    int(10) UNSIGNED                                              NOT NULL COMMENT '对应班级',
+    `end_time`    datetime(3)                                                   NULL     DEFAULT NULL,
+    `create_time` datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `update_time` datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    `delete_time` datetime(3)                                                   NULL     DEFAULT NULL,
+    PRIMARY KEY (`id`) USING BTREE,
+    INDEX `title_del` (`title`, `delete_time`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci
