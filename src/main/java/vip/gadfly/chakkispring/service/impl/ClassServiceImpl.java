@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import vip.gadfly.chakkispring.common.LocalUser;
+import vip.gadfly.chakkispring.common.constant.QuestionTypeConstant;
 import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
 import vip.gadfly.chakkispring.common.constant.TeacherLevelConstant;
 import vip.gadfly.chakkispring.common.constant.WorkStatusConstant;
@@ -32,7 +33,6 @@ import vip.gadfly.chakkispring.module.file.FileUtil;
 import vip.gadfly.chakkispring.module.file.Uploader;
 import vip.gadfly.chakkispring.service.ClassManageService;
 import vip.gadfly.chakkispring.service.ClassService;
-import vip.gadfly.chakkispring.service.FileService;
 import vip.gadfly.chakkispring.service.UserService;
 import vip.gadfly.chakkispring.vo.*;
 
@@ -59,9 +59,6 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Autowired
     private ClassManageService classManageService;
-
-    @Autowired
-    private FileService fileService;
 
     @Autowired
     private Uploader uploader;
@@ -95,6 +92,15 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Autowired
     private AnnouncementMapper announcementMapper;
+
+    @Autowired
+    private QuestionnaireMapper questionnaireMapper;
+
+    @Autowired
+    private QuestionMapper questionMapper;
+
+    @Autowired
+    private OptionMapper optionMapper;
 
     @Autowired
     private FileProperties fileProperties;
@@ -293,6 +299,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         if (userIds == null || userIds.isEmpty()) {
             return false;
         }
+        // 主教师限制一人
         if (level == TeacherLevelConstant.MAIN_LEVEL) {
             QueryWrapper<TeacherClassDO> wrapper = new QueryWrapper<>();
             wrapper.lambda().eq(TeacherClassDO::getClassId, classId).eq(TeacherClassDO::getLevel, level);
@@ -355,6 +362,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createWork(NewWorkDTO dto) {
+        // 扩展名列表只保留字母并大写，生成List<WorkExtensionDO>
         TreeSet<String> treeSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         treeSet.addAll(dto.getFileExtension());
         WorkDO work = WorkDO
@@ -368,6 +376,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
                 .build();
         workMapper.insert(work);
         if (treeSet.size() > 0) {
+            // 扩展名列表只保留字母并大写，生成List<WorkExtensionDO>
             List<WorkExtensionDO> relations = treeSet
                     .stream()
                     .map(ext -> WorkExtensionDO.builder()
@@ -502,6 +511,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Override
     public Integer createAnnouncement(NewAnnouncementDTO dto) {
+        // XSS 过滤
         PolicyFactory policy = Sanitizers.FORMATTING
                 .and(Sanitizers.LINKS)
                 .and(Sanitizers.BLOCKS)
@@ -567,6 +577,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateWork(UpdateWorkDTO dto) {
+        // 扩展名去重
         TreeSet<String> treeSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         treeSet.addAll(dto.getFileExtension());
         WorkDO work = WorkDO
@@ -583,6 +594,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
             QueryWrapper<WorkExtensionDO> wrapper = new QueryWrapper<>();
             wrapper.lambda().eq(WorkExtensionDO::getWorkId, dto.getId());
             workExtendMapper.delete(wrapper);
+            // 扩展名列表只保留字母并大写，生成List<WorkExtensionDO>
             List<WorkExtensionDO> relations = treeSet
                     .stream()
                     .map(ext -> WorkExtensionDO.builder()
@@ -620,6 +632,43 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         announcementDO.setTitle(dto.getTitle());
         announcementDO.setUpdateTime(null);
         announcementMapper.updateById(announcementDO);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void createQuestionnaire(NewQuestionnaireDTO dto) {
+        // 插入问卷获取id
+        QuestionnaireDO questionnaireDO = QuestionnaireDO.builder()
+                .title(dto.getTitle())
+                .info(dto.getInfo())
+                .classId(dto.getClassId())
+                .endTime(dto.getEndTime())
+                .build();
+        questionnaireMapper.insert(questionnaireDO);
+        // 插入题目
+        for (NewQuestionDTO questionDTO : dto.getQuestions()) {
+            QuestionDO questionDO = QuestionDO.builder()
+                    .questionnaireId(questionnaireDO.getId())
+                    .title(questionDTO.getTitle())
+                    .order(questionDTO.getOrder())
+                    .type(questionDTO.getType())
+                    .limit(questionDTO.getLimit())
+                    .build();
+            questionMapper.insert(questionDO);
+            // 如果是选择题，且选项列表不为空则插入选项
+            if (questionDTO.getType() == QuestionTypeConstant.SELECT
+                    && questionDTO.getOptions() != null
+                    && !questionDTO.getOptions().isEmpty()) {
+                for (NewOptionDTO optionDTO : questionDTO.getOptions()) {
+                    OptionDO optionDO = OptionDO.builder()
+                            .questionId(questionDO.getId())
+                            .title(optionDTO.getTitle())
+                            .order(optionDTO.getOrder())
+                            .build();
+                    optionMapper.insert(optionDO);
+                }
+            }
+        }
     }
 
     private void throwSemesterNameExist(String name) {

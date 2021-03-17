@@ -319,4 +319,7 @@ public interface ClassService {
     String getAnnouncementFilename(Integer id);
 
     void updateAnnouncement(Integer id, NewAnnouncementDTO dto);
+
+    void createQuestionnaire(NewQuestionnaireDTO dto);
+
 }

@@ -303,4 +303,14 @@ public class LessonController {
         classService.deleteAnnouncement(id);
         return ResponseUtil.generateUnifyResponse(37);
     }
+
+    @PostMapping("/questionnaire/create")
+    @GroupRequired
+    @PermissionMeta(value = "发布问卷")
+    @TeacherClassCheck(valueType = classIdType, paramType = requestBodyType, valueName = "class_id")
+    public UnifyResponseVO<String> createQuestionnaire(@RequestBody @Validated NewQuestionnaireDTO dto) {
+        classService.createQuestionnaire(dto);
+        return ResponseUtil.generateUnifyResponse(38);
+    }
+
 }
