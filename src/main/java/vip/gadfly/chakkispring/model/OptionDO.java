@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 公告项目表
+ * 问题项目表
  * </p>
  *
  * @author Gadfly
@@ -17,35 +17,25 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("announcement")
+@TableName("option")
 @EqualsAndHashCode(callSuper = true)
-public class AnnouncementDO extends BaseModel implements Serializable {
+public class OptionDO extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 公告标题
+     * 问卷标题
      */
     private String title;
 
     /**
-     * 富文本内容
+     * 对应问题
      */
-    private String content;
+    private Integer questionId;
 
     /**
-     * 对应班级
+     * 序号
      */
-    private Integer classId;
-
-    /**
-     * 附件id
-     */
-    private Integer fileId;
-
-    /**
-     * 附件文件名
-     */
-    private String filename;
+    private Integer order;
 
 }

@@ -4,10 +4,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
- * 公告项目表
+ * 问卷项目表
  * </p>
  *
  * @author Gadfly
@@ -17,21 +18,21 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("announcement")
+@TableName("questionnaire")
 @EqualsAndHashCode(callSuper = true)
-public class AnnouncementDO extends BaseModel implements Serializable {
+public class QuestionnaireDO extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 公告标题
+     * 问卷标题
      */
     private String title;
 
     /**
-     * 富文本内容
+     * 简介
      */
-    private String content;
+    private String info;
 
     /**
      * 对应班级
@@ -39,13 +40,8 @@ public class AnnouncementDO extends BaseModel implements Serializable {
     private Integer classId;
 
     /**
-     * 附件id
+     * 结束时间
      */
-    private Integer fileId;
-
-    /**
-     * 附件文件名
-     */
-    private String filename;
+    private Date endTime;
 
 }

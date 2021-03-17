@@ -232,12 +232,12 @@ CREATE TABLE `lin_user_mfa`
 DROP TABLE IF EXISTS `option`;
 CREATE TABLE `option`
 (
-    `id`          int(10) UNSIGNED                                              NOT NULL AUTO_INCREMENT,
-    `title`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '选项内容',
-    `question_id` int(10) UNSIGNED                                              NOT NULL COMMENT '对应问卷',
-    `order`       tinyint(2)                                                    NOT NULL COMMENT '顺序编号',
-    `update_time` datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    `delete_time` datetime(3)                                                   NULL     DEFAULT NULL,
+    `id`          int(10) UNSIGNED                                             NOT NULL AUTO_INCREMENT,
+    `title`       varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '选项内容',
+    `question_id` int(10) UNSIGNED                                             NOT NULL COMMENT '对应问卷',
+    `order`       tinyint(2) UNSIGNED                                          NOT NULL COMMENT '顺序编号',
+    `update_time` datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    `delete_time` datetime(3)                                                  NULL     DEFAULT NULL,
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
@@ -253,9 +253,9 @@ CREATE TABLE `question`
     `id`               int(10) UNSIGNED                                             NOT NULL AUTO_INCREMENT,
     `title`            varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '问题标题',
     `questionnaire_id` int(10) UNSIGNED                                             NOT NULL COMMENT '对应问卷',
-    `order`            tinyint(2)                                                   NOT NULL COMMENT '顺序编号',
-    `type`             tinyint(2)                                                   NOT NULL COMMENT '问题类型：1-简答 2-选择',
-    `limit`            tinyint(2)                                                   NULL     DEFAULT NULL COMMENT '多选限制数量',
+    `order`            tinyint(2) UNSIGNED                                          NOT NULL COMMENT '顺序编号',
+    `type`             tinyint(2) UNSIGNED                                          NOT NULL COMMENT '问题类型：1-简答 2-选择',
+    `limit`            tinyint(2) UNSIGNED                                          NULL     DEFAULT NULL COMMENT '多选限制数量',
     `create_time`      datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `update_time`      datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     `delete_time`      datetime(3)                                                  NULL     DEFAULT NULL,
@@ -272,7 +272,6 @@ DROP TABLE IF EXISTS `question_answer`;
 CREATE TABLE `question_answer`
 (
     `id`               int(10) UNSIGNED                                              NOT NULL AUTO_INCREMENT,
-    `questionnaire_id` int(10) UNSIGNED                                              NOT NULL COMMENT '问卷id',
     `question_id`      int(10) UNSIGNED                                              NOT NULL COMMENT '问题id',
     `answer`           varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
     `option_id`        int(10) UNSIGNED                                              NULL     DEFAULT NULL,
@@ -387,7 +386,7 @@ CREATE TABLE `student_sign`
     `sign_id`     int(10) UNSIGNED                                             NOT NULL COMMENT '签到项目id',
     `ip`          varchar(39) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
     `create_time` datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `status`      tinyint(1)                                                   NOT NULL DEFAULT 1 COMMENT '签到状态：1-正常签到 2-迟到 3-作废',
+    `status`      tinyint(1) UNSIGNED                                          NOT NULL DEFAULT 1 COMMENT '签到状态：1-正常签到 2-迟到 3-作废',
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `user_id_sign_id` (`user_id`, `sign_id`) USING BTREE COMMENT '联合索引'
 ) ENGINE = InnoDB
@@ -405,8 +404,8 @@ CREATE TABLE `student_work`
     `user_id`     int(10) UNSIGNED                                             NOT NULL COMMENT '学生id',
     `work_id`     int(10) UNSIGNED                                             NOT NULL COMMENT '作业项目id',
     `ip`          varchar(39) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
-    `file_id`     int(10)                                                      NOT NULL COMMENT '对应的文件id',
-    `rate`        tinyint(2)                                                   NULL     DEFAULT NULL COMMENT '教师打分',
+    `file_id`     int(10) UNSIGNED                                             NOT NULL COMMENT '对应的文件id',
+    `rate`        tinyint(2) UNSIGNED                                          NULL     DEFAULT NULL COMMENT '教师打分',
     `create_time` datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `update_time` datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     `delete_time` datetime(3)                                                  NULL     DEFAULT NULL,
@@ -423,10 +422,10 @@ CREATE TABLE `student_work`
 DROP TABLE IF EXISTS `teacher_class`;
 CREATE TABLE `teacher_class`
 (
-    `id`       int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `user_id`  int(10) UNSIGNED NOT NULL COMMENT '用户id',
-    `class_id` int(10) UNSIGNED NOT NULL COMMENT '班级id',
-    `level`    tinyint(1)       NOT NULL COMMENT '教师等级 1-主教师 2-助教',
+    `id`       int(10) UNSIGNED    NOT NULL AUTO_INCREMENT,
+    `user_id`  int(10) UNSIGNED    NOT NULL COMMENT '用户id',
+    `class_id` int(10) UNSIGNED    NOT NULL COMMENT '班级id',
+    `level`    tinyint(1) UNSIGNED NOT NULL COMMENT '教师等级 1-主教师 2-助教',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
@@ -444,7 +443,7 @@ CREATE TABLE `work`
     `info`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '作业信息：例如：第一次板砖',
     `class_id`    int(10) UNSIGNED                                              NOT NULL COMMENT '对应班级',
     `file_size`   int(10) UNSIGNED                                              NULL     DEFAULT NULL COMMENT '单文件大小限制，单位为B/byte',
-    `type`        tinyint(1)                                                    NOT NULL COMMENT '作业类型：1-课堂 2-回家',
+    `type`        tinyint(1) UNSIGNED                                           NOT NULL COMMENT '作业类型：1-课堂 2-回家',
     `end_time`    datetime(3)                                                   NULL     DEFAULT NULL,
     `create_time` datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `update_time` datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
