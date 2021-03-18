@@ -12,8 +12,13 @@
 * JDK 1.8+，已在 JAVA8、9、11 上测试通过。
 * MySQL 5.6+，确保你有可用的数据库环境。
 * Maven 3.6+，依赖、打包需要它。
+* DejaVu 字体
 
 ## 快速上手
+
+DejaVu 字体在 Linux 上多为系统自带，Windows 上一般没有，这个字体的用途是渲染验证码中的文字，如果
+jvm 没有找到字体，则会自动回落到系统字体，这可能导致验证码渲染异常。该字体系列为自由版权，
+可以在官网 [https://dejavu-fonts.github.io/](https://dejavu-fonts.github.io/) 上下载。
 
 `resource` 目录下的 `schema.sql` 为数据库初始化配置的sql
 

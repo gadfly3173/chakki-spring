@@ -43,7 +43,7 @@ public class ValidateCodeUtil {
      * 字体的设置
      */
     private Font getFont() {
-        return new Font("Times New Roman", Font.BOLD + Font.ITALIC, 36);
+        return new Font("DejaVu Serif", Font.BOLD, 36);
     }
 
     /**
