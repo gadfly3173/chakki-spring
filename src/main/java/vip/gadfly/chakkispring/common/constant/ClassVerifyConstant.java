@@ -37,5 +37,9 @@ public class ClassVerifyConstant {
      * announcementId
      */
     public static final String announcementIdType = "announcementId";
+    /**
+     * questionnaireId
+     */
+    public static final String questionnaireIdType = "questionnaireId";
 
 }

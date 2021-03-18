@@ -646,11 +646,12 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
                 .build();
         questionnaireMapper.insert(questionnaireDO);
         // 插入题目
-        for (NewQuestionDTO questionDTO : dto.getQuestions()) {
+        for (int i = 0; i < dto.getQuestions().size(); i++) {
+            NewQuestionDTO questionDTO = dto.getQuestions().get(i);
             QuestionDO questionDO = QuestionDO.builder()
                     .questionnaireId(questionnaireDO.getId())
                     .title(questionDTO.getTitle())
-                    .order(questionDTO.getOrder())
+                    .order(i)
                     .type(questionDTO.getType())
                     .limit(questionDTO.getLimit())
                     .build();
@@ -659,16 +660,30 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
             if (questionDTO.getType() == QuestionTypeConstant.SELECT
                     && questionDTO.getOptions() != null
                     && !questionDTO.getOptions().isEmpty()) {
-                for (NewOptionDTO optionDTO : questionDTO.getOptions()) {
+                for (int k = 0; k < questionDTO.getOptions().size(); k++) {
+                    NewOptionDTO optionDTO = questionDTO.getOptions().get(k);
                     OptionDO optionDO = OptionDO.builder()
                             .questionId(questionDO.getId())
                             .title(optionDTO.getTitle())
-                            .order(optionDTO.getOrder())
+                            .order(k)
                             .build();
                     optionMapper.insert(optionDO);
                 }
             }
         }
+    }
+
+    @Override
+    public IPage<QuestionnaireVO> getQuestionnairePageByClassId(Integer classId, Integer count, Integer page) {
+        Page pager = new Page(page, count);
+        IPage<QuestionnaireVO> iPage;
+        iPage = questionnaireMapper.selectQuestionnairePageByClassId(pager, classId);
+        return iPage;
+    }
+
+    @Override
+    public void deleteQuestionnaire(Integer id) {
+        questionnaireMapper.deleteById(id);
     }
 
     private void throwSemesterNameExist(String name) {

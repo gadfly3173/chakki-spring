@@ -310,7 +310,31 @@ public class LessonController {
     @TeacherClassCheck(valueType = classIdType, paramType = requestBodyType, valueName = "class_id")
     public UnifyResponseVO<String> createQuestionnaire(@RequestBody @Validated NewQuestionnaireDTO dto) {
         classService.createQuestionnaire(dto);
-        return ResponseUtil.generateUnifyResponse(38);
+        return ResponseUtil.generateUnifyResponse(39);
+    }
+
+    @GetMapping("/questionnaire/list")
+    @GroupRequired
+    @PermissionMeta(value = "查看所有问卷")
+    @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
+    public PageResponseVO<QuestionnaireVO> getQuestionnaireList(
+            @RequestParam(name = "class_id")
+            @Min(value = 1, message = "{class-id}") Integer classId,
+            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @Min(value = 1, message = "{count}") Integer count,
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Min(value = 0, message = "{page}") Integer page) {
+        IPage<QuestionnaireVO> iPage = classService.getQuestionnairePageByClassId(classId, count, page);
+        return PageUtil.build(iPage);
+    }
+
+    @PostMapping("/questionnaire/delete/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "删除问卷")
+    @TeacherClassCheck(valueType = questionnaireIdType, paramType = pathVariableType)
+    public UnifyResponseVO<String> deleteQuestionnaire(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+        classService.deleteQuestionnaire(id);
+        return ResponseUtil.generateUnifyResponse(40);
     }
 
 }

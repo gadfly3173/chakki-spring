@@ -12,7 +12,7 @@ import static vip.gadfly.chakkispring.common.constant.ClassVerifyConstant.*;
 public @interface StudentClassCheck {
     String valueName() default "";
 
-    @MagicConstant(stringValues = {classIdType, workIdType, signIdType, studentWorkIdType, announcementIdType})
+    @MagicConstant(stringValues = {classIdType, workIdType, signIdType, studentWorkIdType, announcementIdType, questionnaireIdType})
     String valueType() default "";
 
     @MagicConstant(stringValues = {requestBodyType, requestParamType, pathVariableType})
