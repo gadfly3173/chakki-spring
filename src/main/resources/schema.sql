@@ -271,13 +271,13 @@ CREATE TABLE `question`
 DROP TABLE IF EXISTS `question_answer`;
 CREATE TABLE `question_answer`
 (
-    `id`               int(10) UNSIGNED                                              NOT NULL AUTO_INCREMENT,
-    `question_id`      int(10) UNSIGNED                                              NOT NULL COMMENT '问题id',
-    `answer`           varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
-    `option_id`        int(10) UNSIGNED                                              NULL     DEFAULT NULL,
-    `create_time`      datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `update_time`      datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    `delete_time`      datetime(3)                                                   NULL     DEFAULT NULL,
+    `id`          int(10) UNSIGNED                                              NOT NULL AUTO_INCREMENT,
+    `question_id` int(10) UNSIGNED                                              NOT NULL COMMENT '问题id',
+    `answer`      varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
+    `option_id`   int(10) UNSIGNED                                              NULL     DEFAULT NULL,
+    `create_time` datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `update_time` datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    `delete_time` datetime(3)                                                   NULL     DEFAULT NULL,
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
@@ -622,14 +622,16 @@ INSERT INTO `lin_permission`(id, name, module, mount)
 VALUES (61, '查询日志记录的用户', '日志', 1);
 INSERT INTO `lin_permission`(id, name, module, mount)
 VALUES (62, '下载公告附件', '教师', 1);
+INSERT INTO `lin_permission`(id, name, module, mount)
+VALUES (63, '删除问卷', '教师', 1);
+INSERT INTO `lin_permission`(id, name, module, mount)
+VALUES (64, '查看所有问卷', '教师', 1);
+INSERT INTO `lin_permission`(id, name, module, mount)
+VALUES (65, '发布问卷', '教师', 1);
 
 -- ----------------------------
 -- Records of lin_group_permission
 -- ----------------------------
-INSERT INTO `lin_group_permission`
-VALUES (26, 2, 6);
-INSERT INTO `lin_group_permission`
-VALUES (28, 2, 8);
 INSERT INTO `lin_group_permission`
 VALUES (1, 2, 12);
 INSERT INTO `lin_group_permission`
@@ -681,11 +683,11 @@ VALUES (24, 2, 57);
 INSERT INTO `lin_group_permission`
 VALUES (25, 2, 58);
 INSERT INTO `lin_group_permission`
+VALUES (26, 2, 6);
+INSERT INTO `lin_group_permission`
 VALUES (27, 2, 62);
 INSERT INTO `lin_group_permission`
-VALUES (42, 3, 8);
-INSERT INTO `lin_group_permission`
-VALUES (43, 3, 9);
+VALUES (28, 2, 8);
 INSERT INTO `lin_group_permission`
 VALUES (29, 3, 10);
 INSERT INTO `lin_group_permission`
@@ -713,8 +715,18 @@ VALUES (40, 3, 55);
 INSERT INTO `lin_group_permission`
 VALUES (41, 3, 59);
 INSERT INTO `lin_group_permission`
-VALUES (45, 4, 8);
+VALUES (42, 3, 8);
+INSERT INTO `lin_group_permission`
+VALUES (43, 3, 9);
 INSERT INTO `lin_group_permission`
 VALUES (44, 4, 34);
+INSERT INTO `lin_group_permission`
+VALUES (45, 4, 8);
+INSERT INTO `lin_group_permission`
+VALUES (46, 2, 63);
+INSERT INTO `lin_group_permission`
+VALUES (47, 2, 64);
+INSERT INTO `lin_group_permission`
+VALUES (48, 2, 65);
 
 COMMIT;
