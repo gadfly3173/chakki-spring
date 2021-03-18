@@ -653,7 +653,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
                     .title(questionDTO.getTitle())
                     .order(i)
                     .type(questionDTO.getType())
-                    .limit(questionDTO.getLimit())
+                    .limitMax(questionDTO.getLimitMax())
                     .build();
             questionMapper.insert(questionDO);
             // 如果是选择题，且选项列表不为空则插入选项

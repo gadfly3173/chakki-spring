@@ -255,7 +255,7 @@ CREATE TABLE `question`
     `questionnaire_id` int(10) UNSIGNED                                             NOT NULL COMMENT '对应问卷',
     `order`            tinyint(2) UNSIGNED                                          NOT NULL COMMENT '顺序编号',
     `type`             tinyint(2) UNSIGNED                                          NOT NULL COMMENT '问题类型：1-简答 2-选择',
-    `limit`            tinyint(2) UNSIGNED                                          NULL     DEFAULT NULL COMMENT '多选限制数量',
+    `limit_max`        tinyint(2) UNSIGNED                                          NULL     DEFAULT NULL COMMENT '多选限制数量',
     `create_time`      datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `update_time`      datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     `delete_time`      datetime(3)                                                  NULL     DEFAULT NULL,

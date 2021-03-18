@@ -31,7 +31,7 @@ public class NewQuestionDTO {
 
     @Min(value = 1, message = "{lesson.questionnaire.question.limit.not-null}")
     @Max(value = 10, message = "{lesson.questionnaire.question.limit.not-null}")
-    private Integer limit;
+    private Integer limitMax;
 
     @Valid
     @Size(max = 10, message = "{lesson.questionnaire.question.option.limit}")

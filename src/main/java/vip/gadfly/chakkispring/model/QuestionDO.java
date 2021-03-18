@@ -46,6 +46,6 @@ public class QuestionDO extends BaseModel implements Serializable {
     /**
      * 选择数量限制
      */
-    private Integer limit;
+    private Integer limitMax;
 
 }
