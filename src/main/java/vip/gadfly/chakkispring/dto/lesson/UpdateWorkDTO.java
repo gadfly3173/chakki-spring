@@ -39,8 +39,8 @@ public class UpdateWorkDTO {
     @Max(value = WorkTypeConstant.TYPE_HOME, message = "{lesson.work.type}")
     private Integer type;
 
-    @NotNull(message = "lesson.work.extension.not-null")
-    private List<@NotBlank(message = "lesson.work.extension.not-blank") String> fileExtension;
+    @NotNull(message = "{lesson.work.extension.not-null}")
+    private List<@NotBlank(message = "{lesson.work.extension.not-blank}") String> fileExtension;
 
     // @Future(message = "{lesson.work.end-time.not-null}")
     private Date endTime;
