@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Getter
 @NoArgsConstructor
-@ApiModel(value="新建通知公告DTO", description="通知公告")
+@ApiModel(value = "新建通知公告DTO", description = "通知公告")
 public class NewAnnouncementDTO {
 
     @ApiModelProperty(value = "标题", required = true)

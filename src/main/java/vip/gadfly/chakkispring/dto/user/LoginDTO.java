@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Getter
 @NoArgsConstructor
-@ApiModel(value="新建问题DTO", description="问题")
+@ApiModel(value = "新建问题DTO", description = "问题")
 public class LoginDTO {
 
     @ApiModelProperty(value = "用户名", required = true)

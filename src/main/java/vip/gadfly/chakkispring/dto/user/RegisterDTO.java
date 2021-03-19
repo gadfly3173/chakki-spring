@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @EqualField(srcField = "password", dstField = "confirmPassword", message = "{password.equal-field}")
-@ApiModel(value="注册用户DTO", description="注册")
+@ApiModel(value = "注册用户DTO", description = "注册")
 public class RegisterDTO {
 
     @ApiModelProperty(value = "用户名", required = true)

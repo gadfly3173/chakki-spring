@@ -14,7 +14,7 @@ import javax.validation.constraints.Pattern;
 @Getter
 @NoArgsConstructor
 @EqualField(srcField = "newPassword", dstField = "confirmPassword", message = "{password.equal-field}")
-@ApiModel(value="修改密码DTO", description="修改密码")
+@ApiModel(value = "修改密码DTO", description = "修改密码")
 public class ChangePasswordDTO {
 
     @ApiModelProperty(value = "新密码", required = true)

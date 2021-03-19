@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-@ApiModel(value="批量注册用户DTO", description="批量注册")
+@ApiModel(value = "批量注册用户DTO", description = "批量注册")
 public class BatchRegisterDTO {
 
     @ApiModelProperty(value = "用户列表", required = true)

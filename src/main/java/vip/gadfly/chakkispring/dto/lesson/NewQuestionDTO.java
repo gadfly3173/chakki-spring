@@ -21,7 +21,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-@ApiModel(value="新建问题DTO", description="问题")
+@ApiModel(value = "新建问题DTO", description = "问题")
 public class NewQuestionDTO {
 
     @ApiModelProperty(value = "标题", required = true)

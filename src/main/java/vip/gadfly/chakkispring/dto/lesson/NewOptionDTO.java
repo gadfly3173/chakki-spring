@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.Length;
 @Setter
 @Getter
 @NoArgsConstructor
-@ApiModel(value="新建选项DTO", description="选项")
+@ApiModel(value = "新建选项DTO", description = "选项")
 public class NewOptionDTO {
 
     @ApiModelProperty(value = "标题")
