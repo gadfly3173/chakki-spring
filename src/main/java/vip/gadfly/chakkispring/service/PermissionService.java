@@ -1,6 +1,7 @@
 package vip.gadfly.chakkispring.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import vip.gadfly.chakkispring.bo.ModulePermissionBO;
 import vip.gadfly.chakkispring.model.PermissionDO;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public interface PermissionService extends IService<PermissionDO> {
      * @param permissions 权限
      * @return 结构化的权限
      */
-    List<Map<String, List<Map<String, String>>>> structuringPermissions(List<PermissionDO> permissions);
+    List<Map<String, List<ModulePermissionBO>>> structuringPermissions(List<PermissionDO> permissions);
 
     /**
      * 将权限简单地结构化

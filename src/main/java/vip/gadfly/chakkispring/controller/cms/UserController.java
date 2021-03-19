@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+import vip.gadfly.chakkispring.bo.ModulePermissionBO;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.common.util.ValidateCodeUtil;
@@ -271,7 +272,7 @@ public class UserController {
     public UserPermissionVO getPermissions() {
         UserDO user = LocalUser.getLocalUser();
         boolean admin = groupService.checkIsRootByUserId(user.getId());
-        List<Map<String, List<Map<String, String>>>> permissions =
+        List<Map<String, List<ModulePermissionBO>>> permissions =
                 userService.getStructuralUserPermissions(user.getId());
         UserPermissionVO userPermissions = new UserPermissionVO(user, permissions);
         userPermissions.setAdmin(admin);

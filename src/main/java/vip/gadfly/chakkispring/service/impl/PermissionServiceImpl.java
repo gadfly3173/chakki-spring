@@ -2,6 +2,7 @@ package vip.gadfly.chakkispring.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import vip.gadfly.chakkispring.bo.ModulePermissionBO;
 import vip.gadfly.chakkispring.mapper.PermissionMapper;
 import vip.gadfly.chakkispring.model.PermissionDO;
 import vip.gadfly.chakkispring.service.PermissionService;
@@ -38,8 +39,8 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
      */
     @Override
     public Map<Integer, List<PermissionDO>> getPermissionMapByGroupIds(List<Integer> groupIds) {
-        HashMap map = new HashMap(groupIds.size());
-        groupIds.stream().forEach(groupId -> {
+        HashMap<Integer, List<PermissionDO>> map = new HashMap<>(groupIds.size());
+        groupIds.forEach(groupId -> {
             List<PermissionDO> permissions = this.baseMapper.selectPermissionsByGroupId(groupId);
             map.put(groupId, permissions);
         });
@@ -47,31 +48,28 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     }
 
     @Override
-    public List<Map<String, List<Map<String, String>>>> structuringPermissions(List<PermissionDO> permissions) {
-        Map<String, List<Map<String, String>>> tmp = new HashMap();
+    public List<Map<String, List<ModulePermissionBO>>> structuringPermissions(List<PermissionDO> permissions) {
+        Map<String, List<ModulePermissionBO>> tmp = new HashMap<>();
         permissions.forEach(permission -> {
+            ModulePermissionBO tiny = new ModulePermissionBO(
+                    permission.getModule(),
+                    permission.getName()
+            );
             if (!tmp.containsKey(permission.getModule())) {
-                Map<String, String> tiny = new HashMap();
-                tiny.put("module", permission.getModule());
-                tiny.put("permission", permission.getName());
-                List<Map<String, String>> mini = new ArrayList();
+                List<ModulePermissionBO> mini = new ArrayList<>();
                 mini.add(tiny);
                 tmp.put(permission.getModule(), mini);
             } else {
-                Map<String, String> tiny = new HashMap();
-                tiny.put("module", permission.getModule());
-                tiny.put("permission", permission.getName());
                 tmp.get(permission.getModule()).add(tiny);
             }
-            permission.getName();
         });
-        List<Map<String, List<Map<String, String>>>> structualPermissions = new ArrayList();
+        List<Map<String, List<ModulePermissionBO>>> structuralPermissions = new ArrayList<>();
         tmp.forEach((k, v) -> {
-            Map<String, List<Map<String, String>>> ttmp = new HashMap();
-            ttmp.put(k, v);
-            structualPermissions.add(ttmp);
+            Map<String, List<ModulePermissionBO>> temp2 = new HashMap<>();
+            temp2.put(k, v);
+            structuralPermissions.add(temp2);
         });
-        return structualPermissions;
+        return structuralPermissions;
     }
 
     @Override

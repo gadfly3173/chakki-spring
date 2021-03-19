@@ -2,6 +2,7 @@ package vip.gadfly.chakkispring.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import vip.gadfly.chakkispring.bo.ModulePermissionBO;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.dto.user.BatchRegisterDTO;
 import vip.gadfly.chakkispring.dto.user.ChangePasswordDTO;
@@ -70,7 +71,7 @@ public interface UserService extends IService<UserDO> {
      * @param userId 用户id
      * @return 权限
      */
-    List<Map<String, List<Map<String, String>>>> getStructuralUserPermissions(Integer userId);
+    List<Map<String, List<ModulePermissionBO>>> getStructuralUserPermissions(Integer userId);
 
     /**
      * 获得用户所有权限

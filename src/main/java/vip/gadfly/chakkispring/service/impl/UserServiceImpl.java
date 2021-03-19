@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import vip.gadfly.chakkispring.bo.ModulePermissionBO;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.enumeration.GroupLevelEnum;
 import vip.gadfly.chakkispring.common.mybatis.Page;
@@ -172,7 +173,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     }
 
     @Override
-    public List<Map<String, List<Map<String, String>>>> getStructuralUserPermissions(Integer userId) {
+    public List<Map<String, List<ModulePermissionBO>>> getStructuralUserPermissions(Integer userId) {
         List<PermissionDO> permissions = getUserPermissions(userId);
         return permissionService.structuringPermissions(permissions);
     }
