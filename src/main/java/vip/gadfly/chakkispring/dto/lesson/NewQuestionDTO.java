@@ -34,7 +34,7 @@ public class NewQuestionDTO {
     @Max(value = 2, message = "{lesson.questionnaire.question.type.not-null}")
     private Integer type;
 
-    @ApiModelProperty(value = "上限", notes = "目前用于选择题", allowableValues = "range[1,10]")
+    @ApiModelProperty(value = "上限，目前用于选择题", allowableValues = "range[1,10]")
     @Min(value = 1, message = "{lesson.questionnaire.question.limit.not-null}")
     @Max(value = 10, message = "{lesson.questionnaire.question.limit.not-null}")
     private Integer limitMax;

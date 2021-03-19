@@ -52,7 +52,7 @@ public class Swagger2Configuration {
 
     /**
      * 创建该API的基本信息（这些基本信息会展现在文档页面中）
-     * 访问地址：http://localhost:5000/api/doc.html
+     * 访问地址：<a href="http://localhost:5000/api/doc.html">http://localhost:5000/api/doc.html</a>
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()

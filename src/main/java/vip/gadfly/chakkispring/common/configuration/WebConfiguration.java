@@ -103,9 +103,6 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // classpath: or file:
-        registry.addResourceHandler(getDirServePath())
-                .addResourceLocations("file:" + getAbsDir() + "/");
         // 解决 knife4j SWAGGER 404报错
         registry.addResourceHandler("doc.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
