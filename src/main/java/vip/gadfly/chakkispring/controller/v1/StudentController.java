@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.core.annotation.GroupRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.core.annotation.PermissionModule;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +32,8 @@ import static vip.gadfly.chakkispring.common.constant.ClassVerifyConstant.*;
 /**
  * @author Gadfly
  */
+
+@Api(value = "/v1/class", tags = "学生接口")
 @RestController
 @RequestMapping("/v1/class")
 @PermissionModule(value = "学生")

@@ -40,6 +40,9 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Value("${request-log.enabled:false}")
     private boolean requestLogEnabled;
 
+    @Value("${qps-limit.enabled:false}")
+    private boolean qpsLimitEnabled;
+
     @Autowired
     private AuthorizeInterceptor authorizeInterceptor;
 
@@ -82,7 +85,9 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // QPS拦截器
-        registry.addInterceptor(limitInterceptor);
+        if (qpsLimitEnabled) {
+            registry.addInterceptor(limitInterceptor);
+        }
         if (authEnabled) {
             //开发环境忽略签名认证
             registry.addInterceptor(authorizeInterceptor)
@@ -101,6 +106,11 @@ public class WebConfiguration implements WebMvcConfigurer {
         // classpath: or file:
         registry.addResourceHandler(getDirServePath())
                 .addResourceLocations("file:" + getAbsDir() + "/");
+        // 解决 knife4j SWAGGER 404报错
+        registry.addResourceHandler("doc.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
     @Bean

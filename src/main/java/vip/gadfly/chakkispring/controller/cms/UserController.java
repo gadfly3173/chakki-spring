@@ -7,12 +7,18 @@ import io.github.talelin.autoconfigure.exception.ParameterException;
 import io.github.talelin.core.annotation.*;
 import io.github.talelin.core.token.DoubleJWT;
 import io.github.talelin.core.token.Tokens;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.common.util.ValidateCodeUtil;
@@ -37,6 +43,7 @@ import java.util.Map;
  * License MIT
  */
 
+@Api(value = "/cms/user", tags = "用户认证及信息")
 @RestController
 @RequestMapping("/cms/user")
 @PermissionModule(value = "用户")
@@ -65,6 +72,7 @@ public class UserController {
     /**
      * 用户注册
      */
+    @ApiOperation(value = "用户注册", notes = "用户注册")
     @PostMapping("/register")
     @AdminRequired
     public UnifyResponseVO<String> register(@RequestBody @Validated RegisterDTO validator) {
@@ -75,6 +83,7 @@ public class UserController {
     /**
      * 用户批量注册
      */
+    @ApiOperation(value = "用户批量注册", notes = "用户批量注册")
     @PostMapping("/register/batch")
     @AdminRequired
     public UnifyResponseVO<String> register(@RequestBody @Validated BatchRegisterDTO validator) {
@@ -85,8 +94,10 @@ public class UserController {
     /**
      * 用户登录
      */
+    @ApiOperation(value = "用户名密码登录接口", notes = "用户名密码登录")
     @PostMapping("/login")
-    public TokensWithMFA login(@RequestBody @Validated LoginDTO validator, HttpSession session) {
+    public TokensWithMFA login(@RequestBody @Validated LoginDTO validator,
+                               @ApiIgnore HttpSession session) {
         String sessionCode = String.valueOf(session.getAttribute(ValidateCodeUtil.sessionKey));
         String receivedCode = validator.getCaptcha();
         if (!sessionCode.equalsIgnoreCase(receivedCode)) {
@@ -125,8 +136,10 @@ public class UserController {
         return tokensWithMFA;
     }
 
+    @ApiOperation(value = "两步验证登录接口", notes = "两步验证登录")
     @PostMapping("/login_with_mfa/{code}")
-    public Tokens loginWithMFA(@PathVariable @NotNull Integer code, HttpSession session) {
+    public Tokens loginWithMFA(@ApiParam(value = "六位验证码", required = true) @PathVariable @NotNull Integer code,
+                               @ApiIgnore HttpSession session) {
         String username = String.valueOf(session.getAttribute("username"));
         Integer userId = (Integer) session.getAttribute("userid");
         if (!StringUtils.hasText(username) || userId == null) {
@@ -145,8 +158,9 @@ public class UserController {
         return jwt.generateTokens(userId);
     }
 
+    @ApiOperation(value = "获取验证码", notes = "获取验证码")
     @GetMapping("/get_captcha_img")
-    public String getCaptchaImg(HttpSession session) throws IOException {
+    public String getCaptchaImg(@ApiIgnore HttpSession session) throws IOException {
         ValidateCodeUtil validateCode = new ValidateCodeUtil();
         // 返回base64
         String base64String = validateCode.getRandomCodeBase64(session);
@@ -168,9 +182,10 @@ public class UserController {
     /**
      * 获取两步验证密钥
      */
+    @ApiOperation(value = "获取两步验证密钥", notes = "获取两步验证密钥")
     @PostMapping("/get_mfa_secret")
     @GroupRequired
-    public String setUserMFASecret(HttpSession session) throws UnsupportedEncodingException {
+    public String setUserMFASecret(@ApiIgnore HttpSession session) throws UnsupportedEncodingException {
         UserDO user = LocalUser.getLocalUser();
         if (googleAuthenticatorService.MFAexist(user.getId())) {
             throw new FailedException(10103);
@@ -181,6 +196,7 @@ public class UserController {
     /**
      * 获取两步验证开通状态
      */
+    @ApiOperation(value = "获取两步验证开通状态", notes = "获取两步验证开通状态")
     @GetMapping("/mfa")
     @GroupRequired
     public boolean getUserMFAStatus() {
@@ -191,9 +207,11 @@ public class UserController {
     /**
      * 删除两步验证密钥
      */
+    @ApiOperation(value = "删除两步验证密钥", notes = "删除两步验证密钥")
     @PostMapping("/delete_mfa_secret/{code}")
     @GroupRequired
-    public UnifyResponseVO<String> deleteUserMFASecret(@PathVariable @NotNull Integer code) {
+    public UnifyResponseVO<String> deleteUserMFASecret(@ApiParam(value = "两步验证码", required = true)
+                                                       @PathVariable @NotNull Integer code) {
         UserDO user = LocalUser.getLocalUser();
         if (googleAuthenticatorService.validCodeWithUsername(user.getUsername(), code)) {
             googleAuthenticatorService.cancelMFA(user.getId());
@@ -205,9 +223,12 @@ public class UserController {
     /**
      * 启用后验证两步验证密钥，成功才会写入数据库
      */
+    @ApiOperation(value = "验证并开通两步验证密钥", notes = "验证并开通两步验证密钥")
     @PostMapping("/confirm_mfa_secret/{code}")
     @GroupRequired
-    public UnifyResponseVO<String> confirmUserMFASecret(@PathVariable @NotNull Integer code, HttpSession session) {
+    public UnifyResponseVO<String> confirmUserMFASecret(
+            @ApiParam(value = "两步验证码", required = true) @PathVariable @NotNull Integer code,
+            @ApiIgnore HttpSession session) {
         UserDO user = LocalUser.getLocalUser();
         String secretKey = String.valueOf(session.getAttribute("secretKey"));
         if (!StringUtils.hasText(secretKey)) {
@@ -223,6 +244,7 @@ public class UserController {
     /**
      * 修改密码
      */
+    @ApiOperation(value = "修改密码", notes = "修改密码")
     @PutMapping("/change_password")
     @GroupRequired
     public UnifyResponseVO<String> updatePassword(@RequestBody @Validated ChangePasswordDTO validator) {
@@ -233,6 +255,7 @@ public class UserController {
     /**
      * 刷新令牌
      */
+    @ApiOperation(value = "刷新令牌", notes = "刷新令牌")
     @GetMapping("/refresh")
     @RefreshRequired
     public Tokens getRefreshToken() {
@@ -243,6 +266,7 @@ public class UserController {
     /**
      * 查询拥有权限
      */
+    @ApiOperation(value = "查询自己拥有的权限", notes = "查询自己拥有的权限")
     @GetMapping("/permissions")
     @GroupRequired
     @PermissionMeta(value = "查询自己拥有的权限")
@@ -259,6 +283,7 @@ public class UserController {
     /**
      * 查询自己信息
      */
+    @ApiOperation(value = "查询自己信息", notes = "查询自己信息")
     @GetMapping("/information")
     @GroupRequired
     @PermissionMeta(value = "查询自己信息")

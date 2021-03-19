@@ -1,0 +1,22 @@
+{
+  "properties": [
+    {
+      "name": "auth.enabled",
+      "type": "java.lang.Boolean",
+      "description": "权限配置.",
+      "defaultValue": false
+    },
+    {
+      "name": "qps-limit.enabled",
+      "type": "java.lang.Boolean",
+      "description": "QPS限制是否开启.",
+      "defaultValue": false
+    },
+    {
+      "name": "request-log.enabled",
+      "type": "java.lang.Boolean",
+      "description": "http请求日志记录.",
+      "defaultValue": true
+    }
+  ]
+}

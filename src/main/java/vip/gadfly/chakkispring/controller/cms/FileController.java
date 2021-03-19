@@ -2,6 +2,7 @@ package vip.gadfly.chakkispring.controller.cms;
 
 import io.github.talelin.core.annotation.GroupRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import static vip.gadfly.chakkispring.common.constant.ClassVerifyConstant.*;
 
+@Api(value = "/cms/file", tags = "文件管理及下载")
 @Controller
 @RequestMapping("/cms/file")
 @Validated

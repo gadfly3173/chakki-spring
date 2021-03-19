@@ -23,6 +23,20 @@ spring:
 auth:
   enabled: true
 
+# 开启 knife4j 增强配置
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+    enableSwaggerModels: true
+    swaggerModelName: "实体类列表"
+    enableVersion: true
+    enableFooter: false
+  production: false
+
+# 关闭 QPS 限制
+qps-limit:
+  enabled: false
 
 # 开启http请求日志记录
 request-log:
