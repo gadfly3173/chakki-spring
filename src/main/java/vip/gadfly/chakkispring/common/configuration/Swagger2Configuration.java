@@ -5,15 +5,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpHeaders;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Gadfly
@@ -41,12 +48,21 @@ public class Swagger2Configuration {
      */
     @Bean()
     public Docket defaultApi2() {
+        //添加header参数
+        ParameterBuilder ticketPar = new ParameterBuilder();
+        List<Parameter> pars = new ArrayList<>();
+        ticketPar.name(HttpHeaders.AUTHORIZATION).description("用户 token，除登录接口及验证码接口以外都需要")
+                .modelRef(new ModelRef("string")).parameterType("header")
+                //header中的token参数非必填，传空也可以
+                .required(false).build();
+        pars.add(ticketPar.build());
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("vip.gadfly.chakkispring.controller"))
                 .paths(PathSelectors.any())
                 .build()
+                .globalOperationParameters(pars)
                 .extensions(openApiExtensionResolver.buildSettingExtensions());
     }
 
