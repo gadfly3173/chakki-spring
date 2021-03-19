@@ -6,6 +6,7 @@ import io.github.talelin.core.annotation.GroupRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.core.annotation.PermissionModule;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
@@ -43,8 +44,10 @@ public class LessonController {
     @Autowired
     private ClassService classService;
 
-    // 班级接口
-
+    /**
+     * 班级接口
+     */
+    @ApiOperation(value = "查询教师本学期所属班级", notes = "查询教师本学期所属班级")
     @GetMapping("/class/list")
     @GroupRequired
     @PermissionMeta(value = "查询教师本学期所属班级")
@@ -53,6 +56,7 @@ public class LessonController {
         return classService.getClassesBySemesterAndTeacher(semesterId, teacherId);
     }
 
+    @ApiOperation(value = "查询一个班级", notes = "查询一个班级")
     @GetMapping("/class/{id}")
     @GroupRequired
     @PermissionMeta(value = "查询一个班级")
@@ -61,6 +65,7 @@ public class LessonController {
         return classService.getClass(id);
     }
 
+    @ApiOperation(value = "查询所有此班级学生", notes = "查询所有此班级学生")
     @GetMapping("/students")
     @GroupRequired
     @PermissionMeta(value = "查询所有此班级学生")
@@ -76,6 +81,7 @@ public class LessonController {
         return PageUtil.build(iPage);
     }
 
+    @ApiOperation(value = "发起签到", notes = "发起签到")
     @PostMapping("/sign/create")
     @GroupRequired
     @PermissionMeta(value = "发起签到")
@@ -85,6 +91,7 @@ public class LessonController {
         return ResponseUtil.generateUnifyResponse(19);
     }
 
+    @ApiOperation(value = "查看所有签到项目", notes = "查看所有签到项目")
     @GetMapping("/sign/list")
     @GroupRequired
     @PermissionMeta(value = "查看所有签到项目")
@@ -100,6 +107,7 @@ public class LessonController {
         return PageUtil.build(iPage);
     }
 
+    @ApiOperation(value = "查询单个签到项目下的所有学生", notes = "查询单个签到项目下的所有学生")
     @GetMapping("/sign/students/query/{signId}")
     @GroupRequired
     @PermissionMeta(value = "查询单个签到项目下的所有学生")
@@ -122,6 +130,7 @@ public class LessonController {
         return PageUtil.build(iPage);
     }
 
+    @ApiOperation(value = "查询一个签到信息", notes = "查询一个签到信息")
     @GetMapping("/sign/{id}")
     @GroupRequired
     @PermissionMeta(value = "查询一个签到信息")
@@ -130,6 +139,7 @@ public class LessonController {
         return classService.getSign(id);
     }
 
+    @ApiOperation(value = "修改签到记录", notes = "修改签到记录")
     @PostMapping("/sign/record/update/{signId}")
     @GroupRequired
     @PermissionMeta(value = "修改签到记录")
@@ -142,6 +152,7 @@ public class LessonController {
         return ResponseUtil.generateUnifyResponse(10212);
     }
 
+    @ApiOperation(value = "教师查询所有学期", notes = "教师查询所有学期")
     @GetMapping("/semester/all")
     @GroupRequired
     @PermissionMeta(value = "教师查询所有学期")
@@ -149,6 +160,7 @@ public class LessonController {
         return classService.getAllSemesters();
     }
 
+    @ApiOperation(value = "发起作业", notes = "发起作业")
     @PostMapping("/work/create")
     @GroupRequired
     @PermissionMeta(value = "发起作业")
@@ -158,6 +170,7 @@ public class LessonController {
         return ResponseUtil.generateUnifyResponse(28);
     }
 
+    @ApiOperation(value = "删除作业", notes = "删除作业")
     @PostMapping("/work/delete/{id}")
     @GroupRequired
     @PermissionMeta(value = "删除作业")
@@ -167,6 +180,7 @@ public class LessonController {
         return ResponseUtil.generateUnifyResponse(29);
     }
 
+    @ApiOperation(value = "查看所有作业项目", notes = "查看所有作业项目")
     @GetMapping("/work/list")
     @GroupRequired
     @PermissionMeta(value = "查看所有作业项目")
@@ -182,15 +196,17 @@ public class LessonController {
         return PageUtil.build(iPage);
     }
 
+    @ApiOperation(value = "修改作业", notes = "修改作业")
     @PostMapping("/work/update")
     @GroupRequired
-    @PermissionMeta(value = "发起作业")
+    @PermissionMeta(value = "修改作业")
     @TeacherClassCheck(valueType = workIdType, paramType = requestBodyType, valueName = "id")
     public UnifyResponseVO<String> updateWork(@RequestBody @Validated UpdateWorkDTO validator) {
         classService.updateWork(validator);
         return ResponseUtil.generateUnifyResponse(30);
     }
 
+    @ApiOperation(value = "查询单个作业项目下的所有学生", notes = "查询单个作业项目下的所有学生")
     @GetMapping("/work/students/query/{workId}")
     @GroupRequired
     @PermissionMeta(value = "查询单个作业项目下的所有学生")
@@ -213,6 +229,7 @@ public class LessonController {
         return PageUtil.build(iPage);
     }
 
+    @ApiOperation(value = "查询一个作业信息", notes = "查询一个作业信息")
     @GetMapping("/work/{id}")
     @GroupRequired
     @PermissionMeta(value = "查询一个作业信息")
@@ -221,6 +238,7 @@ public class LessonController {
         return classService.getWorkDetail(id);
     }
 
+    @ApiOperation(value = "给学生作业打分", notes = "给学生作业打分")
     @PostMapping("/work/student/rate/{id}")
     @GroupRequired
     @PermissionMeta(value = "给学生作业打分")
@@ -231,6 +249,7 @@ public class LessonController {
         return ResponseUtil.generateUnifyResponse(32);
     }
 
+    @ApiOperation(value = "删除学生作业", notes = "删除学生作业")
     @PostMapping("/work/student/delete/{id}")
     @GroupRequired
     @PermissionMeta(value = "删除学生作业")
@@ -240,6 +259,7 @@ public class LessonController {
         return ResponseUtil.generateUnifyResponse(33);
     }
 
+    @ApiOperation(value = "发布通知公告", notes = "发布通知公告")
     @PostMapping("/announcement/create")
     @GroupRequired
     @PermissionMeta(value = "发布通知公告")
@@ -248,6 +268,7 @@ public class LessonController {
         return classService.createAnnouncement(dto);
     }
 
+    @ApiOperation(value = "修改通知公告", notes = "修改通知公告")
     @PostMapping("/announcement/update/{id}")
     @GroupRequired
     @PermissionMeta(value = "修改通知公告")
@@ -258,6 +279,7 @@ public class LessonController {
         return ResponseUtil.generateUnifyResponse(38);
     }
 
+    @ApiOperation(value = "修改公告文件", notes = "修改公告文件")
     @PostMapping("/announcement/attachment/{id}")
     @GroupRequired
     @PermissionMeta(value = "修改公告文件")
@@ -274,6 +296,7 @@ public class LessonController {
         return ResponseUtil.generateUnifyResponse(36);
     }
 
+    @ApiOperation(value = "查看所有通知公告", notes = "查看所有通知公告")
     @GetMapping("/announcement/list")
     @GroupRequired
     @PermissionMeta(value = "查看所有通知公告")
@@ -289,6 +312,7 @@ public class LessonController {
         return PageUtil.build(iPage);
     }
 
+    @ApiOperation(value = "查看单个通知公告", notes = "查看单个通知公告")
     @GetMapping("/announcement/{id}")
     @GroupRequired
     @PermissionMeta(value = "查看单个通知公告")
@@ -297,6 +321,7 @@ public class LessonController {
         return classService.getAnnouncementVO(id);
     }
 
+    @ApiOperation(value = "删除通知公告", notes = "删除通知公告")
     @PostMapping("/announcement/delete/{id}")
     @GroupRequired
     @PermissionMeta(value = "删除通知公告")
@@ -306,6 +331,7 @@ public class LessonController {
         return ResponseUtil.generateUnifyResponse(37);
     }
 
+    @ApiOperation(value = "发布问卷", notes = "发布问卷")
     @PostMapping("/questionnaire/create")
     @GroupRequired
     @PermissionMeta(value = "发布问卷")
@@ -315,6 +341,7 @@ public class LessonController {
         return ResponseUtil.generateUnifyResponse(39);
     }
 
+    @ApiOperation(value = "查看所有问卷", notes = "查看所有问卷")
     @GetMapping("/questionnaire/list")
     @GroupRequired
     @PermissionMeta(value = "查看所有问卷")
@@ -330,6 +357,7 @@ public class LessonController {
         return PageUtil.build(iPage);
     }
 
+    @ApiOperation(value = "删除问卷", notes = "删除问卷")
     @PostMapping("/questionnaire/delete/{id}")
     @GroupRequired
     @PermissionMeta(value = "删除问卷")

@@ -4,13 +4,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.core.annotation.GroupRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.core.annotation.PermissionModule;
-import io.swagger.annotations.Api;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import springfox.documentation.annotations.ApiIgnore;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.annotation.StudentClassCheck;
 import vip.gadfly.chakkispring.common.util.IPUtil;
@@ -42,9 +43,11 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
     @Autowired
     private ClassService classService;
 
+    @ApiOperation(value = "查看自己所属班级", notes = "查看自己所属班级")
     @GroupRequired
     @PermissionMeta(value = "查看自己所属班级")
     @GetMapping("/list")
@@ -52,19 +55,23 @@ public class StudentController {
         return studentService.getStudentClassList();
     }
 
+    @ApiOperation(value = "查询学生本学期所属班级", notes = "查询学生本学期所属班级")
     @GetMapping("/class/list")
     @GroupRequired
     @PermissionMeta(value = "查询学生本学期所属班级")
-    public List<ClassDO> getClassesBySemesterAndStudent(@RequestParam("semester_id") Integer semesterId) {
+    public List<ClassDO> getClassesBySemesterAndStudent(
+            @ApiParam(value = "学期id", required = true) @RequestParam("semester_id") Integer semesterId) {
         Integer userId = LocalUser.getLocalUser().getId();
         return classService.getClassesBySemesterAndStudent(semesterId, userId);
     }
 
+    @ApiOperation(value = "查询特定班级", notes = "查询特定班级")
     @GetMapping("/{id}")
     @GroupRequired
     @PermissionMeta(value = "查询特定班级")
     @StudentClassCheck(valueType = classIdType, paramType = pathVariableType)
-    public ClassDO getClass(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public ClassDO getClass(@ApiParam(value = "班级id", required = true)
+                            @PathVariable @Positive(message = "{id.positive}") Integer id) {
         return classService.getClass(id);
     }
 
@@ -84,24 +91,28 @@ public class StudentController {
         return PageUtil.build(iPage);
     }
 
+    @ApiOperation(value = "查看班级最新签到项目", notes = "查看班级最新签到项目")
     @GroupRequired
     @PermissionMeta(value = "查看班级最新签到项目")
     @GetMapping("/sign/latest")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public SignListVO getLatestSign(
+            @ApiParam(value = "班级id", required = true)
             @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Integer classId) {
+            @Positive(message = "{class-id}") Integer classId) {
         return studentService.getLatestSignByClassId(classId);
     }
 
+    @ApiOperation(value = "学生进行签到", notes = "学生进行签到")
     @GroupRequired
     @PermissionMeta(value = "学生进行签到")
     @PostMapping("/sign/confirm/{signId}")
     @StudentClassCheck(valueType = signIdType, paramType = pathVariableType)
     public UnifyResponseVO<String> confirmStudentSign(
-            @Min(value = 1, message = "{lesson.sign.id.positive}")
+            @ApiParam(value = "签到id", required = true)
+            @Positive(message = "{lesson.sign.id.positive}")
             @PathVariable Integer signId,
-            HttpServletRequest request) {
+            @ApiIgnore HttpServletRequest request) {
         if (!studentService.signAvailable(signId)) {
             return ResponseUtil.generateUnifyResponse(10211);
         }
@@ -112,6 +123,7 @@ public class StudentController {
         return ResponseUtil.generateUnifyResponse(20);
     }
 
+    @ApiOperation(value = "学生查询所有学期", notes = "学生查询所有学期")
     @GroupRequired
     @GetMapping("/semester/all")
     @PermissionMeta(value = "学生查询所有学期")
@@ -119,37 +131,45 @@ public class StudentController {
         return classService.getAllSemesters();
     }
 
+    @ApiOperation(value = "查看班级内作业项目", notes = "查看班级内作业项目")
     @GroupRequired
     @PermissionMeta(value = "查看班级内作业项目")
     @GetMapping("/work/list")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO<WorkVO> getWorkList(
-            @RequestParam(name = "class_id")
+            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @ApiParam(value = "每页数量", required = true) @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
-            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @ApiParam(value = "页数", required = true) @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<WorkVO> iPage = classService.getWorkPageForStudentByClassId(classId, count, page);
         return PageUtil.build(iPage);
     }
 
+    @ApiOperation(value = "查询作业详情", notes = "查询作业详情")
     @GetMapping("/work/{id}")
     @GroupRequired
     @PermissionMeta(value = "查询作业详情")
     @StudentClassCheck(valueType = workIdType, paramType = pathVariableType)
-    public WorkVO getWorkDetailForStudent(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public WorkVO getWorkDetailForStudent(@ApiParam(value = "作业id", required = true)
+                                          @PathVariable @Positive(message = "{id.positive}") Integer id) {
         return classService.getOneWorkForStudent(id);
     }
 
+    @ApiOperation(value = "交作业", notes = "交作业")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "workId", value = "作业id", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "file", value = "上传的文件", required = true,
+                    paramType = "form", dataType = "__File", allowMultiple = true)})
     @GroupRequired
     @PermissionMeta(value = "交作业")
     @PostMapping("/work/hand/{workId}")
     @StudentClassCheck(valueType = workIdType, paramType = pathVariableType)
     public UnifyResponseVO<String> handStudentWork(
-            @Min(value = 1, message = "{lesson.sign.id.positive}")
+            @Positive(message = "{lesson.sign.id.positive}")
             @PathVariable Integer workId,
-            MultipartHttpServletRequest multipartHttpServletRequest) {
+            @ApiIgnore MultipartHttpServletRequest multipartHttpServletRequest) {
         if (!studentService.workAvailable(workId)) {
             return ResponseUtil.generateUnifyResponse(10231);
         }
@@ -162,26 +182,29 @@ public class StudentController {
         return ResponseUtil.generateUnifyResponse(31);
     }
 
+    @ApiOperation(value = "查看所有通知公告", notes = "查看所有通知公告")
     @GetMapping("/announcement/list")
     @GroupRequired
     @PermissionMeta(value = "查看所有通知公告")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO<AnnouncementVO> getAnnouncementList(
-            @RequestParam(name = "class_id")
+            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @ApiParam(value = "每页数量", required = true) @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
-            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @ApiParam(value = "页数", required = true) @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<AnnouncementVO> iPage = classService.getAnnouncementPageByClassId(classId, count, page);
         return PageUtil.build(iPage);
     }
 
+    @ApiOperation(value = "查看单个通知公告", notes = "查看单个通知公告")
     @GetMapping("/announcement/{id}")
     @GroupRequired
     @PermissionMeta(value = "查看单个通知公告")
     @StudentClassCheck(valueType = announcementIdType, paramType = pathVariableType)
-    public AnnouncementVO getAnnouncementVO(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public AnnouncementVO getAnnouncementVO(@ApiParam(value = "公告id", required = true)
+            @PathVariable @Positive(message = "{id.positive}") Integer id) {
         return classService.getAnnouncementVO(id);
     }
 

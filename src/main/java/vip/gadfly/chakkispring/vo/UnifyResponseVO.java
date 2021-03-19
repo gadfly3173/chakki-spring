@@ -2,6 +2,8 @@ package vip.gadfly.chakkispring.vo;
 
 import io.github.talelin.autoconfigure.bean.Code;
 import io.github.talelin.autoconfigure.util.RequestUtil;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,12 +17,16 @@ import vip.gadfly.chakkispring.common.util.ResponseUtil;
 @Data
 @Builder
 @AllArgsConstructor
+@ApiModel(value = "通用信息返回VO", description = "通知VO")
 public class UnifyResponseVO<T> {
 
+    @ApiModelProperty(value = "消息码", example = "0")
     private int code;
 
+    @ApiModelProperty(value = "消息内容", example = "成功")
     private T message;
 
+    @ApiModelProperty(value = "请求URL", example = "GET /api/xxxxx")
     private String request;
 
     public UnifyResponseVO() {
