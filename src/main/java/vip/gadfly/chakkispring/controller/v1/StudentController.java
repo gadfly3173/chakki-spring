@@ -204,7 +204,7 @@ public class StudentController {
     @PermissionMeta(value = "查看单个通知公告")
     @StudentClassCheck(valueType = announcementIdType, paramType = pathVariableType)
     public AnnouncementVO getAnnouncementVO(@ApiParam(value = "公告id", required = true)
-            @PathVariable @Positive(message = "{id.positive}") Integer id) {
+                                            @PathVariable @Positive(message = "{id.positive}") Integer id) {
         return classService.getAnnouncementVO(id);
     }
 
