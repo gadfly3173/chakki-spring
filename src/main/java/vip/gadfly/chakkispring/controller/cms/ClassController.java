@@ -1,6 +1,7 @@
 package vip.gadfly.chakkispring.controller.cms;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.github.talelin.autoconfigure.exception.FailedException;
 import io.github.talelin.core.annotation.GroupRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.core.annotation.PermissionModule;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import vip.gadfly.chakkispring.common.util.PageUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.dto.admin.*;
+import vip.gadfly.chakkispring.dto.query.ClassIdNamePageDTO;
+import vip.gadfly.chakkispring.dto.query.ClassIdPageDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.UserDO;
@@ -20,7 +23,6 @@ import vip.gadfly.chakkispring.vo.TeacherClassVO;
 import vip.gadfly.chakkispring.vo.UnifyResponseVO;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class ClassController {
         if (classService.createClass(validator)) {
             return ResponseUtil.generateUnifyResponse(16);
         }
-        return ResponseUtil.generateUnifyResponse(10200);
+        throw new FailedException(10200);
     }
 
     @PutMapping("/class/{id}")
@@ -72,7 +74,7 @@ public class ClassController {
         if (classService.updateClass(id, validator)) {
             return ResponseUtil.generateUnifyResponse(14);
         }
-        return ResponseUtil.generateUnifyResponse(10200);
+        throw new FailedException(10200);
     }
 
     @DeleteMapping("/class/{id}")
@@ -82,50 +84,38 @@ public class ClassController {
         if (classService.deleteClass(id)) {
             return ResponseUtil.generateUnifyResponse(15);
         }
-        return ResponseUtil.generateUnifyResponse(10200);
+        throw new FailedException(10200);
     }
 
     @GetMapping("/students")
     @GroupRequired
     @PermissionMeta(value = "查询所有此班级学生")
-    public PageResponseVO<UserDO> getStudents(
-            @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Integer classId,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
-        IPage<UserDO> iPage = classService.getUserPageByClassId(classId, count, page);
+    public PageResponseVO<UserDO> getStudents(@Validated ClassIdPageDTO classIdPageDTO) {
+        IPage<UserDO> iPage = classService.getUserPageByClassId(classIdPageDTO.getClassId(),
+                classIdPageDTO.getCount(),
+                classIdPageDTO.getPage());
         return PageUtil.build(iPage);
     }
 
     @GetMapping("/students/fresh")
     @GroupRequired
     @PermissionMeta(value = "查询所有不在此班级的学生")
-    public PageResponseVO<UserDO> getFreshStudents(
-            @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Integer classId,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
-        IPage<UserDO> iPage = classService.getFreshUserPageByClassId(classId, count, page);
+    public PageResponseVO<UserDO> getFreshStudents(@Validated ClassIdPageDTO classIdPageDTO) {
+        IPage<UserDO> iPage = classService.getFreshUserPageByClassId(classIdPageDTO.getClassId(),
+                classIdPageDTO.getCount(),
+                classIdPageDTO.getPage());
         return PageUtil.build(iPage);
     }
 
     @GetMapping("/students/fresh_by_name")
     @GroupRequired
     @PermissionMeta(value = "查询名字符合的不在此班级的学生")
-    public PageResponseVO<UserDO> getFreshStudentsByName(
-            @RequestParam(name = "name")
-            @NotBlank(message = "{search-text.blank}") String name,
-            @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Integer classId,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
-        IPage<UserDO> iPage = classService.getFreshUserPageByClassIdAndName(classId, name, count, page);
+    public PageResponseVO<UserDO> getFreshStudentsByName(@Validated ClassIdNamePageDTO classIdNamePageDTO) {
+        IPage<UserDO> iPage = classService.getFreshUserPageByClassIdAndName(
+                classIdNamePageDTO.getClassId(),
+                classIdNamePageDTO.getName(),
+                classIdNamePageDTO.getCount(),
+                classIdNamePageDTO.getPage());
         return PageUtil.build(iPage);
     }
 
@@ -136,7 +126,7 @@ public class ClassController {
         if (classService.deleteStudentClassRelations(validator.getUserId(), validator.getClassIds())) {
             return ResponseUtil.generateUnifyResponse(17);
         }
-        return ResponseUtil.generateUnifyResponse(10206);
+        throw new FailedException(10206);
     }
 
     @PostMapping("/students/add")
@@ -146,7 +136,7 @@ public class ClassController {
         if (classService.addStudentClassRelations(validator.getClassId(), validator.getUserIds())) {
             return ResponseUtil.generateUnifyResponse(18);
         }
-        return ResponseUtil.generateUnifyResponse(10207);
+        throw new FailedException(10207);
     }
 
     @GetMapping("/teacher/list")
@@ -162,16 +152,12 @@ public class ClassController {
     @GetMapping("/teacher/fresh_by_name")
     @GroupRequired
     @PermissionMeta(value = "查询不在班级内的教师")
-    public PageResponseVO<UserDO> getFreshTeachersByName(
-            @RequestParam(name = "name")
-            @NotBlank(message = "{search-text.blank}") String name,
-            @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Integer classId,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
-        IPage<UserDO> iPage = classService.getFreshTeacherPageByClassIdAndName(classId, name, count, page);
+    public PageResponseVO<UserDO> getFreshTeachersByName(@Validated ClassIdNamePageDTO classIdNamePageDTO) {
+        IPage<UserDO> iPage = classService.getFreshTeacherPageByClassIdAndName(
+                classIdNamePageDTO.getClassId(),
+                classIdNamePageDTO.getName(),
+                classIdNamePageDTO.getCount(),
+                classIdNamePageDTO.getPage());
         return PageUtil.build(iPage);
     }
 
@@ -182,7 +168,7 @@ public class ClassController {
         if (classService.deleteTeacherClassRelations(validator.getUserId(), validator.getClassIds())) {
             return ResponseUtil.generateUnifyResponse(22);
         }
-        return ResponseUtil.generateUnifyResponse(10208);
+        throw new FailedException(10208);
     }
 
     @PostMapping("/teacher/add")
@@ -193,7 +179,7 @@ public class ClassController {
                 validator.getLevel())) {
             return ResponseUtil.generateUnifyResponse(23);
         }
-        return ResponseUtil.generateUnifyResponse(10209);
+        throw new FailedException(10209);
     }
 
     @PostMapping("/semester")
@@ -203,7 +189,7 @@ public class ClassController {
         if (classService.createSemester(validator)) {
             return ResponseUtil.generateUnifyResponse(26);
         }
-        return ResponseUtil.generateUnifyResponse(10200);
+        throw new FailedException(10200);
     }
 
     @GetMapping("/semester/all")
@@ -221,7 +207,7 @@ public class ClassController {
         if (classService.updateSemester(id, validator)) {
             return ResponseUtil.generateUnifyResponse(24);
         }
-        return ResponseUtil.generateUnifyResponse(10200);
+        throw new FailedException(10200);
     }
 
     @DeleteMapping("/semester/{id}")
@@ -231,6 +217,6 @@ public class ClassController {
         if (classService.deleteSemester(id)) {
             return ResponseUtil.generateUnifyResponse(25);
         }
-        return ResponseUtil.generateUnifyResponse(10200);
+        throw new FailedException(10200);
     }
 }
