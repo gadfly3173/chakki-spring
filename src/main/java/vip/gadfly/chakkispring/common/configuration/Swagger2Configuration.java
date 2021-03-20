@@ -28,10 +28,11 @@ import java.util.List;
  * <p>
  * Swagger2配置类
  */
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-@Configuration(proxyBeanMethods = false)
+@Slf4j
 @EnableSwagger2WebMvc
+@Configuration(proxyBeanMethods = false)
 @Import(BeanValidatorPluginsConfiguration.class)
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 public class Swagger2Configuration {
 
     private final OpenApiExtensionResolver openApiExtensionResolver;
@@ -70,14 +71,17 @@ public class Swagger2Configuration {
 
     /**
      * 创建该API的基本信息（这些基本信息会展现在文档页面中）
-     * 访问地址：<a href="http://localhost:5000/api/doc.html">http://localhost:5000/api/doc.html</a>
+     * 访问地址：<a href="http://localhost:5000/api/swagger2/doc.html">http://localhost:5000/api/swagger2/doc.html</a>
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Chakki 作业平台接口文档")
                 .description("毕业设计")
                 .termsOfServiceUrl("https://chakki.gadfly.vip/")
-                .contact(new Contact("Gadfly", "https://www.gadfly.vip/", "gadfly@gadfly.vip"))
+                .contact(new Contact(
+                        "Gadfly",
+                        "https://www.gadfly.vip/",
+                        "gadfly@gadfly.vip"))
                 .version("1.0")
                 .build();
     }

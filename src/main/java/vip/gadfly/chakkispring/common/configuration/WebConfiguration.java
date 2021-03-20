@@ -88,7 +88,8 @@ public class WebConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // QPS拦截器
         if (qpsLimitEnabled) {
-            registry.addInterceptor(limitInterceptor);
+            registry.addInterceptor(limitInterceptor)
+                    .excludePathPatterns("doc.html", "/webjars/**");
         }
         if (authEnabled) {
             //开发环境忽略签名认证
