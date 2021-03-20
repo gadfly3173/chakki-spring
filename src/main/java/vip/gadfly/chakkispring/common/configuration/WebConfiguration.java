@@ -13,6 +13,7 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -25,6 +26,7 @@ import vip.gadfly.chakkispring.module.file.FileUtil;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.List;
 
 
 /**
@@ -124,6 +126,11 @@ public class WebConfiguration implements WebMvcConfigurer {
         return tomcatServletWebServerFactory ->
                 tomcatServletWebServerFactory.addContextCustomizers(context ->
                         context.setCookieProcessor(new LegacyCookieProcessor()));
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new CustomServletModelAttributeMethodProcessor(true));
     }
 
     private String getDirServePath() {
