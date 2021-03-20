@@ -5,14 +5,14 @@ import io.github.talelin.autoconfigure.exception.FailedException;
 import io.github.talelin.core.annotation.GroupRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.core.annotation.PermissionModule;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import springfox.documentation.annotations.ApiIgnore;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.annotation.TeacherClassCheck;
 import vip.gadfly.chakkispring.common.util.PageUtil;
@@ -51,7 +51,8 @@ public class LessonController {
     @GetMapping("/class/list")
     @GroupRequired
     @PermissionMeta(value = "查询教师本学期所属班级")
-    public List<ClassDO> getClassesBySemesterAndTeacher(@RequestParam("semester_id") Integer semesterId) {
+    public List<ClassDO> getClassesBySemesterAndTeacher(@ApiParam(value = "学期id", required = true)
+                                                        @RequestParam("semester_id") Integer semesterId) {
         Integer teacherId = LocalUser.getLocalUser().getId();
         return classService.getClassesBySemesterAndTeacher(semesterId, teacherId);
     }
@@ -61,7 +62,8 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查询一个班级")
     @TeacherClassCheck(valueType = classIdType, paramType = pathVariableType)
-    public ClassDO getClass(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public ClassDO getClass(@ApiParam(value = "班级id", required = true)
+                            @PathVariable @Positive(message = "{id.positive}") Integer id) {
         return classService.getClass(id);
     }
 
@@ -71,11 +73,11 @@ public class LessonController {
     @PermissionMeta(value = "查询所有此班级学生")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO<UserDO> getStudents(
-            @RequestParam(name = "class_id")
+            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
-            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<UserDO> iPage = classService.getUserPageByClassId(classId, count, page);
         return PageUtil.build(iPage);
@@ -97,11 +99,11 @@ public class LessonController {
     @PermissionMeta(value = "查看所有签到项目")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO<SignListVO> getSignList(
-            @RequestParam(name = "class_id")
+            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
-            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<SignListVO> iPage = classService.getSignPageByClassId(classId, count, page);
         return PageUtil.build(iPage);
@@ -113,16 +115,22 @@ public class LessonController {
     @PermissionMeta(value = "查询单个签到项目下的所有学生")
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public PageResponseVO<StudentSignVO> getStudentsBySignId(
+            @ApiParam(value = "签到状态")
             @RequestParam(name = "sign_status", required = false, defaultValue = "0")
             @Min(value = 0, message = "{sign-status}") Integer signStatus,
+            @ApiParam(value = "是否按IP排序")
             @RequestParam(name = "order_by_IP", required = false, defaultValue = "false")
                     boolean orderByIP,
+            @ApiParam(value = "每页数量")
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
+            @ApiParam(value = "页数")
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page,
+            @ApiParam(value = "用户名")
             @RequestParam(name = "username", required = false, defaultValue = "")
                     String username,
+            @ApiParam(value = "签到id", required = true)
             @Min(value = 1, message = "{lesson.sign.id.positive}")
             @PathVariable Integer signId) {
         IPage<StudentSignVO> iPage = classService.getUserPageBySignId(signId, signStatus, username, count, page,
@@ -135,7 +143,8 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查询一个签到信息")
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
-    public SignCountVO getSign(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public SignCountVO getSign(@ApiParam(value = "签到id", required = true)
+                               @PathVariable @Positive(message = "{id.positive}") Integer id) {
         return classService.getSign(id);
     }
 
@@ -145,6 +154,7 @@ public class LessonController {
     @PermissionMeta(value = "修改签到记录")
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
     public UnifyResponseVO<String> updateStudentSignRecord(@RequestBody @Validated UpdateSignRecordDTO validator,
+                                                           @ApiParam(value = "签到id", required = true)
                                                            @PathVariable Integer signId) {
         if (classService.updateSignRecord(validator, signId)) {
             return ResponseUtil.generateUnifyResponse(21);
@@ -175,7 +185,8 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "删除作业")
     @TeacherClassCheck(valueType = workIdType, paramType = pathVariableType)
-    public UnifyResponseVO<String> deleteWork(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public UnifyResponseVO<String> deleteWork(@ApiParam(value = "作业id", required = true)
+                                              @PathVariable @Positive(message = "{id.positive}") Integer id) {
         classService.deleteWork(id);
         return ResponseUtil.generateUnifyResponse(29);
     }
@@ -186,11 +197,11 @@ public class LessonController {
     @PermissionMeta(value = "查看所有作业项目")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO<WorkVO> getWorkList(
-            @RequestParam(name = "class_id")
+            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
-            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<WorkVO> iPage = classService.getWorkPageByClassId(classId, count, page);
         return PageUtil.build(iPage);
@@ -212,16 +223,22 @@ public class LessonController {
     @PermissionMeta(value = "查询单个作业项目下的所有学生")
     @TeacherClassCheck(valueType = workIdType, paramType = pathVariableType)
     public PageResponseVO<StudentWorkVO> getStudentsByWorkId(
+            @ApiParam(value = "作业状态", required = true)
             @RequestParam(name = "work_status", required = false, defaultValue = "0")
             @Min(value = 0, message = "{work-status}") Integer workStatus,
+            @ApiParam(value = "是否按IP排序")
             @RequestParam(name = "order_by_IP", required = false, defaultValue = "false")
                     boolean orderByIP,
+            @ApiParam(value = "每页数量")
             @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
+            @ApiParam(value = "页数")
             @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page,
+            @ApiParam(value = "用户名")
             @RequestParam(name = "username", required = false, defaultValue = "")
                     String username,
+            @ApiParam(value = "作业id", required = true)
             @Min(value = 1, message = "{id.positive}")
             @PathVariable Integer workId) {
         IPage<StudentWorkVO> iPage = classService.getUserPageByWorkId(workId, workStatus, username, count, page,
@@ -234,7 +251,8 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查询一个作业信息")
     @TeacherClassCheck(valueType = workIdType, paramType = pathVariableType)
-    public WorkCountVO getWorkDetail(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public WorkCountVO getWorkDetail(@ApiParam(value = "作业id", required = true)
+                                     @PathVariable @Positive(message = "{id.positive}") Integer id) {
         return classService.getWorkDetail(id);
     }
 
@@ -244,6 +262,7 @@ public class LessonController {
     @PermissionMeta(value = "给学生作业打分")
     @TeacherClassCheck(valueType = studentWorkIdType, paramType = pathVariableType)
     public UnifyResponseVO<String> rateStudentWork(@RequestBody @Validated RateStudentWorkDTO validator,
+                                                   @ApiParam(value = "学生作业id", required = true)
                                                    @PathVariable @Positive(message = "{id.positive}") Integer id) {
         classService.rateStudentWork(validator, id);
         return ResponseUtil.generateUnifyResponse(32);
@@ -254,7 +273,8 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "删除学生作业")
     @TeacherClassCheck(valueType = studentWorkIdType, paramType = pathVariableType)
-    public UnifyResponseVO<String> deleteStudentWork(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public UnifyResponseVO<String> deleteStudentWork(@ApiParam(value = "学生作业id", required = true)
+                                                     @PathVariable @Positive(message = "{id.positive}") Integer id) {
         classService.deleteStudentWork(id);
         return ResponseUtil.generateUnifyResponse(33);
     }
@@ -273,13 +293,18 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "修改通知公告")
     @TeacherClassCheck(valueType = announcementIdType, paramType = pathVariableType)
-    public UnifyResponseVO<String> updateAnnouncement(@PathVariable @Positive(message = "{id.positive}") Integer id,
+    public UnifyResponseVO<String> updateAnnouncement(@ApiParam(value = "公告id", required = true)
+                                                      @PathVariable @Positive(message = "{id.positive}") Integer id,
                                                       @RequestBody @Validated NewAnnouncementDTO dto) {
         classService.updateAnnouncement(id, dto);
         return ResponseUtil.generateUnifyResponse(38);
     }
 
     @ApiOperation(value = "修改公告文件", notes = "修改公告文件")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "公告id", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "file", value = "上传的文件", required = true,
+                    paramType = "form", dataType = "__File", allowMultiple = true)})
     @PostMapping("/announcement/attachment/{id}")
     @GroupRequired
     @PermissionMeta(value = "修改公告文件")
@@ -287,7 +312,7 @@ public class LessonController {
     public UnifyResponseVO<String> updateAnnouncementAttachment(
             @Min(value = 1, message = "{id.positive}")
             @PathVariable Integer id,
-            MultipartHttpServletRequest multipartHttpServletRequest) {
+            @ApiIgnore MultipartHttpServletRequest multipartHttpServletRequest) {
         MultiValueMap<String, MultipartFile> fileMap =
                 multipartHttpServletRequest.getMultiFileMap();
         if (!classService.updateAnnouncementAttachment(id, fileMap)) {
@@ -302,11 +327,11 @@ public class LessonController {
     @PermissionMeta(value = "查看所有通知公告")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO<AnnouncementVO> getAnnouncementList(
-            @RequestParam(name = "class_id")
+            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
-            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<AnnouncementVO> iPage = classService.getAnnouncementPageByClassId(classId, count, page);
         return PageUtil.build(iPage);
@@ -317,7 +342,8 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查看单个通知公告")
     @TeacherClassCheck(valueType = announcementIdType, paramType = pathVariableType)
-    public AnnouncementVO getAnnouncementVO(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public AnnouncementVO getAnnouncementVO(@ApiParam(value = "公告id", required = true)
+                                            @PathVariable @Positive(message = "{id.positive}") Integer id) {
         return classService.getAnnouncementVO(id);
     }
 
@@ -326,7 +352,8 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "删除通知公告")
     @TeacherClassCheck(valueType = announcementIdType, paramType = pathVariableType)
-    public UnifyResponseVO<String> deleteAnnouncement(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public UnifyResponseVO<String> deleteAnnouncement(@ApiParam(value = "公告id", required = true)
+                                                      @PathVariable @Positive(message = "{id.positive}") Integer id) {
         classService.deleteAnnouncement(id);
         return ResponseUtil.generateUnifyResponse(37);
     }
@@ -347,11 +374,11 @@ public class LessonController {
     @PermissionMeta(value = "查看所有问卷")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
     public PageResponseVO<QuestionnaireVO> getQuestionnaireList(
-            @RequestParam(name = "class_id")
+            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
+            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
-            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<QuestionnaireVO> iPage = classService.getQuestionnairePageByClassId(classId, count, page);
         return PageUtil.build(iPage);
@@ -362,7 +389,8 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "删除问卷")
     @TeacherClassCheck(valueType = questionnaireIdType, paramType = pathVariableType)
-    public UnifyResponseVO<String> deleteQuestionnaire(@PathVariable @Positive(message = "{id.positive}") Integer id) {
+    public UnifyResponseVO<String> deleteQuestionnaire(@ApiParam(value = "问卷id", required = true)
+                                                       @PathVariable @Positive(message = "{id.positive}") Integer id) {
         classService.deleteQuestionnaire(id);
         return ResponseUtil.generateUnifyResponse(40);
     }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import vip.gadfly.chakkispring.common.constant.QuestionTypeConstant;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -30,8 +31,8 @@ public class NewQuestionDTO {
 
     @ApiModelProperty(value = "类型", allowableValues = "1,2", required = true)
     @NotNull(message = "{lesson.questionnaire.question.type.not-null}")
-    @Min(value = 1, message = "{lesson.questionnaire.question.type.not-null}")
-    @Max(value = 2, message = "{lesson.questionnaire.question.type.not-null}")
+    @Min(value = QuestionTypeConstant.TEXT, message = "{lesson.questionnaire.question.type.not-null}")
+    @Max(value = QuestionTypeConstant.SELECT, message = "{lesson.questionnaire.question.type.not-null}")
     private Integer type;
 
     @ApiModelProperty(value = "上限，目前用于选择题", allowableValues = "range[1,10]")

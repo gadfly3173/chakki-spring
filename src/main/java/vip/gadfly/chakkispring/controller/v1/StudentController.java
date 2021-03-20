@@ -139,9 +139,9 @@ public class StudentController {
     public PageResponseVO<WorkVO> getWorkList(
             @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
-            @ApiParam(value = "每页数量", required = true) @RequestParam(name = "count", required = false, defaultValue = "10")
+            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
-            @ApiParam(value = "页数", required = true) @RequestParam(name = "page", required = false, defaultValue = "0")
+            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<WorkVO> iPage = classService.getWorkPageForStudentByClassId(classId, count, page);
         return PageUtil.build(iPage);
@@ -190,9 +190,9 @@ public class StudentController {
     public PageResponseVO<AnnouncementVO> getAnnouncementList(
             @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
             @Min(value = 1, message = "{class-id}") Integer classId,
-            @ApiParam(value = "每页数量", required = true) @RequestParam(name = "count", required = false, defaultValue = "10")
+            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
             @Min(value = 1, message = "{count}") Integer count,
-            @ApiParam(value = "页数", required = true) @RequestParam(name = "page", required = false, defaultValue = "0")
+            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
             @Min(value = 0, message = "{page}") Integer page) {
         IPage<AnnouncementVO> iPage = classService.getAnnouncementPageByClassId(classId, count, page);
         return PageUtil.build(iPage);
