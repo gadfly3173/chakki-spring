@@ -278,10 +278,9 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "修改公告文件")
     @TeacherClassCheck(valueType = announcementIdType, paramType = pathVariableType)
-    public UnifyResponseVO<String> updateAnnouncementAttachment(
-            @Min(value = 1, message = "{id.positive}")
-            @PathVariable Integer id,
-            @ApiIgnore MultipartHttpServletRequest multipartHttpServletRequest) {
+    public UnifyResponseVO<String> updateAnnouncementAttachment(@Min(value = 1, message = "{id.positive}")
+                                                                @PathVariable Integer id,
+                                                                @ApiIgnore MultipartHttpServletRequest multipartHttpServletRequest) {
         MultiValueMap<String, MultipartFile> fileMap =
                 multipartHttpServletRequest.getMultiFileMap();
         if (!classService.updateAnnouncementAttachment(id, fileMap)) {
