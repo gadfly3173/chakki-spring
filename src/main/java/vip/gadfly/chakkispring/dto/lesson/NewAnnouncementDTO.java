@@ -31,7 +31,7 @@ public class NewAnnouncementDTO {
     @CharSize(max = 64000, message = "{lesson.announcement.content.size}")
     private String content;
 
-    @ApiModelProperty(value = "班级Id", allowableValues = "range[1, infinity]", required = true)
+    @ApiModelProperty(value = "班级Id", name = "class_id", allowableValues = "range[1, infinity]", required = true)
     @NotNull(message = "{class.id.not-null}")
     @Min(value = 1, message = "{class.id.not-null}")
     private Integer classId;

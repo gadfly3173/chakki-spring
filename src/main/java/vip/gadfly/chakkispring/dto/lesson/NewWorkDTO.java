@@ -33,12 +33,12 @@ public class NewWorkDTO {
     @Length(max = 255, message = "{group.info.length}")
     private String info;
 
-    @ApiModelProperty(value = "班级id", required = true)
+    @ApiModelProperty(value = "班级id", name = "class_id", required = true)
     @NotNull(message = "{class.id.not-null}")
     @Min(value = 1, message = "{class.id.not-null}")
     private Integer classId;
 
-    @ApiModelProperty(value = "限制文件大小")
+    @ApiModelProperty(value = "限制文件大小", name = "file_size")
     @Max(value = 20971520, message = "{lesson.work.file.size}")
     private Integer fileSize;
 
@@ -52,7 +52,7 @@ public class NewWorkDTO {
     @NotNull(message = "{lesson.work.extension.not-null}")
     private List<@NotBlank(message = "{lesson.work.extension.not-blank}") String> fileExtension;
 
-    @ApiModelProperty(value = "结束时间")
+    @ApiModelProperty(value = "结束时间", name = "end_time")
     // @Future(message = "{lesson.work.end-time.not-null}")
     private Date endTime;
 

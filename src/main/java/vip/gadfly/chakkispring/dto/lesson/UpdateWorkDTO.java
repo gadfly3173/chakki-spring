@@ -38,7 +38,7 @@ public class UpdateWorkDTO {
     @Length(max = 255, message = "{group.info.length}")
     private String info;
 
-    @ApiModelProperty(value = "限制文件大小")
+    @ApiModelProperty(value = "限制文件大小", name = "file_size")
     @Max(value = 20971520, message = "{lesson.work.file.size}")
     private Integer fileSize;
 
@@ -48,11 +48,11 @@ public class UpdateWorkDTO {
     @Max(value = WorkTypeConstant.TYPE_HOME, message = "{lesson.work.type}")
     private Integer type;
 
-    @ApiModelProperty(value = "文件扩展名列表", required = true)
+    @ApiModelProperty(value = "文件扩展名列表", name = "file_extension", required = true)
     @NotNull(message = "{lesson.work.extension.not-null}")
     private List<@NotBlank(message = "{lesson.work.extension.not-blank}") String> fileExtension;
 
-    @ApiModelProperty(value = "结束时间")
+    @ApiModelProperty(value = "结束时间", name = "end_time")
     // @Future(message = "{lesson.work.end-time.not-null}")
     private Date endTime;
 

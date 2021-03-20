@@ -33,7 +33,7 @@ public class NewQuestionnaireDTO {
     @Length(max = 255, message = "{lesson.questionnaire.info.length}")
     private String info;
 
-    @ApiModelProperty(value = "班级id", required = true)
+    @ApiModelProperty(value = "班级id", name = "class_id", required = true)
     @NotNull(message = "{class.id.not-null}")
     @Min(value = 1, message = "{class.id.not-null}")
     private Integer classId;
@@ -44,6 +44,6 @@ public class NewQuestionnaireDTO {
     @Size(min = 1, max = 99, message = "{lesson.questionnaire.length}")
     private List<NewQuestionDTO> questions;
 
-    @ApiModelProperty(value = "结束时间")
+    @ApiModelProperty(value = "结束时间", name = "end_time")
     private Date endTime;
 }
