@@ -58,7 +58,7 @@ public class GoogleAuthenticatorServiceImpl implements GoogleAuthenticatorServic
                 userMFAMapper.insert(userMFADO);
             }
         });
-        log.info("GoogleAuthenticator初始化成功");
+        log.info("GoogleAuthenticator 初始化成功");
     }
 
     /**

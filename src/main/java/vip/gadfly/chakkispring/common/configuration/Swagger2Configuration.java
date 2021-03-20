@@ -1,6 +1,7 @@
 package vip.gadfly.chakkispring.common.configuration;
 
 import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,6 +57,7 @@ public class Swagger2Configuration {
                 //header中的token参数非必填，传空也可以
                 .required(false).build();
         pars.add(ticketPar.build());
+        log.info("Knife4J 初始化成功");
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
