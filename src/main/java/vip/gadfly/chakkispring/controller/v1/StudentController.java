@@ -17,6 +17,7 @@ import vip.gadfly.chakkispring.common.annotation.StudentClassCheck;
 import vip.gadfly.chakkispring.common.util.IPUtil;
 import vip.gadfly.chakkispring.common.util.PageUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
+import vip.gadfly.chakkispring.dto.query.ClassIdPageDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.service.ClassService;
@@ -24,7 +25,6 @@ import vip.gadfly.chakkispring.service.StudentService;
 import vip.gadfly.chakkispring.vo.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -59,8 +59,8 @@ public class StudentController {
     @GetMapping("/class/list")
     @GroupRequired
     @PermissionMeta(value = "查询学生本学期所属班级")
-    public List<ClassDO> getClassesBySemesterAndStudent(
-            @ApiParam(value = "学期id", required = true) @RequestParam("semester_id") Integer semesterId) {
+    public List<ClassDO> getClassesBySemesterAndStudent(@ApiParam(value = "学期id", required = true)
+                                                        @RequestParam("semester_id") Integer semesterId) {
         Integer userId = LocalUser.getLocalUser().getId();
         return classService.getClassesBySemesterAndStudent(semesterId, userId);
     }
@@ -80,14 +80,10 @@ public class StudentController {
     @PermissionMeta(value = "查看班级内签到项目")
     // @GetMapping("/sign/list")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO<SignListVO> getSignList(
-            @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Integer classId,
-            @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
-        IPage<SignListVO> iPage = classService.getSignPageByClassId(classId, count, page);
+    public PageResponseVO<SignListVO> getSignList(@Validated ClassIdPageDTO classIdPageDTO) {
+        IPage<SignListVO> iPage = classService.getSignPageByClassId(classIdPageDTO.getClassId(),
+                classIdPageDTO.getCount(),
+                classIdPageDTO.getPage());
         return PageUtil.build(iPage);
     }
 
@@ -96,10 +92,9 @@ public class StudentController {
     @PermissionMeta(value = "查看班级最新签到项目")
     @GetMapping("/sign/latest")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public SignListVO getLatestSign(
-            @ApiParam(value = "班级id", required = true)
-            @RequestParam(name = "class_id")
-            @Positive(message = "{class-id}") Integer classId) {
+    public SignListVO getLatestSign(@ApiParam(value = "班级id", required = true)
+                                    @RequestParam(name = "class_id")
+                                    @Positive(message = "{class-id}") Integer classId) {
         return studentService.getLatestSignByClassId(classId);
     }
 
@@ -108,11 +103,10 @@ public class StudentController {
     @PermissionMeta(value = "学生进行签到")
     @PostMapping("/sign/confirm/{signId}")
     @StudentClassCheck(valueType = signIdType, paramType = pathVariableType)
-    public UnifyResponseVO<String> confirmStudentSign(
-            @ApiParam(value = "签到id", required = true)
-            @Positive(message = "{lesson.sign.id.positive}")
-            @PathVariable Integer signId,
-            @ApiIgnore HttpServletRequest request) {
+    public UnifyResponseVO<String> confirmStudentSign(@ApiParam(value = "签到id", required = true)
+                                                      @Positive(message = "{lesson.sign.id.positive}")
+                                                      @PathVariable Integer signId,
+                                                      @ApiIgnore HttpServletRequest request) {
         if (!studentService.signAvailable(signId)) {
             return ResponseUtil.generateUnifyResponse(10211);
         }
@@ -136,14 +130,10 @@ public class StudentController {
     @PermissionMeta(value = "查看班级内作业项目")
     @GetMapping("/work/list")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO<WorkVO> getWorkList(
-            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Integer classId,
-            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
-        IPage<WorkVO> iPage = classService.getWorkPageForStudentByClassId(classId, count, page);
+    public PageResponseVO<WorkVO> getWorkList(@Validated ClassIdPageDTO classIdPageDTO) {
+        IPage<WorkVO> iPage = classService.getWorkPageForStudentByClassId(classIdPageDTO.getClassId(),
+                classIdPageDTO.getCount(),
+                classIdPageDTO.getPage());
         return PageUtil.build(iPage);
     }
 
@@ -166,10 +156,9 @@ public class StudentController {
     @PermissionMeta(value = "交作业")
     @PostMapping("/work/hand/{workId}")
     @StudentClassCheck(valueType = workIdType, paramType = pathVariableType)
-    public UnifyResponseVO<String> handStudentWork(
-            @Positive(message = "{lesson.sign.id.positive}")
-            @PathVariable Integer workId,
-            @ApiIgnore MultipartHttpServletRequest multipartHttpServletRequest) {
+    public UnifyResponseVO<String> handStudentWork(@Positive(message = "{lesson.sign.id.positive}")
+                                                   @PathVariable Integer workId,
+                                                   @ApiIgnore MultipartHttpServletRequest multipartHttpServletRequest) {
         if (!studentService.workAvailable(workId)) {
             return ResponseUtil.generateUnifyResponse(10231);
         }
@@ -187,14 +176,10 @@ public class StudentController {
     @GroupRequired
     @PermissionMeta(value = "查看所有通知公告")
     @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO<AnnouncementVO> getAnnouncementList(
-            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Integer classId,
-            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
-        IPage<AnnouncementVO> iPage = classService.getAnnouncementPageByClassId(classId, count, page);
+    public PageResponseVO<AnnouncementVO> getAnnouncementList(@Validated ClassIdPageDTO classIdPageDTO) {
+        IPage<AnnouncementVO> iPage = classService.getAnnouncementPageByClassId(classIdPageDTO.getClassId(),
+                classIdPageDTO.getCount(),
+                classIdPageDTO.getPage());
         return PageUtil.build(iPage);
     }
 

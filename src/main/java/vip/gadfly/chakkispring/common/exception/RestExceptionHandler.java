@@ -9,6 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -63,7 +64,29 @@ public class RestExceptionHandler {
     }
 
     /**
-     * ConstraintViolationException
+     * 表单绑定到 java bean 出错时抛出 BindException 异常
+     */
+    @ExceptionHandler({BindException.class})
+    public UnifyResponseVO<Map<String, Object>> processException(BindException exception, HttpServletRequest request, HttpServletResponse response) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        log.error(exception.toString());
+        Map<String, Object> msg = new HashMap<>();
+        for (ObjectError objectError : exception.getAllErrors()) {
+            String template, path;
+            if (objectError instanceof FieldError) {
+                FieldError fieldError = (FieldError) objectError;
+                path = fieldError.getField();
+                template = fieldError.getDefaultMessage();
+            } else {
+                path = objectError.getObjectName();
+                template = objectError.getDefaultMessage();
+            }
+            msg.put(com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(path), template);
+        }
+        return getMapUnifyResponseVO(request, response, msg);
+    }
+
+    /**
+     * 普通参数(非 java bean)校验出错时抛出 ConstraintViolationException 异常
      */
     @ExceptionHandler({ConstraintViolationException.class})
     public UnifyResponseVO<Map<String, Object>> processException(ConstraintViolationException exception, HttpServletRequest request, HttpServletResponse response) {
@@ -159,7 +182,7 @@ public class RestExceptionHandler {
     }
 
     /**
-     * MethodArgumentNotValidException
+     * 将请求体解析并绑定到 java bean 时，如果出错，则抛出 MethodArgumentNotValidException 异常
      */
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public UnifyResponseVO<Map<String, Object>> processException(

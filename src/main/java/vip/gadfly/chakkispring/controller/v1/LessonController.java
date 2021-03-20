@@ -18,6 +18,9 @@ import vip.gadfly.chakkispring.common.annotation.TeacherClassCheck;
 import vip.gadfly.chakkispring.common.util.PageUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
 import vip.gadfly.chakkispring.dto.lesson.*;
+import vip.gadfly.chakkispring.dto.query.ClassIdPageDTO;
+import vip.gadfly.chakkispring.dto.query.SignStudentPageDTO;
+import vip.gadfly.chakkispring.dto.query.WorkStudentPageDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.UserDO;
@@ -72,14 +75,10 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查询所有此班级学生")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO<UserDO> getStudents(
-            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Integer classId,
-            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
-        IPage<UserDO> iPage = classService.getUserPageByClassId(classId, count, page);
+    public PageResponseVO<UserDO> getStudents(@Validated ClassIdPageDTO classIdPageDTO) {
+        IPage<UserDO> iPage = classService.getUserPageByClassId(classIdPageDTO.getClassId(),
+                classIdPageDTO.getCount(),
+                classIdPageDTO.getPage());
         return PageUtil.build(iPage);
     }
 
@@ -98,14 +97,10 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查看所有签到项目")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO<SignListVO> getSignList(
-            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Integer classId,
-            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
-        IPage<SignListVO> iPage = classService.getSignPageByClassId(classId, count, page);
+    public PageResponseVO<SignListVO> getSignList(@Validated ClassIdPageDTO classIdPageDTO) {
+        IPage<SignListVO> iPage = classService.getSignPageByClassId(classIdPageDTO.getClassId(),
+                classIdPageDTO.getCount(),
+                classIdPageDTO.getPage());
         return PageUtil.build(iPage);
     }
 
@@ -114,27 +109,16 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查询单个签到项目下的所有学生")
     @TeacherClassCheck(valueType = signIdType, paramType = pathVariableType)
-    public PageResponseVO<StudentSignVO> getStudentsBySignId(
-            @ApiParam(value = "签到状态")
-            @RequestParam(name = "sign_status", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{sign-status}") Integer signStatus,
-            @ApiParam(value = "是否按IP排序")
-            @RequestParam(name = "order_by_IP", required = false, defaultValue = "false")
-                    boolean orderByIP,
-            @ApiParam(value = "每页数量")
-            @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @ApiParam(value = "页数")
-            @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page,
-            @ApiParam(value = "用户名")
-            @RequestParam(name = "username", required = false, defaultValue = "")
-                    String username,
-            @ApiParam(value = "签到id", required = true)
-            @Min(value = 1, message = "{lesson.sign.id.positive}")
-            @PathVariable Integer signId) {
-        IPage<StudentSignVO> iPage = classService.getUserPageBySignId(signId, signStatus, username, count, page,
-                orderByIP);
+    public PageResponseVO<StudentSignVO> getStudentsBySignId(@Validated SignStudentPageDTO signStudentPageDTO,
+                                                             @ApiParam(value = "签到id", required = true)
+                                                             @Min(value = 1, message = "{lesson.sign.id.positive}")
+                                                             @PathVariable Integer signId) {
+        IPage<StudentSignVO> iPage = classService.getUserPageBySignId(signId,
+                signStudentPageDTO.getSignStatus(),
+                signStudentPageDTO.getUsername(),
+                signStudentPageDTO.getCount(),
+                signStudentPageDTO.getPage(),
+                signStudentPageDTO.getOrderByIP());
         return PageUtil.build(iPage);
     }
 
@@ -196,14 +180,10 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查看所有作业项目")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO<WorkVO> getWorkList(
-            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Integer classId,
-            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
-        IPage<WorkVO> iPage = classService.getWorkPageByClassId(classId, count, page);
+    public PageResponseVO<WorkVO> getWorkList(@Validated ClassIdPageDTO classIdPageDTO) {
+        IPage<WorkVO> iPage = classService.getWorkPageByClassId(classIdPageDTO.getClassId(),
+                classIdPageDTO.getCount(),
+                classIdPageDTO.getPage());
         return PageUtil.build(iPage);
     }
 
@@ -222,27 +202,16 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查询单个作业项目下的所有学生")
     @TeacherClassCheck(valueType = workIdType, paramType = pathVariableType)
-    public PageResponseVO<StudentWorkVO> getStudentsByWorkId(
-            @ApiParam(value = "作业状态", required = true)
-            @RequestParam(name = "work_status", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{work-status}") Integer workStatus,
-            @ApiParam(value = "是否按IP排序")
-            @RequestParam(name = "order_by_IP", required = false, defaultValue = "false")
-                    boolean orderByIP,
-            @ApiParam(value = "每页数量")
-            @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @ApiParam(value = "页数")
-            @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page,
-            @ApiParam(value = "用户名")
-            @RequestParam(name = "username", required = false, defaultValue = "")
-                    String username,
-            @ApiParam(value = "作业id", required = true)
-            @Min(value = 1, message = "{id.positive}")
-            @PathVariable Integer workId) {
-        IPage<StudentWorkVO> iPage = classService.getUserPageByWorkId(workId, workStatus, username, count, page,
-                orderByIP);
+    public PageResponseVO<StudentWorkVO> getStudentsByWorkId(@Validated WorkStudentPageDTO workStudentPageDTO,
+                                                             @ApiParam(value = "作业id", required = true)
+                                                             @Min(value = 1, message = "{id.positive}")
+                                                             @PathVariable Integer workId) {
+        IPage<StudentWorkVO> iPage = classService.getUserPageByWorkId(workId,
+                workStudentPageDTO.getWorkStatus(),
+                workStudentPageDTO.getUsername(),
+                workStudentPageDTO.getCount(),
+                workStudentPageDTO.getPage(),
+                workStudentPageDTO.getOrderByIP());
         return PageUtil.build(iPage);
     }
 
@@ -326,14 +295,10 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查看所有通知公告")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO<AnnouncementVO> getAnnouncementList(
-            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Integer classId,
-            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
-        IPage<AnnouncementVO> iPage = classService.getAnnouncementPageByClassId(classId, count, page);
+    public PageResponseVO<AnnouncementVO> getAnnouncementList(@Validated ClassIdPageDTO classIdPageDTO) {
+        IPage<AnnouncementVO> iPage = classService.getAnnouncementPageByClassId(classIdPageDTO.getClassId(),
+                classIdPageDTO.getCount(),
+                classIdPageDTO.getPage());
         return PageUtil.build(iPage);
     }
 
@@ -373,14 +338,10 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查看所有问卷")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO<QuestionnaireVO> getQuestionnaireList(
-            @ApiParam(value = "班级id", required = true) @RequestParam(name = "class_id")
-            @Min(value = 1, message = "{class-id}") Integer classId,
-            @ApiParam(value = "每页数量") @RequestParam(name = "count", required = false, defaultValue = "10")
-            @Min(value = 1, message = "{count}") Integer count,
-            @ApiParam(value = "页数") @RequestParam(name = "page", required = false, defaultValue = "0")
-            @Min(value = 0, message = "{page}") Integer page) {
-        IPage<QuestionnaireVO> iPage = classService.getQuestionnairePageByClassId(classId, count, page);
+    public PageResponseVO<QuestionnaireVO> getQuestionnaireList(@Validated ClassIdPageDTO classIdPageDTO) {
+        IPage<QuestionnaireVO> iPage = classService.getQuestionnairePageByClassId(classIdPageDTO.getClassId(),
+                classIdPageDTO.getCount(),
+                classIdPageDTO.getPage());
         return PageUtil.build(iPage);
     }
 
