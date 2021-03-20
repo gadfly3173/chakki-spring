@@ -12,7 +12,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static io.github.talelin.autoconfigure.util.RequestUtil.getSimpleRequest;
@@ -67,29 +65,32 @@ public class RestExceptionHandler {
      * 表单绑定到 java bean 出错时抛出 BindException 异常
      */
     @ExceptionHandler({BindException.class})
-    public UnifyResponseVO<Map<String, Object>> processException(BindException exception, HttpServletRequest request, HttpServletResponse response) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public UnifyResponseVO<Map<String, Object>> processException(BindException exception,
+                                                                 HttpServletRequest request,
+                                                                 HttpServletResponse response) {
         log.error(exception.toString());
-        Map<String, Object> msg = new HashMap<>();
-        for (ObjectError objectError : exception.getAllErrors()) {
-            String template, path;
-            if (objectError instanceof FieldError) {
-                FieldError fieldError = (FieldError) objectError;
-                path = fieldError.getField();
-                template = fieldError.getDefaultMessage();
-            } else {
-                path = objectError.getObjectName();
-                template = objectError.getDefaultMessage();
-            }
-            msg.put(com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(path), template);
-        }
-        return getMapUnifyResponseVO(request, response, msg);
+        return getMapUnifyResponseVOByErrorList(request, response, exception);
+    }
+
+    /**
+     * 将请求体解析并绑定到 java bean 时，如果出错，则抛出 MethodArgumentNotValidException 异常
+     */
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public UnifyResponseVO<Map<String, Object>> processException(MethodArgumentNotValidException exception,
+                                                                 HttpServletRequest request,
+                                                                 HttpServletResponse response) {
+        log.error("", exception);
+        BindingResult bindingResult = exception.getBindingResult();
+        return getMapUnifyResponseVOByErrorList(request, response, bindingResult);
     }
 
     /**
      * 普通参数(非 java bean)校验出错时抛出 ConstraintViolationException 异常
      */
     @ExceptionHandler({ConstraintViolationException.class})
-    public UnifyResponseVO<Map<String, Object>> processException(ConstraintViolationException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO<Map<String, Object>> processException(ConstraintViolationException exception,
+                                                                 HttpServletRequest request,
+                                                                 HttpServletResponse response) {
         log.error(exception.toString());
         Map<String, Object> msg = new HashMap<>();
         exception.getConstraintViolations().forEach(constraintViolation -> {
@@ -100,20 +101,13 @@ public class RestExceptionHandler {
         return getMapUnifyResponseVO(request, response, msg);
     }
 
-    private UnifyResponseVO<Map<String, Object>> getMapUnifyResponseVO(HttpServletRequest request, HttpServletResponse response, Map<String, Object> msg) {
-        UnifyResponseVO<Map<String, Object>> unifyResponse = new UnifyResponseVO<>();
-        unifyResponse.setRequest(getSimpleRequest(request));
-        unifyResponse.setMessage(msg);
-        unifyResponse.setCode(Code.PARAMETER_ERROR.getCode());
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
-        return unifyResponse;
-    }
-
     /**
      * NoHandlerFoundException
      */
     @ExceptionHandler({NoHandlerFoundException.class})
-    public UnifyResponseVO<String> processException(NoHandlerFoundException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO<String> processException(NoHandlerFoundException exception,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO<String> unifyResponse = new UnifyResponseVO<>();
         unifyResponse.setRequest(getSimpleRequest(request));
@@ -132,7 +126,9 @@ public class RestExceptionHandler {
      * MissingServletRequestParameterException
      */
     @ExceptionHandler({MissingServletRequestParameterException.class})
-    public UnifyResponseVO<String> processException(MissingServletRequestParameterException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO<String> processException(MissingServletRequestParameterException exception,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO<String> result = new UnifyResponseVO<>();
         result.setRequest(getSimpleRequest(request));
@@ -152,7 +148,9 @@ public class RestExceptionHandler {
      * MethodArgumentTypeMismatchException
      */
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    public UnifyResponseVO<String> processException(MethodArgumentTypeMismatchException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO<String> processException(MethodArgumentTypeMismatchException exception,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO<String> result = new UnifyResponseVO<>();
         result.setRequest(getSimpleRequest(request));
@@ -171,7 +169,9 @@ public class RestExceptionHandler {
      * ServletException
      */
     @ExceptionHandler({ServletException.class})
-    public UnifyResponseVO<String> processException(ServletException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO<String> processException(ServletException exception,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO<String> result = new UnifyResponseVO<>();
         result.setRequest(getSimpleRequest(request));
@@ -182,32 +182,12 @@ public class RestExceptionHandler {
     }
 
     /**
-     * 将请求体解析并绑定到 java bean 时，如果出错，则抛出 MethodArgumentNotValidException 异常
-     */
-    @ExceptionHandler({MethodArgumentNotValidException.class})
-    public UnifyResponseVO<Map<String, Object>> processException(
-            MethodArgumentNotValidException exception, HttpServletRequest request, HttpServletResponse response) {
-        log.error("", exception);
-        BindingResult bindingResult = exception.getBindingResult();
-        List<ObjectError> errors = bindingResult.getAllErrors();
-        Map<String, Object> msg = new HashMap<>();
-        errors.forEach(error -> {
-            if (error instanceof FieldError) {
-                FieldError fieldError = (FieldError) error;
-                msg.put(com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(fieldError.getField()),
-                        fieldError.getDefaultMessage());
-            } else {
-                msg.put(com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(error.getObjectName()), error.getDefaultMessage());
-            }
-        });
-        return getMapUnifyResponseVO(request, response, msg);
-    }
-
-    /**
      * HttpMessageNotReadableException
      */
     @ExceptionHandler({HttpMessageNotReadableException.class})
-    public UnifyResponseVO<String> processException(HttpMessageNotReadableException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO<String> processException(HttpMessageNotReadableException exception,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO<String> result = new UnifyResponseVO<>();
         result.setRequest(getSimpleRequest(request));
@@ -226,7 +206,9 @@ public class RestExceptionHandler {
      * TypeMismatchException
      */
     @ExceptionHandler({TypeMismatchException.class})
-    public UnifyResponseVO<String> processException(TypeMismatchException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO<String> processException(TypeMismatchException exception,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO<String> result = new UnifyResponseVO<>();
         result.setRequest(getSimpleRequest(request));
@@ -240,7 +222,9 @@ public class RestExceptionHandler {
      * MaxUploadSizeExceededException
      */
     @ExceptionHandler({MaxUploadSizeExceededException.class})
-    public UnifyResponseVO<String> processException(MaxUploadSizeExceededException exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO<String> processException(MaxUploadSizeExceededException exception,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO<String> result = new UnifyResponseVO<>();
         result.setRequest(getSimpleRequest(request));
@@ -259,7 +243,9 @@ public class RestExceptionHandler {
      * Exception
      */
     @ExceptionHandler({Exception.class})
-    public UnifyResponseVO<String> processException(Exception exception, HttpServletRequest request, HttpServletResponse response) {
+    public UnifyResponseVO<String> processException(Exception exception,
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response) {
         log.error("", exception);
         UnifyResponseVO<String> result = new UnifyResponseVO<>();
         result.setRequest(getSimpleRequest(request));
@@ -267,5 +253,33 @@ public class RestExceptionHandler {
         result.setCode(Code.INTERNAL_SERVER_ERROR.getCode());
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         return result;
+    }
+
+    private UnifyResponseVO<Map<String, Object>> getMapUnifyResponseVO(HttpServletRequest request,
+                                                                       HttpServletResponse response,
+                                                                       Map<String, Object> msg) {
+        UnifyResponseVO<Map<String, Object>> unifyResponse = new UnifyResponseVO<>();
+        unifyResponse.setRequest(getSimpleRequest(request));
+        unifyResponse.setMessage(msg);
+        unifyResponse.setCode(Code.PARAMETER_ERROR.getCode());
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        return unifyResponse;
+    }
+
+    private UnifyResponseVO<Map<String, Object>> getMapUnifyResponseVOByErrorList(HttpServletRequest request,
+                                                                                  HttpServletResponse response,
+                                                                                  BindingResult bindingResult) {
+        Map<String, Object> msg = new HashMap<>();
+        bindingResult.getAllErrors().forEach(error -> {
+            if (error instanceof FieldError) {
+                FieldError fieldError = (FieldError) error;
+                msg.put(com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(fieldError.getField()),
+                        fieldError.getDefaultMessage());
+            } else {
+                msg.put(com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(error.getObjectName()),
+                        error.getDefaultMessage());
+            }
+        });
+        return getMapUnifyResponseVO(request, response, msg);
     }
 }
