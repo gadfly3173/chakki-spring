@@ -1,5 +1,6 @@
 package vip.gadfly.chakkispring.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
@@ -36,11 +37,13 @@ public class QuestionDO extends BaseModel implements Serializable {
     /**
      * 序号
      */
+    @TableField(value = "`order`")
     private Integer order;
 
     /**
      * 类型：1-简答 2-选择
      */
+    @TableField(value = "`type`")
     private Integer type;
 
     /**

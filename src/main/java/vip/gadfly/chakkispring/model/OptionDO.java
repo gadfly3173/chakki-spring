@@ -1,5 +1,6 @@
 package vip.gadfly.chakkispring.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
@@ -17,7 +18,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("option")
+@TableName("`option`")
 @EqualsAndHashCode(callSuper = true)
 public class OptionDO extends BaseModel implements Serializable {
 
@@ -36,6 +37,7 @@ public class OptionDO extends BaseModel implements Serializable {
     /**
      * 序号
      */
+    @TableField(value = "`order`")
     private Integer order;
 
 }
