@@ -22,4 +22,6 @@ public interface QuestionnaireMapper extends BaseMapper<QuestionnaireDO> {
                                                                           @Param("classId") Integer classId);
 
     QuestionnaireVO getQuestionnaireVO(@Param("id") Integer id);
+
+    long selectCountByClassId(@Param("classId") Integer classId);
 }

@@ -73,5 +73,11 @@
         WHERE q.id = #{id}
           AND q.delete_time IS NULL
     </select>
+    <select id="selectCountByClassId" resultType="java.lang.Long">
+        SELECT COUNT(*) AS TOTAL
+        FROM questionnaire AS q
+        WHERE q.class_id = #{classId}
+          AND q.delete_time IS NULL
+    </select>
 
 </mapper>

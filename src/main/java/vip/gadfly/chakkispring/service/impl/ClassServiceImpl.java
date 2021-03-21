@@ -676,6 +676,8 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     @Override
     public IPage<QuestionnairePageVO> getQuestionnairePageByClassId(Integer classId, Integer count, Integer page) {
         Page pager = new Page(page, count);
+        pager.setSearchCount(false);
+        pager.setTotal(questionnaireMapper.selectCountByClassId(classId));
         IPage<QuestionnairePageVO> iPage;
         iPage = questionnaireMapper.selectQuestionnairePageByClassId(pager, classId);
         return iPage;

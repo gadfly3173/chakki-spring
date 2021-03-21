@@ -737,8 +737,8 @@ VALUES (48, 2, 65);
 INSERT INTO `lin_group_permission`
 VALUES (49, 2, 66);
 INSERT INTO `lin_group_permission`
-VALUES (50, 2, 67);
+VALUES (50, 3, 67);
 INSERT INTO `lin_group_permission`
-VALUES (51, 2, 68);
+VALUES (51, 3, 68);
 
 COMMIT;

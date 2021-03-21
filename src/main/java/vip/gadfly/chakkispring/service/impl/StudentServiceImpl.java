@@ -144,8 +144,10 @@ public class StudentServiceImpl implements StudentService {
     public IPage<QuestionnairePageVO> getQuestionnairePageForStudentByClassId(Integer classId, Integer count, Integer page) {
         Integer userId = LocalUser.getLocalUser().getId();
         Page pager = new Page(page, count);
+        pager.setSearchCount(false);
+        pager.setTotal(questionnaireMapper.selectCountByClassId(classId));
         IPage<QuestionnairePageVO> iPage;
-        iPage = questionnaireMapper.selectQuestionnairePageForStudentByClassId(pager, classId, userId);
+        iPage = questionnaireMapper.selectQuestionnairePageForStudentByClassId(pager, userId, classId);
         return iPage;
     }
 
