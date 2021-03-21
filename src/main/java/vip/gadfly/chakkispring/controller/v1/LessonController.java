@@ -337,8 +337,8 @@ public class LessonController {
     @GroupRequired
     @PermissionMeta(value = "查看所有问卷")
     @TeacherClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
-    public PageResponseVO<QuestionnaireVO> getQuestionnaireList(@Validated ClassIdPageDTO classIdPageDTO) {
-        IPage<QuestionnaireVO> iPage = classService.getQuestionnairePageByClassId(classIdPageDTO.getClassId(),
+    public PageResponseVO<QuestionnairePageVO> getQuestionnaireList(@Validated ClassIdPageDTO classIdPageDTO) {
+        IPage<QuestionnairePageVO> iPage = classService.getQuestionnairePageByClassId(classIdPageDTO.getClassId(),
                 classIdPageDTO.getCount(),
                 classIdPageDTO.getPage());
         return PageUtil.build(iPage);

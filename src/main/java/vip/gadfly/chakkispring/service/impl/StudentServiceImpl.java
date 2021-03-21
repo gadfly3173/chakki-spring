@@ -1,6 +1,7 @@
 package vip.gadfly.chakkispring.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.talelin.autoconfigure.exception.FailedException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
+import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.common.util.IPUtil;
 import vip.gadfly.chakkispring.mapper.*;
 import vip.gadfly.chakkispring.model.ClassDO;
@@ -19,6 +21,7 @@ import vip.gadfly.chakkispring.model.StudentWorkDO;
 import vip.gadfly.chakkispring.module.file.Uploader;
 import vip.gadfly.chakkispring.service.FileService;
 import vip.gadfly.chakkispring.service.StudentService;
+import vip.gadfly.chakkispring.vo.QuestionnairePageVO;
 import vip.gadfly.chakkispring.vo.SignListVO;
 
 import java.util.ArrayList;
@@ -49,6 +52,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private WorkExtensionMapper workExtensionMapper;
+
+    @Autowired
+    private QuestionnaireMapper questionnaireMapper;
 
     @Autowired
     private FileMapper fileMapper;
@@ -132,6 +138,15 @@ public class StudentServiceImpl implements StudentService {
                 .build();
         studentWorkMapper.insert(studentWorkDO);
         return true;
+    }
+
+    @Override
+    public IPage<QuestionnairePageVO> getQuestionnairePageForStudentByClassId(Integer classId, Integer count, Integer page) {
+        Integer userId = LocalUser.getLocalUser().getId();
+        Page pager = new Page(page, count);
+        IPage<QuestionnairePageVO> iPage;
+        iPage = questionnaireMapper.selectQuestionnairePageForStudentByClassId(pager, classId, userId);
+        return iPage;
     }
 
     @Override

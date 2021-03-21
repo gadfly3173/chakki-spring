@@ -674,9 +674,9 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public IPage<QuestionnaireVO> getQuestionnairePageByClassId(Integer classId, Integer count, Integer page) {
+    public IPage<QuestionnairePageVO> getQuestionnairePageByClassId(Integer classId, Integer count, Integer page) {
         Page pager = new Page(page, count);
-        IPage<QuestionnaireVO> iPage;
+        IPage<QuestionnairePageVO> iPage;
         iPage = questionnaireMapper.selectQuestionnairePageByClassId(pager, classId);
         return iPage;
     }
@@ -684,6 +684,11 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     @Override
     public void deleteQuestionnaire(Integer id) {
         questionnaireMapper.deleteById(id);
+    }
+
+    @Override
+    public QuestionnaireVO getQuestionnaireVO(Integer id) {
+        return questionnaireMapper.getQuestionnaireVO(id);
     }
 
     private void throwSemesterNameExist(String name) {

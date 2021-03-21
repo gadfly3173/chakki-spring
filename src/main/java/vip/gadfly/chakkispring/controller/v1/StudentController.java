@@ -193,4 +193,25 @@ public class StudentController {
         return classService.getAnnouncementVO(id);
     }
 
+    @ApiOperation(value = "查看所有问卷", notes = "查看所有问卷")
+    @GetMapping("/questionnaire/list")
+    @GroupRequired
+    @PermissionMeta(value = "查看所有问卷")
+    @StudentClassCheck(valueType = classIdType, paramType = requestParamType, valueName = "class_id")
+    public PageResponseVO<QuestionnairePageVO> getQuestionnaireList(@Validated ClassIdPageDTO classIdPageDTO) {
+        IPage<QuestionnairePageVO> iPage = studentService.getQuestionnairePageForStudentByClassId(classIdPageDTO.getClassId(),
+                classIdPageDTO.getCount(),
+                classIdPageDTO.getPage());
+        return PageUtil.build(iPage);
+    }
+
+    @ApiOperation(value = "查看单个问卷", notes = "查看单个问卷")
+    @GetMapping("/questionnaire/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "查看单个问卷")
+    @StudentClassCheck(valueType = questionnaireIdType, paramType = pathVariableType)
+    public QuestionnaireVO getQuestionnaireVO(@ApiParam(value = "问卷id", required = true)
+                                              @PathVariable @Positive(message = "{id.positive}") Integer id) {
+        return classService.getQuestionnaireVO(id);
+    }
 }

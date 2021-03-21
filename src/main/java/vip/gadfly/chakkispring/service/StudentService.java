@@ -1,8 +1,10 @@
 package vip.gadfly.chakkispring.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import vip.gadfly.chakkispring.model.ClassDO;
+import vip.gadfly.chakkispring.vo.QuestionnairePageVO;
 import vip.gadfly.chakkispring.vo.SignListVO;
 
 import java.util.List;
@@ -39,4 +41,6 @@ public interface StudentService {
     boolean workAvailable(Integer workId);
 
     boolean handStudentWork(Integer workId, MultiValueMap<String, MultipartFile> fileMap, String ip);
+
+    IPage<QuestionnairePageVO> getQuestionnairePageForStudentByClassId(Integer classId, Integer count, Integer page);
 }

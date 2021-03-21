@@ -6,14 +6,13 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Gadfly
  */
 @Data
-@ApiModel(value = "问卷VO", description = "问卷")
-public class QuestionnaireVO implements Serializable {
+@ApiModel(value = "问卷分页VO", description = "问卷")
+public class QuestionnairePageVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,11 +24,14 @@ public class QuestionnaireVO implements Serializable {
     @ApiModelProperty(value = "问卷信息")
     private String info;
 
+    @ApiModelProperty(value = "问题数量")
+    private Integer count;
+
+    @ApiModelProperty(value = "已作答人数 / 是否已作答")
+    private Integer handed;
+
     @ApiModelProperty(value = "结束时间")
     private Date endTime;
-
-    @ApiModelProperty(value = "问题列表")
-    private List<QuestionVO> questions;
 
     private Date createTime;
 

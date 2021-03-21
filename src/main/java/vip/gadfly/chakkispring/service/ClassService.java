@@ -322,7 +322,9 @@ public interface ClassService {
 
     void createQuestionnaire(NewQuestionnaireDTO dto);
 
-    IPage<QuestionnaireVO> getQuestionnairePageByClassId(Integer classId, Integer count, Integer page);
+    IPage<QuestionnairePageVO> getQuestionnairePageByClassId(Integer classId, Integer count, Integer page);
 
     void deleteQuestionnaire(Integer id);
+
+    QuestionnaireVO getQuestionnaireVO(Integer id);
 }

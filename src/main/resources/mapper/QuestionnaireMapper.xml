@@ -3,7 +3,7 @@
 <mapper namespace="vip.gadfly.chakkispring.mapper.QuestionnaireMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="QuestionnaireVO" type="vip.gadfly.chakkispring.vo.QuestionnaireVO">
+    <resultMap id="QuestionnairePageVO" type="vip.gadfly.chakkispring.vo.QuestionnairePageVO">
         <id column="id" property="id"/>
         <result column="title" property="title"/>
         <result column="info" property="info"/>
@@ -14,13 +14,29 @@
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
-    <select id="selectQuestionnairePageByClassId" resultMap="QuestionnaireVO">
+    <resultMap id="QuestionnaireVO" type="vip.gadfly.chakkispring.vo.QuestionnaireVO">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="info" property="info"/>
+        <result column="end_time" property="endTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <collection property="questions" column="id" ofType="vip.gadfly.chakkispring.vo.QuestionVO"
+                    select="vip.gadfly.chakkispring.mapper.QuestionMapper.selectQuestionsByQuestionnaireId">
+        </collection>
+    </resultMap>
+
+    <select id="selectQuestionnairePageByClassId" resultMap="QuestionnairePageVO">
         SELECT q.id,
                q.title,
                (SELECT COUNT(*)
                 FROM question AS qn
                 WHERE qn.questionnaire_id = q.id
                   AND qn.delete_time IS NULL) AS `count`,
+               (SELECT COUNT(*)
+                FROM student_questionnaire AS sq
+                WHERE sq.questionnaire_id = q.id
+                  AND sq.delete_time IS NULL) AS `handed`,
                q.end_time,
                q.create_time,
                q.update_time
@@ -28,6 +44,34 @@
         WHERE q.class_id = #{classId}
           AND q.delete_time IS NULL
         ORDER BY q.id DESC
+    </select>
+
+    <select id="selectQuestionnairePageForStudentByClassId" resultMap="QuestionnairePageVO">
+        SELECT q.id,
+               q.title,
+               (SELECT COUNT(*)
+                FROM question AS qn
+                WHERE qn.questionnaire_id = q.id
+                  AND qn.delete_time IS NULL) AS `count`,
+               (SELECT COUNT(*)
+                FROM student_questionnaire AS sq
+                WHERE sq.questionnaire_id = q.id
+                  AND sq.user_id = #{userId}
+                  AND sq.delete_time IS NULL) AS `handed`,
+               q.end_time,
+               q.create_time,
+               q.update_time
+        FROM questionnaire AS q
+        WHERE q.class_id = #{classId}
+          AND q.delete_time IS NULL
+        ORDER BY q.id DESC
+    </select>
+
+    <select id="getQuestionnaireVO" resultMap="QuestionnaireVO">
+        SELECT q.id, q.title, q.info, q.end_time, q.create_time, q.update_time
+        FROM questionnaire AS q
+        WHERE q.id = #{id}
+          AND q.delete_time IS NULL
     </select>
 
 </mapper>
