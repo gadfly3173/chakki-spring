@@ -1,11 +1,14 @@
 package vip.gadfly.chakkispring.common.util;
 
+import org.springframework.core.io.ClassPathResource;
+
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Base64;
 import java.util.Random;
 
@@ -42,8 +45,9 @@ public class ValidateCodeUtil {
     /**
      * 字体的设置
      */
-    private Font getFont() {
-        return new Font("DejaVu Serif", Font.BOLD, 36);
+    private static Font getFont() throws IOException, FontFormatException {
+        InputStream dejavuSerifBold = new ClassPathResource("DejaVuSerif-Bold.ttf").getInputStream();
+        return Font.createFont(Font.TRUETYPE_FONT, dejavuSerifBold).deriveFont(Font.BOLD, 36);
     }
 
     /**
@@ -70,7 +74,7 @@ public class ValidateCodeUtil {
     /**
      * 字符串的绘制
      */
-    private String drawString(Graphics2D g, String randomStr, int i) {
+    private String drawString(Graphics2D g, String randomStr, int i) throws IOException, FontFormatException {
         g.setFont(getFont());
         g.setColor(getRandomColor(28, 200));
         String rand = getRandomString(random.nextInt(randomString.length()));
@@ -84,7 +88,7 @@ public class ValidateCodeUtil {
         return randomStr;
     }
 
-    private BufferedImage getBufferedImage(HttpSession session) {
+    private BufferedImage getBufferedImage(HttpSession session) throws IOException, FontFormatException {
         // BufferedImage类是具有缓冲区的Image类,Image类是用于描述图像信息的类
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
@@ -115,7 +119,7 @@ public class ValidateCodeUtil {
      * @param session session
      * @return base64
      */
-    public String getRandomCodeBase64(HttpSession session) throws IOException {
+    public String getRandomCodeBase64(HttpSession session) throws IOException, FontFormatException {
         BufferedImage image = getBufferedImage(session);
         // 返回 base64
         ByteArrayOutputStream bos = new ByteArrayOutputStream();

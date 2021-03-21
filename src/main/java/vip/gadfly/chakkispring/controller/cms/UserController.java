@@ -32,6 +32,7 @@ import vip.gadfly.chakkispring.vo.UserPermissionVO;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
+import java.awt.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -159,7 +160,7 @@ public class UserController {
 
     @ApiOperation(value = "获取验证码", notes = "获取验证码")
     @GetMapping("/get_captcha_img")
-    public String getCaptchaImg(@ApiIgnore HttpSession session) throws IOException {
+    public String getCaptchaImg(@ApiIgnore HttpSession session) throws IOException, FontFormatException {
         ValidateCodeUtil validateCode = new ValidateCodeUtil();
         // 返回base64
         String base64String = validateCode.getRandomCodeBase64(session);

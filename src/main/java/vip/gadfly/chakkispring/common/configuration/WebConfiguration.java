@@ -129,6 +129,9 @@ public class WebConfiguration implements WebMvcConfigurer {
                         context.setCookieProcessor(new LegacyCookieProcessor()));
     }
 
+    /**
+     * request parameter 转 java bean 时 snake_case 转 camelCase
+     */
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new CustomServletModelAttributeMethodProcessor(true));
