@@ -24,7 +24,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
         <freemarker.version>2.3.31</freemarker.version>
-        <guava.version>30.1-jre</guava.version>
+        <guava.version>30.1.1-jre</guava.version>
         <knife4j.version>2.0.8</knife4j.version>
     </properties>
 
