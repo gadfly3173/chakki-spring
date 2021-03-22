@@ -10,3 +10,7 @@ updates:
     target-branch: "master"
     schedule:
       interval: "daily"
+      ignore:
+        - dependency-name: "com.github.xiaoymin:knife4j-spring-boot-starter"
+          # Ignore only new versions for 3.x
+          versions: [ "3.x" ]
