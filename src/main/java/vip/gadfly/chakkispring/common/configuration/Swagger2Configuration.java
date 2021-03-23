@@ -2,7 +2,6 @@ package vip.gadfly.chakkispring.common.configuration;
 
 import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -35,9 +34,9 @@ import java.util.List;
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 public class Swagger2Configuration {
 
+    /*引入Knife4j提供的扩展类*/
     private final OpenApiExtensionResolver openApiExtensionResolver;
 
-    @Autowired
     public Swagger2Configuration(OpenApiExtensionResolver openApiExtensionResolver) {
         this.openApiExtensionResolver = openApiExtensionResolver;
     }
@@ -48,7 +47,7 @@ public class Swagger2Configuration {
      * 通过select()函数返回一个ApiSelectorBuilder实例,用来控制哪些接口暴露给Swagger来展现，
      * 本例采用指定扫描的包路径来定义指定要建立API的目录。
      */
-    @Bean()
+    @Bean
     public Docket defaultApi2() {
         //添加header参数
         ParameterBuilder ticketPar = new ParameterBuilder();
@@ -66,12 +65,13 @@ public class Swagger2Configuration {
                 .paths(PathSelectors.any())
                 .build()
                 .globalOperationParameters(pars)
+                //赋予插件体系
                 .extensions(openApiExtensionResolver.buildSettingExtensions());
     }
 
     /**
      * 创建该API的基本信息（这些基本信息会展现在文档页面中）
-     * 访问地址：<a href="http://localhost:5000/api/swagger2/doc.html">http://localhost:5000/api/swagger2/doc.html</a>
+     * 访问地址：<a href="http://localhost:5000/api/doc.html">http://localhost:5000/api/doc.html</a>
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
