@@ -18,9 +18,9 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("question")
+@TableName("questionnaire_question")
 @EqualsAndHashCode(callSuper = true)
-public class QuestionDO extends BaseModel implements Serializable {
+public class QuestionnaireQuestionDO extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -97,10 +97,10 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     private QuestionnaireMapper questionnaireMapper;
 
     @Autowired
-    private QuestionMapper questionMapper;
+    private QuestionnaireQuestionMapper questionnaireQuestionMapper;
 
     @Autowired
-    private OptionMapper optionMapper;
+    private QuestionnaireQuestionOptionMapper questionnaireQuestionOptionMapper;
 
     @Autowired
     private FileProperties fileProperties;
@@ -648,26 +648,26 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         // 插入题目
         for (int i = 0; i < dto.getQuestions().size(); i++) {
             NewQuestionDTO questionDTO = dto.getQuestions().get(i);
-            QuestionDO questionDO = QuestionDO.builder()
+            QuestionnaireQuestionDO questionnaireQuestionDO = QuestionnaireQuestionDO.builder()
                     .questionnaireId(questionnaireDO.getId())
                     .title(questionDTO.getTitle())
                     .order(i)
                     .type(questionDTO.getType())
                     .limitMax(questionDTO.getLimitMax())
                     .build();
-            questionMapper.insert(questionDO);
+            questionnaireQuestionMapper.insert(questionnaireQuestionDO);
             // 如果是选择题，且选项列表不为空则插入选项
             if (questionDTO.getType() == QuestionTypeConstant.SELECT
                     && questionDTO.getOptions() != null
                     && !questionDTO.getOptions().isEmpty()) {
                 for (int k = 0; k < questionDTO.getOptions().size(); k++) {
                     NewOptionDTO optionDTO = questionDTO.getOptions().get(k);
-                    OptionDO optionDO = OptionDO.builder()
-                            .questionId(questionDO.getId())
+                    QuestionnaireQuestionOptionDO questionnaireQuestionOptionDO = QuestionnaireQuestionOptionDO.builder()
+                            .questionId(questionnaireQuestionDO.getId())
                             .title(optionDTO.getTitle())
                             .order(k)
                             .build();
-                    optionMapper.insert(optionDO);
+                    questionnaireQuestionOptionMapper.insert(questionnaireQuestionOptionDO);
                 }
             }
         }

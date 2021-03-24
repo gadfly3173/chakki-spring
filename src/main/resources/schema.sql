@@ -229,8 +229,8 @@ CREATE TABLE `lin_user_mfa`
 -- ----------------------------
 -- 选项表
 -- ----------------------------
-DROP TABLE IF EXISTS `option`;
-CREATE TABLE `option`
+DROP TABLE IF EXISTS `questionnaire_question_option`;
+CREATE TABLE `questionnaire_question_option`
 (
     `id`          int(10) UNSIGNED                                             NOT NULL AUTO_INCREMENT,
     `title`       varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '选项内容',
@@ -247,8 +247,8 @@ CREATE TABLE `option`
 -- ----------------------------
 -- 问题表
 -- ----------------------------
-DROP TABLE IF EXISTS `question`;
-CREATE TABLE `question`
+DROP TABLE IF EXISTS `questionnaire_question`;
+CREATE TABLE `questionnaire_question`
 (
     `id`               int(10) UNSIGNED                                             NOT NULL AUTO_INCREMENT,
     `title`            varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '问题标题',
@@ -268,8 +268,8 @@ CREATE TABLE `question`
 -- ----------------------------
 -- 问题-回答 关系表
 -- ----------------------------
-DROP TABLE IF EXISTS `question_answer`;
-CREATE TABLE `question_answer`
+DROP TABLE IF EXISTS `questionnaire_question_answer`;
+CREATE TABLE `questionnaire_question_answer`
 (
     `id`          int(10) UNSIGNED                                              NOT NULL AUTO_INCREMENT,
     `question_id` int(10) UNSIGNED                                              NOT NULL COMMENT '问题id',

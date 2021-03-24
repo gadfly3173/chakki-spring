@@ -22,7 +22,7 @@
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <collection property="questions" column="id" ofType="vip.gadfly.chakkispring.vo.QuestionVO"
-                    select="vip.gadfly.chakkispring.mapper.QuestionMapper.selectQuestionsByQuestionnaireId">
+                    select="vip.gadfly.chakkispring.mapper.QuestionnaireQuestionMapper.selectQuestionsByQuestionnaireId">
         </collection>
     </resultMap>
 
@@ -30,7 +30,7 @@
         SELECT q.id,
                q.title,
                (SELECT COUNT(*)
-                FROM question AS qn
+                FROM questionnaire_question AS qn
                 WHERE qn.questionnaire_id = q.id
                   AND qn.delete_time IS NULL) AS `count`,
                (SELECT COUNT(*)
@@ -50,7 +50,7 @@
         SELECT q.id,
                q.title,
                (SELECT COUNT(*)
-                FROM question AS qn
+                FROM questionnaire_question AS qn
                 WHERE qn.questionnaire_id = q.id
                   AND qn.delete_time IS NULL) AS `count`,
                (SELECT COUNT(*)

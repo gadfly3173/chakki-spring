@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="vip.gadfly.chakkispring.mapper.OptionMapper">
+<mapper namespace="vip.gadfly.chakkispring.mapper.QuestionnaireQuestionOptionMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="OptionVO" type="vip.gadfly.chakkispring.vo.OptionVO">
@@ -11,7 +11,7 @@
 
     <select id="selectOptionsByQuestionId" resultMap="OptionVO">
         SELECT o.id, o.title, o.`order`
-        FROM `option` AS o
+        FROM questionnaire_question_option AS o
         WHERE o.question_id = #{questionId}
           AND o.delete_time IS NULL
     </select>
