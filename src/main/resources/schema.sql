@@ -208,25 +208,6 @@ CREATE TABLE `lin_user_group`
   ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- 两步验证密钥表
--- ----------------------------
-DROP TABLE IF EXISTS `lin_user_mfa`;
-CREATE TABLE `lin_user_mfa`
-(
-    `id`          int(10) UNSIGNED                                             NOT NULL AUTO_INCREMENT,
-    `user_id`     int(10) UNSIGNED                                             NOT NULL COMMENT '用户id',
-    `secret`      varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '两步验证secret',
-    `create_time` datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `update_time` datetime(3)                                                  NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    `delete_time` datetime(3)                                                  NULL     DEFAULT NULL,
-    PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE INDEX `user_secret_del` (`user_id`, `secret`, `delete_time`) USING BTREE
-) ENGINE = InnoDB
-  CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_general_ci
-  ROW_FORMAT = Dynamic;
-
--- ----------------------------
 -- 选项表
 -- ----------------------------
 DROP TABLE IF EXISTS `questionnaire_question_option`;

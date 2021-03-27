@@ -91,6 +91,9 @@ public class CommonConfiguration {
         return filterRegistrationBean;
     }
 
+    /**
+     * validation 快速失败模式
+     */
     @Bean
     public Validator validator() {
         ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)

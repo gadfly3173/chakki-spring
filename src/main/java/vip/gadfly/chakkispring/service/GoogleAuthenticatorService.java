@@ -18,5 +18,5 @@ public interface GoogleAuthenticatorService {
 
     boolean MFAexist(Integer userId);
 
-    void saveUserCredentials(String secretKey, Integer userId);
+    void saveUserCredentials(String secretKey, Integer userId, String username);
 }

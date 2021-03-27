@@ -8,11 +8,12 @@ import io.github.talelin.autoconfigure.exception.FailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vip.gadfly.chakkispring.mapper.UserMFAMapper;
+import vip.gadfly.chakkispring.common.constant.IdentityConstant;
 import vip.gadfly.chakkispring.mapper.UserMapper;
 import vip.gadfly.chakkispring.model.UserDO;
-import vip.gadfly.chakkispring.model.UserMFADO;
+import vip.gadfly.chakkispring.model.UserIdentityDO;
 import vip.gadfly.chakkispring.service.GoogleAuthenticatorService;
+import vip.gadfly.chakkispring.service.UserIdentityService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
@@ -32,7 +33,7 @@ public class GoogleAuthenticatorServiceImpl implements GoogleAuthenticatorServic
     private static final String KEY_FORMAT = "otpauth://totp/%s:%s?secret=%s&issuer=%s";
 
     @Autowired
-    private UserMFAMapper userMFAMapper;
+    private UserIdentityService userIdentityService;
 
     @Autowired
     private UserMapper userMapper;
@@ -42,10 +43,11 @@ public class GoogleAuthenticatorServiceImpl implements GoogleAuthenticatorServic
         googleAuthenticator.setCredentialRepository(new ICredentialRepository() {
             @Override
             public String getSecretKey(String username) {
-                QueryWrapper<UserDO> wrapper = new QueryWrapper<>();
-                wrapper.lambda().eq(UserDO::getUsername, username);
-                UserDO userDO = userMapper.selectOne(wrapper);
-                return userMFAMapper.getSecretKeyByUserId(userDO.getId());
+                QueryWrapper<UserIdentityDO> identityDOQueryWrapper = new QueryWrapper<>();
+                identityDOQueryWrapper.lambda()
+                        .eq(UserIdentityDO::getIdentifier, username)
+                        .eq(UserIdentityDO::getIdentityType, IdentityConstant.USERNAME_TOTP_IDENTITY);
+                return userIdentityService.getBaseMapper().selectOne(identityDOQueryWrapper).getCredential();
             }
 
             @Override
@@ -54,8 +56,7 @@ public class GoogleAuthenticatorServiceImpl implements GoogleAuthenticatorServic
                 QueryWrapper<UserDO> wrapper = new QueryWrapper<>();
                 wrapper.lambda().eq(UserDO::getUsername, username);
                 UserDO userDO = userMapper.selectOne(wrapper);
-                UserMFADO userMFADO = UserMFADO.builder().userId(userDO.getId()).secret(secretKey).build();
-                userMFAMapper.insert(userMFADO);
+                userIdentityService.createIdentity(userDO.getId(), IdentityConstant.USERNAME_TOTP_IDENTITY, username, secretKey);
             }
         });
         log.info("GoogleAuthenticator 初始化成功");
@@ -66,9 +67,11 @@ public class GoogleAuthenticatorServiceImpl implements GoogleAuthenticatorServic
      */
     @Override
     public String getQrUrl(String username, Integer userId, HttpSession session) throws UnsupportedEncodingException {
-        QueryWrapper<UserMFADO> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(UserMFADO::getUserId, userId);
-        if (userMFAMapper.selectCount(wrapper) > 0) {
+        QueryWrapper<UserIdentityDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda()
+                .eq(UserIdentityDO::getUserId, userId)
+                .eq(UserIdentityDO::getIdentityType, IdentityConstant.USERNAME_TOTP_IDENTITY);
+        if (userIdentityService.getBaseMapper().selectCount(wrapper) > 0) {
             throw new FailedException(10103);
         }
         // 每次调用createCredentials都会生成新的secretKey
@@ -76,7 +79,11 @@ public class GoogleAuthenticatorServiceImpl implements GoogleAuthenticatorServic
         log.info("username={}, secretKey={}", username, key.getKey());
         session.setAttribute("secretKey", key.getKey());
         session.setMaxInactiveInterval(300);
-        return String.format(KEY_FORMAT, "Chakki", URLEncoder.encode(username, StandardCharsets.UTF_8.name()), key.getKey(), "Chakki");
+        return String.format(KEY_FORMAT,
+                "Chakki",
+                URLEncoder.encode(username, StandardCharsets.UTF_8.name()),
+                key.getKey(),
+                "Chakki");
     }
 
     @Override
@@ -91,22 +98,25 @@ public class GoogleAuthenticatorServiceImpl implements GoogleAuthenticatorServic
 
     @Override
     public void cancelMFA(Integer userId) {
-        QueryWrapper<UserMFADO> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(UserMFADO::getUserId, userId);
-        userMFAMapper.delete(wrapper);
+        QueryWrapper<UserIdentityDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda()
+                .eq(UserIdentityDO::getUserId, userId)
+                .eq(UserIdentityDO::getIdentityType, IdentityConstant.USERNAME_TOTP_IDENTITY);
+        userIdentityService.getBaseMapper().delete(wrapper);
     }
 
     @Override
     public boolean MFAexist(Integer userId) {
-        QueryWrapper<UserMFADO> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(UserMFADO::getUserId, userId);
-        return userMFAMapper.selectCount(wrapper) > 0;
+        QueryWrapper<UserIdentityDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda()
+                .eq(UserIdentityDO::getUserId, userId)
+                .eq(UserIdentityDO::getIdentityType, IdentityConstant.USERNAME_TOTP_IDENTITY);
+        return userIdentityService.getBaseMapper().selectCount(wrapper) > 0;
     }
 
     @Override
-    public void saveUserCredentials(String secretKey, Integer userId) {
+    public void saveUserCredentials(String secretKey, Integer userId, String username) {
         // secretKey要保存在数据库中
-        UserMFADO userMFADO = UserMFADO.builder().userId(userId).secret(secretKey).build();
-        userMFAMapper.insert(userMFADO);
+        userIdentityService.createIdentity(userId, IdentityConstant.USERNAME_TOTP_IDENTITY, username, secretKey);
     }
 }

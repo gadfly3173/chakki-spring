@@ -3,171 +3,124 @@
   <ID>DATABASE</ID>
   <OriginalElement>269e55ba-276f-4b17-bcff-4fbc0795e3be.SCHEMA:chakki-spring</OriginalElement>
   <nodes>
-    <node x="1279.541666666667" y="815.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user_identity</node>
-    <node x="2715.041666666667" y="493.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_permission</node>
-    <node x="2175.541666666667" y="870.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_class</node>
-    <node x="689.2916666666669" y="0.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.semester</node>
-    <node x="738.5416666666669" y="515.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.sign_list</node>
-    <node x="1510.541666666667" y="837.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_sign</node>
-    <node x="2399.541666666667" y="870.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user_group</node>
-    <node x="1521.041666666667" y="471.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user</node>
-    <node x="677.0416666666669" y="859.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.teacher_class</node>
-    <node x="2630.791666666667" y="870.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_group_permission</node>
-    <node x="0.0" y="870.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.work_extension</node>
-    <node x="671.7916666666669" y="214.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.class</node>
-    <node x="2505.041666666667" y="493.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_group</node>
-    <node x="418.49074074074065" y="460.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_file</node>
-    <node x="962.5416666666669" y="482.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.questionnaire</node>
-    <node x="217.0" y="804.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.announcement</node>
-    <node x="999.5416666666669" y="826.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_questionnaire</node>
-    <node x="104.49074074074065" y="460.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.work</node>
-    <node x="1741.541666666667" y="837.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user_mfa</node>
-    <node x="1958.541666666667" y="782.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_log</node>
-    <node x="441.0000000000001" y="804.0">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_work</node>
+    <node x="426.9222661755534" y="1787.4089313624158">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user_identity</node>
+    <node x="918.9074562753118" y="1072.7334886626484">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_class</node>
+    <node x="221.09827752744843" y="1962.9489391358034">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_permission</node>
+    <node x="677.4653002875007" y="626.6666666666663">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.semester</node>
+    <node x="917.8417918500941" y="1705.7641381038156">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_sign</node>
+    <node x="429.6742836548471" y="645.3004833780526">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.sign_list</node>
+    <node x="663.2813825031022" y="1814.6289780983655">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user_group</node>
+    <node x="571.5248322785874" y="1475.9737618466593">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user</node>
+    <node x="559.9442802802904" y="2011.9621054843158">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_group_permission</node>
+    <node x="615.0762267178786" y="1211.5100254115791">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.teacher_class</node>
+    <node x="917.8254597357936" y="631.6946085642488">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.work_extension</node>
+    <node x="590.6914989452537" y="845.0167575447059">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.class</node>
+    <node x="927.7902830331323" y="1946.3086051661617">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_group</node>
+    <node x="218.57663970048566" y="1030.8611505088043">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_file</node>
+    <node x="932.7649636159143" y="1218.3057645957094">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.questionnaire</node>
+    <node x="214.159749788883" y="738.2673572613396">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.announcement</node>
+    <node x="868.588208335112" y="1475.0577841420272">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_questionnaire</node>
+    <node x="934.279611802868" y="772.1045754402227">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.work</node>
+    <node x="213.33333333333314" y="1643.8352237419253">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_log</node>
+    <node x="213.77064990848737" y="1350.0135396467476">269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_work</node>
   </nodes>
   <notes />
   <edges>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_work" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_file">
-      <point x="0.0" y="-115.0" />
-      <point x="539.5000000000001" y="762.0" />
-      <point x="560.9907407407406" y="762.0" />
-      <point x="47.5" y="126.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_class" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user">
-      <point x="-51.0" y="-49.0" />
-      <point x="2226.541666666667" y="742.0" />
-      <point x="1679.375" y="742.0" />
-      <point x="63.33333333333326" y="115.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_group_permission" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_group">
-      <point x="-59.75" y="-49.0" />
-      <point x="2690.541666666667" y="762.0" />
-      <point x="2647.541666666667" y="762.0" />
-      <point x="47.5" y="93.0" />
-    </edge>
-    <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user_mfa" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user">
-      <point x="0.0" y="-82.0" />
-      <point x="1840.041666666667" y="762.0" />
-      <point x="1637.1527777777778" y="762.0" />
-      <point x="21.111111111111086" y="115.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.teacher_class" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.class">
-      <point x="-51.0" y="-60.0" />
-      <point x="728.0416666666669" y="440.0" />
-      <point x="765.5416666666669" y="440.0" />
-      <point x="-18.75" y="93.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user_identity" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user">
-      <point x="0.0" y="-104.0" />
-      <point x="1385.041666666667" y="762.0" />
-      <point x="1594.9305555555557" y="762.0" />
-      <point x="-21.111111111111086" y="115.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_work" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.work">
-      <point x="-65.66666666666652" y="-115.0" />
-      <point x="473.8333333333336" y="742.0" />
-      <point x="262.74074074074065" y="742.0" />
-      <point x="52.75" y="126.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_class" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.class">
-      <point x="51.0" y="-49.0" />
-      <point x="2328.541666666667" y="420.0" />
-      <point x="878.0416666666669" y="420.0" />
-      <point x="93.75" y="93.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.questionnaire" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.class">
-      <point x="0.0" y="-104.0" />
-      <point x="1064.541666666667" y="430.0" />
-      <point x="840.5416666666669" y="430.0" />
-      <point x="56.25" y="93.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_questionnaire" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user">
-      <point x="65.0" y="-93.0" />
-      <point x="1194.541666666667" y="752.0" />
-      <point x="1573.8194444444448" y="752.0" />
-      <point x="-42.22222222222217" y="115.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.work_extension" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.work">
-      <point x="0.0" y="-49.0" />
-      <point x="98.5" y="762.0" />
-      <point x="157.24074074074065" y="762.0" />
-      <point x="-52.75" y="126.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.class" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.semester">
-      <point x="0.0" y="-93.0" />
-      <point x="0.0" y="82.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.announcement" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_file">
-      <point x="51.0" y="-115.0" />
-      <point x="370.0" y="762.0" />
-      <point x="465.99074074074065" y="762.0" />
-      <point x="-47.5" y="126.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.announcement" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.class">
-      <point x="-51.0" y="-115.0" />
-      <point x="268.0" y="752.0" />
-      <point x="93.99074074074065" y="752.0" />
-      <point x="93.99074074074065" y="420.0" />
-      <point x="690.5416666666669" y="420.0" />
-      <point x="-93.75" y="93.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_sign" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user">
-      <point x="0.0" y="-82.0" />
-      <point x="0.0" y="115.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_log" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user">
-      <point x="0.0" y="-137.0" />
-      <point x="2057.041666666667" y="752.0" />
-      <point x="1658.2638888888891" y="752.0" />
-      <point x="42.22222222222217" y="115.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.work" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.class">
-      <point x="0.0" y="-126.0" />
-      <point x="209.99074074074065" y="430.0" />
-      <point x="728.0416666666669" y="430.0" />
-      <point x="-56.25" y="93.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.sign_list" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.class">
-      <point x="-1.1368683772161603E-13" y="-71.0" />
-      <point x="840.5416666666667" y="440.0" />
-      <point x="803.0416666666669" y="440.0" />
-      <point x="18.75" y="93.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user_group" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user">
-      <point x="-51.0" y="-49.0" />
-      <point x="2450.541666666667" y="732.0" />
-      <point x="1700.4861111111113" y="732.0" />
-      <point x="84.44444444444434" y="115.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_work" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user">
-      <point x="65.66666666666652" y="-115.0" />
-      <point x="605.1666666666666" y="732.0" />
-      <point x="1531.5972222222226" y="732.0" />
-      <point x="-84.44444444444434" y="115.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user_group" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_group">
-      <point x="51.0" y="-49.0" />
-      <point x="-47.5" y="93.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_group_permission" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_permission">
-      <point x="59.75" y="-49.0" />
-      <point x="0.0" y="93.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.student_questionnaire" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.questionnaire">
-      <point x="-65.0" y="-93.0" />
-      <point x="0.0" y="104.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
     <edge source="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.teacher_class" target="269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user">
-      <point x="51.0" y="-60.0" />
-      <point x="830.0416666666669" y="742.0" />
-      <point x="1552.7083333333335" y="742.0" />
-      <point x="-63.33333333333326" y="115.0" />
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.5532369768142126" x="961.1606060291421" y="561.3903067214464" />
-  <SelectedNodes>
-    <node>269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.lin_user_identity</node>
-  </SelectedNodes>
+  <settings layout="Circular" zoom="0.8" x="971.038988788987" y="1539.9047619047615" />
+  <SelectedNodes />
   <Categories>
     <Category>Key columns</Category>
     <Category>Columns</Category>

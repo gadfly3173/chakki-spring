@@ -201,7 +201,7 @@ public class UserController {
     @GroupRequired
     public boolean getUserMFAStatus() {
         Integer userId = LocalUser.getLocalUser().getId();
-        return userService.getUserMFAStatus(userId);
+        return googleAuthenticatorService.MFAexist(userId);
     }
 
     /**
@@ -235,7 +235,7 @@ public class UserController {
             throw new FailedException(10104);
         }
         if (googleAuthenticatorService.validCodeWithSecret(secretKey, code)) {
-            googleAuthenticatorService.saveUserCredentials(secretKey, user.getId());
+            googleAuthenticatorService.saveUserCredentials(secretKey, user.getId(), user.getUsername());
             return ResponseUtil.generateUnifyResponse(35);
         }
         throw new FailedException(10104);
