@@ -142,10 +142,8 @@
       <point x="0.0" y="0.0" />
     </edge>
   </edges>
-  <settings layout="Circular" zoom="0.5946379215035933" x="880.0077642122149" y="1405.314524911601" />
-  <SelectedNodes>
-    <node>269e55ba-276f-4b17-bcff-4fbc0795e3be.TABLE:chakki-spring.semester</node>
-  </SelectedNodes>
+  <settings layout="Circular" zoom="0.8946379215035932" x="910.9426037629538" y="1398.2430099979779" />
+  <SelectedNodes />
   <Categories>
     <Category>Key columns</Category>
     <Category>Columns</Category>

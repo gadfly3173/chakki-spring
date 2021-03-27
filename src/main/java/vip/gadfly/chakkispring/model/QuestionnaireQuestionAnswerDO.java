@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("questionnaire_question_answer")
+@TableName("student_questionnaire_question_answer")
 @EqualsAndHashCode(callSuper = true)
 public class QuestionnaireQuestionAnswerDO extends BaseModel implements Serializable {
 

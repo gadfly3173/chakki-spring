@@ -249,16 +249,17 @@ CREATE TABLE `questionnaire_question`
 -- ----------------------------
 -- 问题-回答 关系表
 -- ----------------------------
-DROP TABLE IF EXISTS `questionnaire_question_answer`;
-CREATE TABLE `questionnaire_question_answer`
+DROP TABLE IF EXISTS `student_questionnaire_question_answer`;
+CREATE TABLE `student_questionnaire_question_answer`
 (
-    `id`          int(10) UNSIGNED                                              NOT NULL AUTO_INCREMENT,
-    `question_id` int(10) UNSIGNED                                              NOT NULL COMMENT '问题id',
-    `answer`      varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
-    `option_id`   int(10) UNSIGNED                                              NULL     DEFAULT NULL,
-    `create_time` datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `update_time` datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    `delete_time` datetime(3)                                                   NULL     DEFAULT NULL,
+    `id`                       int(10) UNSIGNED                                              NOT NULL AUTO_INCREMENT,
+    `student_questionnaire_id` int(10) UNSIGNED                                              NOT NULL COMMENT '对应的学生提交信息id',
+    `question_id`              int(10) UNSIGNED                                              NOT NULL COMMENT '问题id',
+    `answer`                   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
+    `option_id`                int(10) UNSIGNED                                              NULL     DEFAULT NULL,
+    `create_time`              datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `update_time`              datetime(3)                                                   NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    `delete_time`              datetime(3)                                                   NULL     DEFAULT NULL,
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
