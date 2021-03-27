@@ -14,9 +14,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 @TableName("student_questionnaire_question_answer")
 @EqualsAndHashCode(callSuper = true)
-public class QuestionnaireQuestionAnswerDO extends BaseModel implements Serializable {
+public class StudentQuestionnaireQuestionAnswerDO extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 对应的学生提交信息id
+     */
+    private Integer studentQuestionId;
 
     /**
      * 问题id
