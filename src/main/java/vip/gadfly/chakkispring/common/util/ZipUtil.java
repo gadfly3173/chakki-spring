@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -79,7 +80,7 @@ public class ZipUtil {
         if (resFiles == null || zipFile == null) return false;
         ZipOutputStream zos = null;
         try {
-            zos = new ZipOutputStream(new FileOutputStream(zipFile));
+            zos = new ZipOutputStream(new FileOutputStream(zipFile), StandardCharsets.UTF_8);
             for (File resFile : resFiles) {
                 if (!zipFile(resFile, "", zos, comment, null)) return false;
             }
@@ -144,7 +145,7 @@ public class ZipUtil {
     public static boolean zipFile(File resFile, File zipFile, String comment)
             throws IOException {
         if (resFile == null || zipFile == null) return false;
-        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))) {
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile), StandardCharsets.UTF_8)) {
             return zipFile(resFile, "", zos, comment, null);
         }
     }

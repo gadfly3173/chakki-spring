@@ -45,6 +45,7 @@
                u.end_time
         FROM sign_list AS u
         WHERE u.class_id = #{classId}
+        AND u.end_time > NOW()
         ORDER BY u.id DESC
         LIMIT 1
     </select>

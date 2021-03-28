@@ -39,6 +39,7 @@ import vip.gadfly.chakkispring.vo.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TreeSet;
@@ -472,7 +473,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
         File zipFile = File.createTempFile(String.valueOf(System.currentTimeMillis()), ".zip");
         ZipOutputStream zos = null;
         try {
-            zos = new ZipOutputStream(new FileOutputStream(zipFile));
+            zos = new ZipOutputStream(new FileOutputStream(zipFile), StandardCharsets.UTF_8);
             for (StudentWorkDO tempDO : studentWorkDOList) {
                 FileDO fileDO = fileMapper.selectById(tempDO.getFileId());
                 String absolutePath = FileUtil.getFileAbsolutePath(fileProperties.getStoreDir(), fileDO.getPath());

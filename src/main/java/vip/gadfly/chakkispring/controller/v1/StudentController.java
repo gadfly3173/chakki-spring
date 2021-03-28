@@ -1,6 +1,7 @@
 package vip.gadfly.chakkispring.controller.v1;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.github.talelin.autoconfigure.exception.FailedException;
 import io.github.talelin.core.annotation.GroupRequired;
 import io.github.talelin.core.annotation.PermissionMeta;
 import io.github.talelin.core.annotation.PermissionModule;
@@ -108,11 +109,11 @@ public class StudentController {
                                                       @PathVariable Integer signId,
                                                       @ApiIgnore HttpServletRequest request) {
         if (!studentService.signAvailable(signId)) {
-            return ResponseUtil.generateUnifyResponse(10211);
+            throw new FailedException(10211);
         }
         String ip = IPUtil.getIPFromRequest(request);
         if (!studentService.confirmSign(signId, ip)) {
-            return ResponseUtil.generateUnifyResponse(10210);
+            throw new FailedException(10210);
         }
         return ResponseUtil.generateUnifyResponse(20);
     }
@@ -160,13 +161,13 @@ public class StudentController {
                                                    @PathVariable Integer workId,
                                                    @ApiIgnore MultipartHttpServletRequest multipartHttpServletRequest) {
         if (!studentService.workAvailable(workId)) {
-            return ResponseUtil.generateUnifyResponse(10231);
+            throw new FailedException(10231);
         }
         String ip = IPUtil.getIPFromRequest(multipartHttpServletRequest);
         MultiValueMap<String, MultipartFile> fileMap =
                 multipartHttpServletRequest.getMultiFileMap();
         if (!studentService.handStudentWork(workId, fileMap, ip)) {
-            return ResponseUtil.generateUnifyResponse(10230);
+            throw new FailedException(10230);
         }
         return ResponseUtil.generateUnifyResponse(31);
     }

@@ -19,6 +19,7 @@
         FROM questionnaire_question AS qn
         WHERE qn.questionnaire_id = #{questionnaireId}
           AND qn.delete_time IS NULL
+        ORDER BY qn.`order`
     </select>
 
 </mapper>

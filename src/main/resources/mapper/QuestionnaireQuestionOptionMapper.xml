@@ -14,6 +14,7 @@
         FROM questionnaire_question_option AS o
         WHERE o.question_id = #{questionId}
           AND o.delete_time IS NULL
+        ORDER BY o.`order`
     </select>
 
 </mapper>
