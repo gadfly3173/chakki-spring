@@ -742,21 +742,16 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
                 }
                 // 选择题查询选项原文写入
                 if (questionnaireVO.getQuestions().get(j).getType().equals(QuestionTypeConstant.SELECT)) {
-                    System.out.println("选择题" + j);
                     // 初始化StringJoiner用来存放原文
                     StringJoiner optionTitles = new StringJoiner(",");
-                    System.out.println(answerVOList.get(i).getAnswers().get(j).getOptionId().toString());
-                    System.out.println(questionnaireVO.getQuestions().get(i).getOptions().toString());
                     for (Integer optionId : answerVOList.get(i).getAnswers().get(j).getOptionId()) {
                         for (OptionVO optionVO : questionnaireVO.getQuestions().get(j).getOptions()) {
                             // 如果id相同就加一条
                             if (optionVO.getId().equals(optionId)) {
                                 optionTitles.add(optionVO.getTitle());
-                                System.out.println(true);
                             }
                         }
                     }
-                    System.out.println(j + optionTitles.toString());
                     row.createCell(j + 2).setCellValue(optionTitles.toString());
                 }
             }
