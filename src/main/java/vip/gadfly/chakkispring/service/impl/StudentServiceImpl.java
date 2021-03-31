@@ -159,6 +159,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void handStudentQuestionnaire(List<QuestionAnswerDTO> dto, Integer id, String ip) {
+        Integer userId = LocalUser.getLocalUser().getId();
+        QueryWrapper<StudentQuestionnaireDO> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(StudentQuestionnaireDO::getQuestionnaireId, id).eq(StudentQuestionnaireDO::getUserId, userId);
+        if (studentQuestionnaireMapper.selectCount(wrapper) > 0) {
+            throw new FailedException(10251);
+        }
         QuestionnaireVO questionnaireVO = questionnaireMapper.getQuestionnaireVO(id);
         // 回答与题目数量对不上就抛异常
         if (questionnaireVO.getQuestions().size() != dto.size()) {
@@ -167,7 +173,7 @@ public class StudentServiceImpl implements StudentService {
         // 插入学生提交问卷记录
         StudentQuestionnaireDO studentQuestionnaireDO = StudentQuestionnaireDO.builder()
                 .questionnaireId(id)
-                .userId(LocalUser.getLocalUser().getId())
+                .userId(userId)
                 .ip(ip)
                 .build();
         studentQuestionnaireMapper.insert(studentQuestionnaireDO);
@@ -185,7 +191,7 @@ public class StudentServiceImpl implements StudentService {
                 StudentQuestionnaireQuestionAnswerDO answerDO =
                         StudentQuestionnaireQuestionAnswerDO.builder()
                                 .questionId(questionVO.getId())
-                                .studentQuestionId(studentQuestionnaireDO.getId())
+                                .studentQuestionnaireId(studentQuestionnaireDO.getId())
                                 .answer(questionAnswerDTO.getAnswer())
                                 .build();
                 studentQuestionnaireQuestionAnswerMapper.insert(answerDO);
@@ -206,7 +212,7 @@ public class StudentServiceImpl implements StudentService {
                         if (option.getId().equals(questionAnswerDTO.getSingleOptionId())) {
                             StudentQuestionnaireQuestionAnswerDO answerDO =
                                     StudentQuestionnaireQuestionAnswerDO.builder()
-                                            .studentQuestionId(studentQuestionnaireDO.getId())
+                                            .studentQuestionnaireId(studentQuestionnaireDO.getId())
                                             .questionId(questionVO.getId())
                                             .optionId(option.getId())
                                             .build();
@@ -240,7 +246,7 @@ public class StudentServiceImpl implements StudentService {
                             if (selectId.equals(option.getId())) {
                                 StudentQuestionnaireQuestionAnswerDO answerDO =
                                         StudentQuestionnaireQuestionAnswerDO.builder()
-                                                .studentQuestionId(studentQuestionnaireDO.getId())
+                                                .studentQuestionnaireId(studentQuestionnaireDO.getId())
                                                 .questionId(questionVO.getId())
                                                 .optionId(option.getId())
                                                 .build();
