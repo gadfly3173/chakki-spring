@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import vip.gadfly.chakkispring.bo.FileBO;
+import vip.gadfly.chakkispring.bo.FileExportBO;
 import vip.gadfly.chakkispring.common.annotation.StudentClassCheck;
 import vip.gadfly.chakkispring.common.annotation.TeacherClassCheck;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
@@ -98,4 +99,13 @@ public class FileController {
         return ResponseUtil.generateFileResponse(file, filename);
     }
 
+    @GetMapping("/lesson/questionnaire/download/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "下载问卷收集结果", module = "教师")
+    @TeacherClassCheck(valueType = questionnaireIdType, paramType = pathVariableType)
+    public ResponseEntity<FileSystemResource> downloadStudentQuestionnaireReport(
+            @PathVariable @Positive(message = "{id.positive}") Integer id) throws IOException {
+        FileExportBO exportBO = classService.getQuestionnaireReportFile(id);
+        return ResponseUtil.generateFileResponse(exportBO.getFile(), exportBO.getFilename());
+    }
 }

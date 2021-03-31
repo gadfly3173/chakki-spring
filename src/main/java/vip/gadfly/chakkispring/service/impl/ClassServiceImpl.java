@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.github.talelin.autoconfigure.exception.ForbiddenException;
 import io.github.talelin.autoconfigure.exception.NotFoundException;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.xssf.usermodel.*;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
 import org.springframework.beans.BeanUtils;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
+import vip.gadfly.chakkispring.bo.FileExportBO;
 import vip.gadfly.chakkispring.common.LocalUser;
 import vip.gadfly.chakkispring.common.constant.QuestionTypeConstant;
 import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
@@ -42,6 +45,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.zip.ZipOutputStream;
@@ -102,6 +106,12 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
 
     @Autowired
     private QuestionnaireQuestionOptionMapper questionnaireQuestionOptionMapper;
+
+    @Autowired
+    private StudentQuestionnaireMapper studentQuestionnaireMapper;
+
+    @Autowired
+    private StudentQuestionnaireQuestionAnswerMapper studentQuestionnaireQuestionAnswerMapper;
 
     @Autowired
     private FileProperties fileProperties;
@@ -692,6 +702,80 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     @Override
     public QuestionnaireVO getQuestionnaireVO(Integer id) {
         return questionnaireMapper.getQuestionnaireVO(id);
+    }
+
+    @Override
+    public FileExportBO getQuestionnaireReportFile(Integer id) throws IOException {
+        // 查询问卷本体
+        QuestionnaireVO questionnaireVO = questionnaireMapper.getQuestionnaireVO(id);
+        // 查询学生提交记录
+        List<StudentQuestionnaireAnswerVO> answerVOList = studentQuestionnaireMapper.selectStudentQuestionnaireAnswerVO(id);
+        // Apache POI 创建 Excel
+        XSSFWorkbook wb = new XSSFWorkbook();
+        XSSFSheet sheet = wb.createSheet("Sheet 1");
+        // 设置时间格式
+        XSSFCreationHelper creationHelper = wb.getCreationHelper();
+        CellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss.SSS"));
+        // 标题行
+        XSSFRow titleRow = sheet.createRow(0);
+        titleRow.createCell(0).setCellValue("学号");
+        titleRow.createCell(1).setCellValue("姓名");
+        // 问题题目作为标题
+        for (int i = 0; i < questionnaireVO.getQuestions().size(); i++) {
+            titleRow.createCell(i + 2).setCellValue(String.format("第%d题：%s",
+                    i + 1,
+                    questionnaireVO.getQuestions().get(i).getTitle()));
+        }
+        titleRow.createCell(questionnaireVO.getQuestions().size() + 2).setCellValue("提交时间");
+        // 学生回答内容写入
+        for (int i = 0; i < answerVOList.size(); i++) {
+            XSSFRow row = sheet.createRow(i + 1);
+            row.createCell(0).setCellValue(answerVOList.get(i).getUsername());
+            row.createCell(1).setCellValue(answerVOList.get(i).getNickname());
+            // 遍历问题
+            for (int j = 0; j < questionnaireVO.getQuestions().size(); j++) {
+                // 简答题写入answer
+                if (questionnaireVO.getQuestions().get(j).getType().equals(QuestionTypeConstant.TEXT)) {
+                    row.createCell(j + 2).setCellValue(answerVOList.get(i).getAnswers().get(j).getAnswer());
+                    continue;
+                }
+                // 选择题查询选项原文写入
+                if (questionnaireVO.getQuestions().get(j).getType().equals(QuestionTypeConstant.SELECT)) {
+                    System.out.println("选择题" + j);
+                    // 初始化StringJoiner用来存放原文
+                    StringJoiner optionTitles = new StringJoiner(",");
+                    System.out.println(answerVOList.get(i).getAnswers().get(j).getOptionId().toString());
+                    System.out.println(questionnaireVO.getQuestions().get(i).getOptions().toString());
+                    for (Integer optionId : answerVOList.get(i).getAnswers().get(j).getOptionId()) {
+                        for (OptionVO optionVO : questionnaireVO.getQuestions().get(j).getOptions()) {
+                            // 如果id相同就加一条
+                            if (optionVO.getId().equals(optionId)) {
+                                optionTitles.add(optionVO.getTitle());
+                                System.out.println(true);
+                            }
+                        }
+                    }
+                    System.out.println(j + optionTitles.toString());
+                    row.createCell(j + 2).setCellValue(optionTitles.toString());
+                }
+            }
+            // 写入创建时间
+            XSSFCell datetimeCell = row.createCell(questionnaireVO.getQuestions().size() + 2);
+            datetimeCell.setCellValue(answerVOList.get(i).getCreateTime());
+            datetimeCell.setCellStyle(cellStyle);
+        }
+        // 写入临时文件
+        File excelFile = File.createTempFile(String.valueOf(System.currentTimeMillis()), ".xlsx");
+        FileOutputStream outputStream = new FileOutputStream(excelFile);
+        wb.write(outputStream);
+        outputStream.close();
+        // 格式化文件名
+        String filename = String.format("问卷调查结果_%s.xlsx", questionnaireVO.getTitle());
+        return FileExportBO.builder()
+                .file(excelFile)
+                .filename(filename)
+                .build();
     }
 
     private void throwSemesterNameExist(String name) {

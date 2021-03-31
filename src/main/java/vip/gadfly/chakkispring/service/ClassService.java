@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
+import vip.gadfly.chakkispring.bo.FileExportBO;
 import vip.gadfly.chakkispring.dto.admin.NewClassDTO;
 import vip.gadfly.chakkispring.dto.admin.NewSemesterDTO;
 import vip.gadfly.chakkispring.dto.admin.UpdateClassDTO;
@@ -327,4 +328,6 @@ public interface ClassService {
     void deleteQuestionnaire(Integer id);
 
     QuestionnaireVO getQuestionnaireVO(Integer id);
+
+    FileExportBO getQuestionnaireReportFile(Integer id) throws IOException;
 }

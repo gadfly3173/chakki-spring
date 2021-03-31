@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.gadfly.chakkispring.mapper.StudentQuestionnaireQuestionAnswerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="StudentQuestionnaireAnswerDetailVO"
+               type="vip.gadfly.chakkispring.vo.StudentQuestionnaireAnswerDetailVO">
+        <id column="question_id" property="questionId"/>
+        <result column="student_questionnaire_id"/>
+        <result column="answer" property="answer"/>
+        <result column="question" property="question"/>
+        <collection property="optionId"
+                    column="{questionId=question_id, studentQuestionnaireId=student_questionnaire_id}"
+                    ofType="java.lang.Integer"
+                    select="vip.gadfly.chakkispring.mapper.StudentQuestionnaireQuestionAnswerMapper.selectOptionsByStudentQuestionnaireId">
+        </collection>
+    </resultMap>
+
+    <select id="selectAnswersByStudentQuestionnaireId" resultMap="StudentQuestionnaireAnswerDetailVO">
+        SELECT DISTINCT(sqqa.question_id), sqqa.answer, qq.title AS question, sqqa.student_questionnaire_id
+        FROM student_questionnaire_question_answer AS sqqa,
+             questionnaire_question AS qq
+        WHERE sqqa.question_id = qq.id
+          AND sqqa.student_questionnaire_id = #{studentQuestionnaireId}
+          AND sqqa.delete_time IS NULL
+          AND qq.delete_time IS NULL
+        ORDER BY qq.`order`
+    </select>
+
+    <select id="selectOptionsByStudentQuestionnaireId" resultType="java.lang.Integer">
+        SELECT sqqa.option_id
+        FROM student_questionnaire_question_answer AS sqqa
+        WHERE sqqa.question_id = #{questionId}
+          AND sqqa.student_questionnaire_id = #{studentQuestionnaireId}
+          AND sqqa.delete_time IS NULL
+    </select>
+</mapper>
