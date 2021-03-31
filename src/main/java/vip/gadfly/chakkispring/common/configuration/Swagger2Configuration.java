@@ -49,12 +49,12 @@ public class Swagger2Configuration {
      */
     @Bean
     public Docket defaultApi2() {
-        //添加header参数
+        // 添加header参数
         ParameterBuilder ticketPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<>();
         ticketPar.name(HttpHeaders.AUTHORIZATION).description("用户 token，除登录接口及验证码接口以外都需要")
                 .modelRef(new ModelRef("string")).parameterType("header")
-                //header中的token参数非必填，传空也可以
+                // header中的token参数非必填，传空也可以
                 .required(false).build();
         pars.add(ticketPar.build());
         log.info("Knife4J 初始化成功");
@@ -65,7 +65,7 @@ public class Swagger2Configuration {
                 .paths(PathSelectors.any())
                 .build()
                 .globalOperationParameters(pars)
-                //赋予插件体系
+                // 赋予插件体系
                 .extensions(openApiExtensionResolver.buildSettingExtensions());
     }
 

@@ -3,6 +3,7 @@ package vip.gadfly.chakkispring.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
+import vip.gadfly.chakkispring.dto.lesson.QuestionAnswerDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.vo.QuestionnairePageVO;
 import vip.gadfly.chakkispring.vo.SignListVO;
@@ -43,4 +44,6 @@ public interface StudentService {
     boolean handStudentWork(Integer workId, MultiValueMap<String, MultipartFile> fileMap, String ip);
 
     IPage<QuestionnairePageVO> getQuestionnairePageForStudentByClassId(Integer classId, Integer count, Integer page);
+
+    void handStudentQuestionnaire(List<QuestionAnswerDTO> dto, Integer id, String ip);
 }

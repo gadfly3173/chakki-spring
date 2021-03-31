@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Base64;
 import java.util.Random;
 
@@ -46,8 +45,8 @@ public class ValidateCodeUtil {
      * 字体的设置
      */
     private static Font getFont() throws IOException, FontFormatException {
-        InputStream dejavuSerifBold = new ClassPathResource("DejaVuSerif-Bold.ttf").getInputStream();
-        return Font.createFont(Font.TRUETYPE_FONT, dejavuSerifBold).deriveFont(Font.BOLD, 36);
+        ClassPathResource dejavuSerifBold = new ClassPathResource("DejaVuSerif-Bold.ttf");
+        return Font.createFont(Font.TRUETYPE_FONT, dejavuSerifBold.getInputStream()).deriveFont(Font.BOLD, 36);
     }
 
     /**

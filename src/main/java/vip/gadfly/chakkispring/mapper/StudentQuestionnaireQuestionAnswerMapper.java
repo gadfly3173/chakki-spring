@@ -8,6 +8,6 @@ import vip.gadfly.chakkispring.model.StudentQuestionnaireQuestionAnswerDO;
  * @author Gadfly
  */
 @Repository
-public interface QuestionnaireQuestionAnswerMapper extends BaseMapper<StudentQuestionnaireQuestionAnswerDO> {
+public interface StudentQuestionnaireQuestionAnswerMapper extends BaseMapper<StudentQuestionnaireQuestionAnswerDO> {
 
 }

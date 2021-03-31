@@ -18,6 +18,7 @@ import vip.gadfly.chakkispring.common.annotation.StudentClassCheck;
 import vip.gadfly.chakkispring.common.util.IPUtil;
 import vip.gadfly.chakkispring.common.util.PageUtil;
 import vip.gadfly.chakkispring.common.util.ResponseUtil;
+import vip.gadfly.chakkispring.dto.lesson.QuestionAnswerDTO;
 import vip.gadfly.chakkispring.dto.query.ClassIdPageDTO;
 import vip.gadfly.chakkispring.model.ClassDO;
 import vip.gadfly.chakkispring.model.SemesterDO;
@@ -26,6 +27,7 @@ import vip.gadfly.chakkispring.service.StudentService;
 import vip.gadfly.chakkispring.vo.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -214,5 +216,20 @@ public class StudentController {
     public QuestionnaireVO getQuestionnaireVO(@ApiParam(value = "问卷id", required = true)
                                               @PathVariable @Positive(message = "{id.positive}") Integer id) {
         return classService.getQuestionnaireVO(id);
+    }
+
+    @ApiOperation(value = "提交问卷回答", notes = "提交问卷回答")
+    @PostMapping("/questionnaire/{id}")
+    @GroupRequired
+    @PermissionMeta(value = "提交问卷回答")
+    @StudentClassCheck(valueType = questionnaireIdType, paramType = pathVariableType)
+    public UnifyResponseVO<String> handStudentQuestionnaire(@ApiParam(value = "问卷回答内容", required = true)
+                                                            @RequestBody @Valid List<QuestionAnswerDTO> dto,
+                                                            @ApiParam(value = "问卷id", required = true)
+                                                            @PathVariable Integer id,
+                                                            @ApiIgnore HttpServletRequest request) {
+        String ip = IPUtil.getIPFromRequest(request);
+        studentService.handStudentQuestionnaire(dto, id, ip);
+        return ResponseUtil.generateUnifyResponse(41);
     }
 }

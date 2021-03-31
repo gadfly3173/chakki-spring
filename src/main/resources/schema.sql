@@ -613,9 +613,11 @@ VALUES (65, '发布问卷', '教师', 1);
 INSERT INTO `lin_permission`(id, name, module, mount)
 VALUES (66, '修改作业', '教师', 1);
 INSERT INTO `lin_permission`(id, name, module, mount)
-VALUES (67, '查看所有问卷', '教师', 1);
+VALUES (67, '查看所有问卷', '学生', 1);
 INSERT INTO `lin_permission`(id, name, module, mount)
-VALUES (68, '查看单个问卷', '教师', 1);
+VALUES (68, '查看单个问卷', '学生', 1);
+INSERT INTO `lin_permission`(id, name, module, mount)
+VALUES (69, '提交问卷回答', '学生', 1);
 
 -- ----------------------------
 -- Records of lin_group_permission
@@ -722,5 +724,7 @@ INSERT INTO `lin_group_permission`
 VALUES (50, 3, 67);
 INSERT INTO `lin_group_permission`
 VALUES (51, 3, 68);
+INSERT INTO `lin_group_permission`
+VALUES (52, 3, 69);
 
 COMMIT;

@@ -8,21 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import vip.gadfly.chakkispring.common.LocalUser;
+import vip.gadfly.chakkispring.common.constant.QuestionTypeConstant;
 import vip.gadfly.chakkispring.common.constant.SignStatusConstant;
 import vip.gadfly.chakkispring.common.mybatis.Page;
 import vip.gadfly.chakkispring.common.util.IPUtil;
+import vip.gadfly.chakkispring.dto.lesson.QuestionAnswerDTO;
 import vip.gadfly.chakkispring.mapper.*;
-import vip.gadfly.chakkispring.model.ClassDO;
-import vip.gadfly.chakkispring.model.FileDO;
-import vip.gadfly.chakkispring.model.StudentSignDO;
-import vip.gadfly.chakkispring.model.StudentWorkDO;
+import vip.gadfly.chakkispring.model.*;
 import vip.gadfly.chakkispring.module.file.Uploader;
 import vip.gadfly.chakkispring.service.FileService;
 import vip.gadfly.chakkispring.service.StudentService;
-import vip.gadfly.chakkispring.vo.QuestionnairePageVO;
-import vip.gadfly.chakkispring.vo.SignListVO;
+import vip.gadfly.chakkispring.vo.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,6 +54,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private QuestionnaireMapper questionnaireMapper;
+
+    @Autowired
+    private StudentQuestionnaireMapper studentQuestionnaireMapper;
+
+    @Autowired
+    private StudentQuestionnaireQuestionAnswerMapper studentQuestionnaireQuestionAnswerMapper;
 
     @Autowired
     private FileMapper fileMapper;
@@ -149,6 +154,108 @@ public class StudentServiceImpl implements StudentService {
         IPage<QuestionnairePageVO> iPage;
         iPage = questionnaireMapper.selectQuestionnairePageForStudentByClassId(pager, userId, classId);
         return iPage;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void handStudentQuestionnaire(List<QuestionAnswerDTO> dto, Integer id, String ip) {
+        QuestionnaireVO questionnaireVO = questionnaireMapper.getQuestionnaireVO(id);
+        // 回答与题目数量对不上就抛异常
+        if (questionnaireVO.getQuestions().size() != dto.size()) {
+            throw new FailedException(10250);
+        }
+        // 插入学生提交问卷记录
+        StudentQuestionnaireDO studentQuestionnaireDO = StudentQuestionnaireDO.builder()
+                .questionnaireId(id)
+                .userId(LocalUser.getLocalUser().getId())
+                .ip(ip)
+                .build();
+        studentQuestionnaireMapper.insert(studentQuestionnaireDO);
+        // 遍历验证每个问题是否符合回答要求并插入
+        for (int i = 0; i < dto.size(); i++) {
+            QuestionVO questionVO = questionnaireVO.getQuestions().get(i);
+            QuestionAnswerDTO questionAnswerDTO = dto.get(i);
+            // 简答题逻辑
+            if (questionVO.getType() == QuestionTypeConstant.TEXT) {
+                // 回答内容空白
+                if (!StringUtils.hasText(questionAnswerDTO.getAnswer())) {
+                    throw new FailedException(10250, String.format("第%d题的回答不得为空", i + 1));
+                }
+                // 插入回答记录
+                StudentQuestionnaireQuestionAnswerDO answerDO =
+                        StudentQuestionnaireQuestionAnswerDO.builder()
+                                .questionId(questionVO.getId())
+                                .studentQuestionId(studentQuestionnaireDO.getId())
+                                .answer(questionAnswerDTO.getAnswer())
+                                .build();
+                studentQuestionnaireQuestionAnswerMapper.insert(answerDO);
+                continue;
+            }
+            // 选择题逻辑
+            if (questionVO.getType() == QuestionTypeConstant.SELECT) {
+                // 单选
+                if (questionVO.getLimitMax() == 1) {
+                    // 选项为空
+                    if (questionAnswerDTO.getSingleOptionId() == null) {
+                        throw new FailedException(10250, String.format("第%d题的选项不得为空", i + 1));
+                    }
+                    // 判断选项是否是问题给出的
+                    int index = 0;
+                    for (OptionVO option : questionVO.getOptions()) {
+                        // 存在就插入
+                        if (option.getId().equals(questionAnswerDTO.getSingleOptionId())) {
+                            StudentQuestionnaireQuestionAnswerDO answerDO =
+                                    StudentQuestionnaireQuestionAnswerDO.builder()
+                                            .studentQuestionId(studentQuestionnaireDO.getId())
+                                            .questionId(questionVO.getId())
+                                            .optionId(option.getId())
+                                            .build();
+                            studentQuestionnaireQuestionAnswerMapper.insert(answerDO);
+                            index += 1;
+                        }
+                    }
+                    // 不存在就抛异常
+                    if (index == 0) {
+                        throw new FailedException(10250, String.format("第%d题的选项不在问题中", i + 1));
+                    }
+                    continue;
+                }
+                // 多选
+                if (questionVO.getLimitMax() > 1) {
+                    // 选项为空
+                    if (questionAnswerDTO.getMultiOptionId() == null || questionAnswerDTO.getMultiOptionId().isEmpty()) {
+                        throw new FailedException(10250, String.format("第%d题的选项不得为空", i + 1));
+                    }
+                    // 选项超过设置的上限
+                    if (questionAnswerDTO.getMultiOptionId().size() > questionVO.getLimitMax()) {
+                        throw new FailedException(10250, String.format("第%d题的选项超出上限", i + 1));
+                    }
+                    // 判断选项是否是问题给出的
+                    int index = 0;
+                    // 先遍历问题里的选项
+                    for (OptionVO option : questionVO.getOptions()) {
+                        // 再遍历提交的选项
+                        for (Integer selectId : questionAnswerDTO.getMultiOptionId()) {
+                            // 存在就插入
+                            if (selectId.equals(option.getId())) {
+                                StudentQuestionnaireQuestionAnswerDO answerDO =
+                                        StudentQuestionnaireQuestionAnswerDO.builder()
+                                                .studentQuestionId(studentQuestionnaireDO.getId())
+                                                .questionId(questionVO.getId())
+                                                .optionId(option.getId())
+                                                .build();
+                                studentQuestionnaireQuestionAnswerMapper.insert(answerDO);
+                                index += 1;
+                            }
+                        }
+                    }
+                    // 插入成功数量少于提交的选项就抛异常
+                    if (index < questionAnswerDTO.getMultiOptionId().size()) {
+                        throw new FailedException(10250, String.format("第%d题的选项不在问题中", i + 1));
+                    }
+                }
+            }
+        }
     }
 
     @Override

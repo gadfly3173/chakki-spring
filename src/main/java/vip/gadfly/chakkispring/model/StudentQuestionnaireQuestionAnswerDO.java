@@ -21,7 +21,7 @@ public class StudentQuestionnaireQuestionAnswerDO extends BaseModel implements S
     /**
      * 对应的学生提交信息id
      */
-    private Integer studentQuestionId;
+    private Integer studentQuestionnaireId;
 
     /**
      * 问题id
