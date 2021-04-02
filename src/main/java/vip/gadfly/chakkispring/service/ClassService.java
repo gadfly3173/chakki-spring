@@ -15,7 +15,6 @@ import vip.gadfly.chakkispring.model.SemesterDO;
 import vip.gadfly.chakkispring.model.UserDO;
 import vip.gadfly.chakkispring.vo.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -293,13 +292,11 @@ public interface ClassService {
 
     WorkCountVO getWorkDetail(Integer id);
 
-    File getStudentWorkFile(Integer id);
+    FileExportBO getStudentWorkFile(Integer id);
 
     String getStudentWorkFilename(Integer id);
 
-    File workFilesToZip(Integer id) throws IOException;
-
-    String getWorkZipFilename(Integer id);
+    FileExportBO workFilesToZip(Integer id) throws IOException;
 
     void rateStudentWork(RateStudentWorkDTO dto, Integer id);
 
@@ -315,9 +312,7 @@ public interface ClassService {
 
     void deleteAnnouncement(Integer id);
 
-    File getAnnouncementFile(Integer id);
-
-    String getAnnouncementFilename(Integer id);
+    FileExportBO getAnnouncementFile(Integer id);
 
     void updateAnnouncement(Integer id, NewAnnouncementDTO dto);
 

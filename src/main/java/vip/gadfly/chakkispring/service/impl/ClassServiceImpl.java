@@ -450,11 +450,20 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public File getStudentWorkFile(Integer id) {
+    public FileExportBO getStudentWorkFile(Integer id) {
         StudentWorkDO studentWork = studentWorkMapper.selectById(id);
         FileDO fileDO = fileMapper.selectById(studentWork.getFileId());
         String absolutePath = FileUtil.getFileAbsolutePath(fileProperties.getStoreDir(), fileDO.getPath());
-        return new File(absolutePath);
+        WorkDO work = workMapper.selectById(studentWork.getWorkId());
+        UserDO user = userService.getById(studentWork.getUserId());
+        File file = new File(absolutePath);
+        String filename = String.format("%s_%s_%s_%tF.%s",
+                work.getName(),
+                user.getUsername(),
+                user.getNickname(),
+                studentWork.getCreateTime(),
+                fileDO.getExtension().toLowerCase());
+        return FileExportBO.builder().file(file).filename(filename).build();
     }
 
     @Override
@@ -472,7 +481,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public File workFilesToZip(Integer id) throws IOException {
+    public FileExportBO workFilesToZip(Integer id) throws IOException {
         WorkDO work = workMapper.selectById(id);
         QueryWrapper<StudentWorkDO> studentWorkWrapper = new QueryWrapper<>();
         studentWorkWrapper.lambda().eq(StudentWorkDO::getWorkId, work.getId());
@@ -497,15 +506,10 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
                 zos.close();
             }
         }
-        return zipFile;
-    }
-
-    @Override
-    public String getWorkZipFilename(Integer id) {
-        WorkDO work = workMapper.selectById(id);
-        return String.format("%s_%tF.zip",
+        String filename = String.format("%s_%tF.zip",
                 work.getName(),
                 System.currentTimeMillis());
+        return FileExportBO.builder().file(zipFile).filename(filename).build();
     }
 
     @Override
@@ -620,20 +624,15 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     }
 
     @Override
-    public File getAnnouncementFile(Integer id) {
+    public FileExportBO getAnnouncementFile(Integer id) {
         AnnouncementDO announcementDO = announcementMapper.selectById(id);
         FileDO fileDO = fileMapper.selectById(announcementDO.getFileId());
         String absolutePath = FileUtil.getFileAbsolutePath(fileProperties.getStoreDir(), fileDO.getPath());
-        return new File(absolutePath);
-    }
-
-    @Override
-    public String getAnnouncementFilename(Integer id) {
-        AnnouncementDO announcementDO = announcementMapper.selectById(id);
-        FileDO fileDO = fileMapper.selectById(announcementDO.getFileId());
-        return String.format("%s.%s",
+        File file = new File(absolutePath);
+        String filename = String.format("%s.%s",
                 announcementDO.getFilename(),
                 fileDO.getExtension().toLowerCase());
+        return FileExportBO.builder().file(file).filename(filename).build();
     }
 
     @Override

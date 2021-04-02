@@ -147,7 +147,7 @@ public class AdminServiceImpl implements AdminService {
         }
         throwGroupNotExistById(id);
         List<Integer> groupUserIds = groupService.getGroupUserIds(id);
-        if(groupUserIds.size() > 0) {
+        if (groupUserIds.size() > 0) {
             throw new ForbiddenException(10027);
         }
         return groupService.removeById(id);

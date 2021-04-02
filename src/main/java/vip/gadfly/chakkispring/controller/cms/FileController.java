@@ -21,7 +21,6 @@ import vip.gadfly.chakkispring.service.ClassService;
 import vip.gadfly.chakkispring.service.FileService;
 
 import javax.validation.constraints.Positive;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -61,9 +60,8 @@ public class FileController {
     @TeacherClassCheck(valueType = studentWorkIdType, paramType = pathVariableType)
     public ResponseEntity<FileSystemResource> downloadStudentWorkFile(
             @PathVariable @Positive(message = "{id.positive}") Integer id) {
-        File file = classService.getStudentWorkFile(id);
-        String filename = classService.getStudentWorkFilename(id);
-        return ResponseUtil.generateFileResponse(file, filename);
+        FileExportBO exportBO = classService.getStudentWorkFile(id);
+        return ResponseUtil.generateFileResponse(exportBO.getFile(), exportBO.getFilename());
     }
 
     @GetMapping("/lesson/work/download/{id}")
@@ -72,9 +70,8 @@ public class FileController {
     @TeacherClassCheck(valueType = workIdType, paramType = pathVariableType)
     public ResponseEntity<FileSystemResource> downloadWorkFile(
             @PathVariable @Positive(message = "{id.positive}") Integer id) throws IOException {
-        File file = classService.workFilesToZip(id);
-        String filename = classService.getWorkZipFilename(id);
-        return ResponseUtil.generateFileResponse(file, filename);
+        FileExportBO exportBO = classService.workFilesToZip(id);
+        return ResponseUtil.generateFileResponse(exportBO.getFile(), exportBO.getFilename());
     }
 
     @GetMapping("/lesson/announcement/download/{id}")
@@ -83,9 +80,8 @@ public class FileController {
     @TeacherClassCheck(valueType = announcementIdType, paramType = pathVariableType)
     public ResponseEntity<FileSystemResource> downloadAnnouncementFile(
             @PathVariable @Positive(message = "{id.positive}") Integer id) {
-        File file = classService.getAnnouncementFile(id);
-        String filename = classService.getAnnouncementFilename(id);
-        return ResponseUtil.generateFileResponse(file, filename);
+        FileExportBO exportBO = classService.getAnnouncementFile(id);
+        return ResponseUtil.generateFileResponse(exportBO.getFile(), exportBO.getFilename());
     }
 
     @GetMapping("/class/announcement/download/{id}")
@@ -94,9 +90,8 @@ public class FileController {
     @StudentClassCheck(valueType = announcementIdType, paramType = pathVariableType)
     public ResponseEntity<FileSystemResource> downloadStudentAnnouncementFile(
             @PathVariable @Positive(message = "{id.positive}") Integer id) {
-        File file = classService.getAnnouncementFile(id);
-        String filename = classService.getAnnouncementFilename(id);
-        return ResponseUtil.generateFileResponse(file, filename);
+        FileExportBO exportBO = classService.getAnnouncementFile(id);
+        return ResponseUtil.generateFileResponse(exportBO.getFile(), exportBO.getFilename());
     }
 
     @GetMapping("/lesson/questionnaire/download/{id}")
