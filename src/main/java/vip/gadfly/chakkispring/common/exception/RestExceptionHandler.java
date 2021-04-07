@@ -29,6 +29,8 @@ import javax.validation.ConstraintViolationException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static io.github.talelin.autoconfigure.util.RequestUtil.getSimpleRequest;
 
@@ -192,10 +194,16 @@ public class RestExceptionHandler {
         UnifyResponseVO<String> result = new UnifyResponseVO<>();
         result.setRequest(getSimpleRequest(request));
         String errorMessage = CodeMessageConfiguration.getMessage(10170);
-        if (!StringUtils.hasText(errorMessage)) {
-            result.setMessage(exception.getMessage());
+        Throwable cause = exception.getCause();
+        if (cause != null) {
+            String msg = convertMessage(cause);
+            result.setMessage(msg);
         } else {
-            result.setMessage(errorMessage);
+            if (!StringUtils.hasText(errorMessage)) {
+                result.setMessage(exception.getMessage());
+            } else {
+                result.setMessage(errorMessage);
+            }
         }
         result.setCode(Code.PARAMETER_ERROR.getCode());
         response.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -281,5 +289,28 @@ public class RestExceptionHandler {
             }
         });
         return getMapUnifyResponseVO(request, response, msg);
+    }
+
+    /**
+     * 传参类型错误时，用于消息转换
+     *
+     * @param throwable
+     * @return 错误信息
+     */
+    private String convertMessage(Throwable throwable) {
+        String error = throwable.toString();
+        String regulation = "\\[\"(.*?)\"]+";
+        Pattern pattern = Pattern.compile(regulation);
+        Matcher matcher = pattern.matcher(error);
+        String group = "";
+        if (matcher.find()) {
+            String matchString = matcher.group();
+            matchString = matchString
+                    .replace("[", "")
+                    .replace("]", "");
+            matchString = matchString.replaceAll("\\\"", "") + "字段类型错误";
+            group += matchString;
+        }
+        return group;
     }
 }
