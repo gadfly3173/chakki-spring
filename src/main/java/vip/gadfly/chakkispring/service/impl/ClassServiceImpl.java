@@ -111,9 +111,6 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
     private StudentQuestionnaireMapper studentQuestionnaireMapper;
 
     @Autowired
-    private StudentQuestionnaireQuestionAnswerMapper studentQuestionnaireQuestionAnswerMapper;
-
-    @Autowired
     private FileProperties fileProperties;
 
     @Override
