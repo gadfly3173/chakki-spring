@@ -756,6 +756,10 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, ClassDO> implemen
             datetimeCell.setCellValue(answerVOList.get(i).getCreateTime());
             datetimeCell.setCellStyle(cellStyle);
         }
+        // 设置自动列宽
+        for (int i = 0; i < questionnaireVO.getQuestions().size(); i++) {
+            sheet.autoSizeColumn(i);
+        }
         // 写入临时文件
         File excelFile = File.createTempFile(String.valueOf(System.currentTimeMillis()), ".xlsx");
         FileOutputStream outputStream = new FileOutputStream(excelFile);
