@@ -17,7 +17,7 @@
     </resultMap>
 
     <select id="selectAnswersByStudentQuestionnaireId" resultMap="StudentQuestionnaireAnswerDetailVO">
-        SELECT DISTINCT(sqqa.question_id), sqqa.answer, qq.title AS question, sqqa.student_questionnaire_id
+        SELECT DISTINCT(sqqa.question_id), sqqa.answer, qq.title AS question, sqqa.student_questionnaire_id, qq.`order`
         FROM student_questionnaire_question_answer AS sqqa,
              questionnaire_question AS qq
         WHERE sqqa.question_id = qq.id
